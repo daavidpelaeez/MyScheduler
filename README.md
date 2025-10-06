@@ -1,4 +1,4 @@
-# 🚀 MyScheduler
+# 🗓️ MyScheduler
 
 **MyScheduler** is a .NET class library that provides a robust and extensible framework for task scheduling. It enables developers to manage and automate the execution of one-time and recurring tasks with ease.
 
