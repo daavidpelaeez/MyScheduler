@@ -1,21 +1,25 @@
 ﻿using MyScheduler.Entities;
 using MyScheduler.Enums;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MyScheduler.Services
 {
     public class TaskManager
     {
-        private TaskEntity attributes;
+        private TaskEntity taskEntity;
+        private TaskValidator validator;
 
         public TaskManager(TaskEntity attributes)
         {
-            this.attributes = attributes;
+            this.taskEntity = attributes;
+            this.validator = new TaskValidator(attributes);
         }
 
         public void GetNextExecution()
         {
-            if (attributes.typeTask == TypeTask.Once)
+            if (taskEntity.typeTask == TypeTask.Once)
             {
                 GetNextExecutionOnce();
             }
@@ -27,100 +31,65 @@ namespace MyScheduler.Services
 
         public void GetNextExecutionOnce()
         {
-            CheckDate();
-            attributes.executionTime = (DateTimeOffset)attributes.eventDate;
-            attributes.description = $"Occurs once. Schedule will be used on {attributes.eventDate:dd/MM/yyyy} at {attributes.eventDate:HH:mm}" +
-                $" starting on {attributes.startDate:dd/MM/yyyy}";
+            validator.ValidateTask();
+
+            taskEntity.executionTime = (DateTimeOffset)taskEntity.eventDate;
+
+            taskEntity.description = $"Occurs once. Schedule will be used on {taskEntity.eventDate:dd/MM/yyyy} at {taskEntity.eventDate:HH:mm}" +
+                $" starting on {taskEntity.startDate:dd/MM/yyyy}";
 
         }
 
         public void GetNextExecutionRecurring()
         {
-            CheckDate();
+            validator.ValidateTask();
+            DateTimeOffset nextExecution;
 
-            if (attributes.startDate > attributes.currentDate)
+            if (taskEntity.startDate > taskEntity.currentDate)
             {
-                attributes.executionTime = attributes.startDate;
+                nextExecution = taskEntity.startDate;
             }
             else
             {
-                int daysSinceStarted = (attributes.currentDate - attributes.startDate).Days;
+                int daysPassed = (taskEntity.currentDate - taskEntity.startDate).Days; // 10 - 8 = 2
 
-                int periods = daysSinceStarted / attributes.recurrence;
+                int remainder = daysPassed % taskEntity.recurrence; // 2%3 = 2
 
-                attributes.executionTime = attributes.startDate.AddDays((periods + 1) * attributes.recurrence);
+                int daysToAdd = remainder == 0 ? taskEntity.recurrence : (taskEntity.recurrence - remainder); //3-2 = 1
+
+                nextExecution = taskEntity.currentDate.AddDays(daysToAdd); 
+
             }
 
-            attributes.description = $"Occurs every day. Schedule will be used on {attributes.executionTime:dd/MM/yyyy} " +
-                $"starting on {attributes.startDate:dd/MM/yyyy} ";
+            taskEntity.executionTime = nextExecution;
+
+            taskEntity.description = $"Occurs every {taskEntity.recurrence} day/s. Schedule will be used on {taskEntity.executionTime:dd/MM/yyyy} " +
+                $"starting on {taskEntity.startDate:dd/MM/yyyy} ";
 
         }
 
-        public void CheckDate()
+        public SortedSet<DateTimeOffset> GetRecurrentDays(DateTimeOffset startFrom, int recurrenceDays, DateTimeOffset? endDate)
         {
+            SortedSet<DateTimeOffset> listOfDays = new SortedSet<DateTimeOffset>();
+            DateTimeOffset current = startFrom;
+            int maxOcurrences = 10;
+            int count = 0;
 
-            if (attributes.typeTask == TypeTask.Once)
+            while (count < maxOcurrences)
             {
-                if (attributes.eventDate == null)
+                if (endDate.HasValue && current > endDate.Value)
                 {
-                    throw new Exception("EventDate is required!");
+                    break;
                 }
 
-                if(attributes.startDate < attributes.currentDate)
-                {
-                    throw new Exception("The start date cannot be in the past");
-                }
-            }
-
-            if (attributes.typeTask == TypeTask.Recurring)
-            {
-                if (attributes.startDate == null || attributes.recurrence < 1)
-                {
-                    throw new Exception("Start date and recurrence are required!");
-                }
+                listOfDays.Add(current);
+                current = current.AddDays(recurrenceDays);
+                count++;
 
             }
 
-            ValidateTaskDateConsistency();
+            return listOfDays;
 
         }
-
-        public void ValidateTaskDateConsistency()
-        {
-            if (attributes.endDate.HasValue)
-            {
-                if (attributes.startDate > attributes.endDate)
-                {
-                    throw new Exception("The start date cannot be after the end date");
-                }
-
-                if (attributes.currentDate > attributes.endDate)
-                {
-                    throw new Exception("The end date must be after the current date");
-                }
-
-                if (attributes.eventDate < attributes.startDate || attributes.eventDate > attributes.endDate)
-                {
-                    throw new Exception("The event date must be between start date and end date");
-                }
-
-            }
-            else
-            {
-                if (attributes.eventDate < attributes.currentDate)
-                {
-                    throw new Exception("The event date cannot be in the past");
-                }
-
-                if (attributes.eventDate < attributes.startDate)
-                {
-                    throw new Exception("The event date cannot be before the start date");
-                }
-            }
-
-        }
-
-
-
     }
 }

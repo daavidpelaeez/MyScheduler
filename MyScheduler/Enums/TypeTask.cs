@@ -7,6 +7,7 @@ namespace MyScheduler.Enums
     public enum TypeTask
     {
         Once,
-        Recurring
+        Recurring,
+        Unsupported
     }
 }
