@@ -1,90 +1,96 @@
-﻿using MyScheduler.Entities;
+﻿using MyScheduler.Common;
+using MyScheduler.Entities;
 using MyScheduler.Enums;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Linq;
 
 namespace MyScheduler.Services
 {
-    public class TaskValidator
+    public static class TaskValidator
     {
-        private TaskEntity taskEntity;
-
-        public TaskValidator(TaskEntity taskEntity)
+        public static Result<TaskEntity> ValidateTask(TaskEntity task)
         {
-            this.taskEntity = taskEntity;
+            Result<TaskEntity> typeValidation = task.typeTask switch
+            {
+                TypeTask.Once => ValidateOnceTask(task),
+                TypeTask.Recurring => ValidateRecurringTask(task),
+                _ => Result<TaskEntity>.Failure("Type task not supported")
+            };
+
+            if (typeValidation.IsFailure)
+            {
+                return typeValidation;
+            }
+
+            var dateValidation = ValidateTaskDateConsistency(task);
+
+            if (dateValidation.IsFailure)
+            {
+                return Result<TaskEntity>.Failure(dateValidation.Error);
+            }
+
+            return Result<TaskEntity>.Success(task);
+
         }
 
-        public void ValidateTask()
+        public static Result<TaskEntity> ValidateOnceTask(TaskEntity task)
         {
-            if (taskEntity.typeTask == TypeTask.Once)
-            {
-                ValidateOnceTask();
 
+            if (task.startDate < task.currentDate)
+            {
+                return Result<TaskEntity>.Failure("The start date cannot be in the past");
             }
-            else if (taskEntity.typeTask == TypeTask.Recurring)
-            {
-                ValidateRecurringTask();
 
+            if (!task.eventDate.HasValue)
+            {
+                return Result<TaskEntity>.Failure("The event date is required!");
+            }
+
+            return Result<TaskEntity>.Success(task);
+
+        }
+
+        public static Result<TaskEntity> ValidateRecurringTask(TaskEntity task)
+        {
+            if (task.recurrence < 1)
+            {
+                return Result<TaskEntity>.Failure("Recurrence must be at least 1");
+            }
+
+            return Result<TaskEntity>.Success(task);
+
+        }
+
+        public static Result<TaskEntity> ValidateTaskDateConsistency(TaskEntity task)
+        { 
+
+            if (task.eventDate < task.startDate)
+            {
+                return Result<TaskEntity>.Failure("The event date cannot be before the start date");
+            }
+                
+            if (task.endDate.HasValue)
+            {
+                if (task.startDate > task.endDate.Value)
+                {
+                    return Result<TaskEntity>.Failure("The start date cannot be after the end date");
+                }
+                  
+                if (task.eventDate > task.endDate.Value)
+                {
+                    return Result<TaskEntity>.Failure("The event date must be between the start and end date");
+                }
             }
             else
             {
-                throw new Exception("Task type not supported");
+                if (task.eventDate < task.currentDate)
+                {
+                    return Result<TaskEntity>.Failure("The event date cannot be in the past");
+                }
+                    
             }
 
-            ValidateTaskDateConsistency();
-
+            return Result<TaskEntity>.Success(task);
         }
 
-        public void ValidateOnceTask()
-        {
-            if (taskEntity.eventDate == null)
-                throw new Exception("EventDate is required!");
-
-            if (taskEntity.startDate < taskEntity.currentDate)
-                throw new Exception("The start date cannot be in the past");
-        }
-
-        public void ValidateRecurringTask()
-        {
-            if (taskEntity.startDate == null || taskEntity.recurrence < 1)
-                throw new Exception("Start date and recurrence are required!");
-        }
-
-        public void ValidateTaskDateConsistency()
-        {
-            if (taskEntity.endDate.HasValue)
-            {
-                if (taskEntity.startDate > taskEntity.endDate)
-                {
-                    throw new Exception("The start date cannot be after the end date");
-                }
-
-                if (taskEntity.currentDate > taskEntity.endDate)
-                {
-                    throw new Exception("The end date must be after the current date");
-                }
-
-                if (taskEntity.eventDate < taskEntity.startDate || taskEntity.eventDate > taskEntity.endDate)
-                {
-                    throw new Exception("The event date must be between start date and end date");
-                }
-
-            }
-            else
-            {
-                if (taskEntity.eventDate < taskEntity.currentDate)
-                {
-                    throw new Exception("The event date cannot be in the past");
-                }
-
-                if (taskEntity.eventDate < taskEntity.startDate)
-                {
-                    throw new Exception("The event date cannot be before the start date");
-                }
-            }
-
-        }
     }
 }

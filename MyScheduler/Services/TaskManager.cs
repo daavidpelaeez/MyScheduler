@@ -1,71 +1,71 @@
-﻿using MyScheduler.Entities;
+﻿using MyScheduler.Common;
+using MyScheduler.Entities;
 using MyScheduler.Enums;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MyScheduler.Services
 {
     public class TaskManager
     {
-        private TaskEntity taskEntity;
-        private TaskValidator validator;
-
-        public TaskManager(TaskEntity attributes)
+        public Result<TaskOutput> GetNextExecution(TaskEntity task)
         {
-            this.taskEntity = attributes;
-            this.validator = new TaskValidator(attributes);
-        }
+            var validation = TaskValidator.ValidateTask(task);
 
-        public void GetNextExecution()
-        {
-            if (taskEntity.typeTask == TypeTask.Once)
+            if (validation.IsFailure)
             {
-                GetNextExecutionOnce();
+                return Result<TaskOutput>.Failure(validation.Error);
             }
-            else
+
+            return task.typeTask switch
             {
-                GetNextExecutionRecurring();
-            }
+                TypeTask.Once => GetNextExecutionOnce(task),
+                TypeTask.Recurring => GetNextExecutionRecurring(task),
+                _ => Result<TaskOutput>.Failure("Task type not supported")
+            };
         }
 
-        public void GetNextExecutionOnce()
+        public Result<TaskOutput> GetNextExecutionOnce(TaskEntity task)
         {
-            validator.ValidateTask();
+            var output = new TaskOutput();
 
-            taskEntity.executionTime = (DateTimeOffset)taskEntity.eventDate;
+            output.executionTime = task.eventDate!.Value;
 
-            taskEntity.description = $"Occurs once. Schedule will be used on {taskEntity.eventDate:dd/MM/yyyy} at {taskEntity.eventDate:HH:mm}" +
-                $" starting on {taskEntity.startDate:dd/MM/yyyy}";
+            output.description = $"Occurs once. Schedule will be used on {task.eventDate.Value.Date.ToShortDateString()} at {task.eventDate.Value.ToLocalTime().DateTime.ToShortTimeString()}" +
+            $" starting on {task.startDate.Date.ToShortDateString()}";
 
+            return Result<TaskOutput>.Success(output);
         }
 
-        public void GetNextExecutionRecurring()
+        public Result<TaskOutput> GetNextExecutionRecurring(TaskEntity task)
         {
-            validator.ValidateTask();
             DateTimeOffset nextExecution;
 
-            if (taskEntity.startDate > taskEntity.currentDate)
+            if (task.startDate > task.currentDate)
             {
-                nextExecution = taskEntity.startDate;
+                nextExecution = task.startDate;
             }
             else
             {
-                int daysPassed = (taskEntity.currentDate - taskEntity.startDate).Days; // 10 - 8 = 2
-
-                int remainder = daysPassed % taskEntity.recurrence; // 2%3 = 2
-
-                int daysToAdd = remainder == 0 ? taskEntity.recurrence : (taskEntity.recurrence - remainder); //3-2 = 1
-
-                nextExecution = taskEntity.currentDate.AddDays(daysToAdd); 
-
+                nextExecution = task.currentDate.AddDays(CalculateDaysToAdd(task)); 
             }
 
-            taskEntity.executionTime = nextExecution;
+            var output = new TaskOutput();
 
-            taskEntity.description = $"Occurs every {taskEntity.recurrence} day/s. Schedule will be used on {taskEntity.executionTime:dd/MM/yyyy} " +
-                $"starting on {taskEntity.startDate:dd/MM/yyyy} ";
+            output.executionTime = nextExecution;
 
+            output.description = $"Occurs every {task.recurrence} day/s. Schedule will be used on {output.executionTime.Date.ToShortDateString()} " +
+            $"starting on {task.startDate.Date.ToShortDateString()} ";
+
+            return Result<TaskOutput>.Success(output);
+
+        }
+
+        private int CalculateDaysToAdd(TaskEntity task)
+        {
+            int daysPassed = (task.currentDate - task.startDate).Days;
+            int remainder = daysPassed % task.recurrence;
+            return remainder == 0 ? 0 : (task.recurrence - remainder);
         }
 
         public SortedSet<DateTimeOffset> GetRecurrentDays(DateTimeOffset startFrom, int recurrenceDays, DateTimeOffset? endDate)
