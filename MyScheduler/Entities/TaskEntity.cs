@@ -13,7 +13,6 @@ namespace MyScheduler.Entities
         public DateTimeOffset startDate { get; set; }
         public DateTimeOffset? endDate { get; set; }
         public int recurrence { get; set; }
-        //public TypeOccurs occurs { get; set; }
        
     }
 }
