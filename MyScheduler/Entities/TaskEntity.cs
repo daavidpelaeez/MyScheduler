@@ -7,12 +7,12 @@ namespace MyScheduler.Entities
 {
     public class TaskEntity
     {
-        public DateTimeOffset currentDate { get; set; }
-        public TypeTask typeTask { get; set; }
-        public DateTimeOffset? eventDate { get; set; }
-        public DateTimeOffset startDate { get; set; }
-        public DateTimeOffset? endDate { get; set; }
-        public int recurrence { get; set; }
+        public DateTimeOffset CurrentDate { get; set; }
+        public TypeTask TypeTask { get; set; }
+        public DateTimeOffset? EventDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
+        public DateTimeOffset? EndDate { get; set; }
+        public int Recurrence { get; set; }
        
     }
 }

@@ -3,6 +3,7 @@ using MyScheduler.Entities;
 using MyScheduler.Enums;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace MyScheduler.Services
 {
@@ -17,7 +18,7 @@ namespace MyScheduler.Services
                 return Result<TaskOutput>.Failure(validation.Error);
             }
 
-            return task.typeTask switch
+            return task.TypeTask switch
             {
                 TypeTask.Once => GetNextExecutionOnce(task),
                 TypeTask.Recurring => GetNextExecutionRecurring(task),
@@ -27,7 +28,7 @@ namespace MyScheduler.Services
 
         public Result<TaskOutput> GetNextExecutionOnce(TaskEntity task)
         {
-            var output = GetOutput(task.eventDate!.Value,task);
+            var output = GetOutput(task.EventDate!.Value, task);
 
             return Result<TaskOutput>.Success(output);
         }
@@ -36,11 +37,11 @@ namespace MyScheduler.Services
         {
             DateTimeOffset? nextExecution = null;
 
-            var recurringDays = GetRecurrentDays(task.startDate, task.recurrence, task.endDate, 10);
+            var recurringDays = GetRecurrentDays(task, 10);
 
             for (int i = 0; i < recurringDays.Count; i++)
             {
-                if (recurringDays[i] >= task.currentDate)
+                if (recurringDays[i] >= task.CurrentDate)
                 {
                     nextExecution = recurringDays[i];
                     break;
@@ -58,17 +59,17 @@ namespace MyScheduler.Services
             var output = new TaskOutput();
             output.executionTime = executionTime;
 
-            switch (task.typeTask)
+            switch (task.TypeTask)
             {
                 case TypeTask.Once:
-                    output.description = $"Occurs once. Schedule will be used on {task.eventDate!.Value.Date.ToShortDateString()} at {task.eventDate.Value.ToLocalTime().DateTime.ToShortTimeString()}" +
-                    $" starting on {task.startDate.Date.ToShortDateString()}";
+                    output.description = $"Occurs once. Schedule will be used on {task.EventDate!.Value.Date.ToShortDateString()} at {task.EventDate.Value.ToLocalTime().DateTime.ToShortTimeString()}" +
+                    $" starting on {task.StartDate.Date.ToShortDateString()}";
                     return output;
 
 
                 case TypeTask.Recurring:
-                    output.description = $"Occurs every {task.recurrence} day/s. Schedule will be used on {output.executionTime.Date.ToShortDateString()} " +
-                    $"starting on {task.startDate.Date.ToShortDateString()} ";
+                    output.description = $"Occurs every {task.Recurrence} day/s. Schedule will be used on {output.executionTime.Date.ToShortDateString()} " +
+                    $"starting on {task.StartDate.Date.ToShortDateString()} ";
                     return output;
 
                 default:
@@ -76,34 +77,30 @@ namespace MyScheduler.Services
             }
         }
 
-        private DateTimeOffset AddRecurrence(DateTimeOffset date, int recurrence)
-        {
-            return date.AddDays(recurrence);
-        }
 
-        public List<DateTimeOffset> GetRecurrentDays(DateTimeOffset startFrom, int recurrence, DateTimeOffset? endDate, int limit)
+        public List<DateTimeOffset> GetRecurrentDays(TaskEntity task, int limitOccurrences)
         {
             var listOfDays = new List<DateTimeOffset>();
-
-            DateTimeOffset current = startFrom;
-
             int count = 0;
+            bool useEndDate = task.EndDate.HasValue;
 
-            while (count < limit)
+            for (var currentDateIterator = task.StartDate;
+                 (useEndDate || count < limitOccurrences);
+                 currentDateIterator = currentDateIterator.AddDays(task.Recurrence))
             {
-                if (endDate.HasValue && current > endDate.Value)
+                if (useEndDate && currentDateIterator > task.EndDate!.Value)
                 {
                     break;
                 }
 
-                listOfDays.Add(current);
-                current = AddRecurrence(current, recurrence);
-                count++;
-
+                if (currentDateIterator >= task.CurrentDate)
+                {
+                    listOfDays.Add(currentDateIterator);
+                    count++;
+                }
             }
 
             return listOfDays;
-
         }
 
 

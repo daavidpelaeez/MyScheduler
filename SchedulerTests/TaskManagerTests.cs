@@ -13,10 +13,10 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Once;
-            task.currentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
-            task.eventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
+            task.TypeTask = TypeTask.Once;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
+            task.EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
 
             var result = taskManager.GetNextExecution(task);
 
@@ -31,10 +31,10 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Recurring;
-            task.currentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
-            task.recurrence = 1;
+            task.TypeTask = TypeTask.Recurring;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
+            task.Recurrence = 1;
 
             var result = taskManager.GetNextExecution(task);
 
@@ -49,10 +49,10 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Recurring;
-            task.currentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
-            task.recurrence = 1;
+            task.TypeTask = TypeTask.Recurring;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
+            task.Recurrence = 1;
 
             var result = taskManager.GetNextExecution(task);
 
@@ -67,11 +67,11 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Once;
-            task.currentDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 6, 0, 0, 0, TimeSpan.Zero);
-            task.eventDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero);
-            task.recurrence = 2;
+            task.TypeTask = TypeTask.Once;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 6, 0, 0, 0, TimeSpan.Zero);
+            task.EventDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero);
+            task.Recurrence = 2;
 
             var result = taskManager.GetNextExecution(task);
 
@@ -85,15 +85,15 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Recurring;
-            task.currentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
-            task.recurrence = 0;
+            task.TypeTask = TypeTask.Recurring;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
+            task.Recurrence = 0;
 
             var result = taskManager.GetNextExecution(task);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("recurrence", result.Error.ToLower());
+            Assert.Contains("recurring tasks must have a recurrence", result.Error.ToLower());
         }
 
         [Fact]
@@ -102,11 +102,11 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Recurring;
-            task.currentDate = new DateTimeOffset(2025, 10, 4, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
-            task.endDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
-            task.recurrence = 1;
+            task.TypeTask = TypeTask.Recurring;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 4, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
+            task.EndDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
+            task.Recurrence = 1;
 
             var result = taskManager.GetNextExecution(task);
 
@@ -120,10 +120,10 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Recurring;
-            task.currentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
-            task.recurrence = 2;
+            task.TypeTask = TypeTask.Recurring;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
+            task.Recurrence = 2;
 
             var result = taskManager.GetNextExecution(task);
 
@@ -137,9 +137,9 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Unsupported;
-            task.currentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
+            task.TypeTask = TypeTask.Unsupported;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
 
             var result = taskManager.GetNextExecution(task);
 
@@ -153,10 +153,10 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Once;
-            task.currentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
-            task.eventDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.TypeTask = TypeTask.Once;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
+            task.EventDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
 
             var result = taskManager.GetNextExecution(task);
 
@@ -170,10 +170,10 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Once;
-            task.currentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero);
-            task.eventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
+            task.TypeTask = TypeTask.Once;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero);
+            task.EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
 
             var result = taskManager.GetNextExecutionOnce(task);
 
@@ -187,32 +187,36 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Recurring;
-            task.currentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
-            task.recurrence = 2;
+            task.TypeTask = TypeTask.Recurring;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
+            task.Recurrence = 2;
 
             var result = taskManager.GetNextExecutionRecurring(task);
 
             Assert.True(result.IsSuccess);
             Assert.Equal("Occurs every 2 day/s. Schedule will be used on 09/10/2025 starting on 05/10/2025 ", result.Value.description);
         }
-
+        
         [Fact]
         public void GetRecurrentDays_Exactly100Occurrences()
         {
             var taskManager = new TaskManager();
 
+            var task = new TaskEntity();
+            task.TypeTask = TypeTask.Recurring;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
+            task.Recurrence = 2;
+
             var result = taskManager.GetRecurrentDays(
-                new DateTimeOffset(2025, 10, 1, 0, 0, 0, TimeSpan.Zero),
-                1,
-                null,
-                100
+                task,
+                10
             );
 
-            Assert.Equal(100, result.Count);
-            Assert.Equal(new DateTimeOffset(2025, 10, 1, 0, 0, 0, TimeSpan.Zero), result[0]);
-            Assert.Equal(new DateTimeOffset(2025, 10, 1, 0, 0, 0, TimeSpan.Zero).AddDays(99), result[99]);
+            Assert.Equal(10, result.Count);
+            Assert.Equal(new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero), result[0]);
+            Assert.Equal(new DateTimeOffset(2025, 10, 27, 0, 0, 0, TimeSpan.Zero), result[9]);
         }
 
         [Fact]
@@ -221,10 +225,10 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Recurring;
-            task.currentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
-            task.recurrence = 1;
+            task.TypeTask = TypeTask.Recurring;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
+            task.Recurrence = 1;
 
             var result = taskManager.GetNextExecutionRecurring(task);
 
@@ -238,10 +242,10 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Recurring;
-            task.currentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
-            task.recurrence = 3;
+            task.TypeTask = TypeTask.Recurring;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.Recurrence = 3;
 
             var result = taskManager.GetNextExecutionRecurring(task);
 
@@ -250,41 +254,27 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void GetRecurrentDays_ShouldBreakWhenCurrentExceedsEndDate()
-        {
-            
-            var taskManager = new TaskManager(); 
-            DateTimeOffset startFrom = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
-            int recurrence = 1; 
-            DateTimeOffset endDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
-            int limit = 10; 
-           
-            var result = taskManager.GetRecurrentDays(startFrom, recurrence, endDate, limit);
-            
-            Assert.Contains(endDate, result);
-            Assert.DoesNotContain(endDate.AddDays(1), result);
-            Assert.True(result.Count < limit); 
-        }
-
-        [Fact]
         public void GetRecurrentDays_CheckLeap()
         {
             var taskManager = new TaskManager();
 
+
+            var task = new TaskEntity();
+            task.TypeTask = TypeTask.Recurring;
+            task.CurrentDate = new DateTimeOffset(2024, 2, 28, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2024, 2, 28, 0, 0, 0, TimeSpan.Zero);
+            task.Recurrence = 3;
+
             var result = taskManager.GetRecurrentDays(
-                new DateTimeOffset(2024, 2, 28, 0, 0, 0, TimeSpan.Zero),
-                1,
-                null,
-                5
+                task,
+                3
             );
 
-            Assert.Equal(5, result.Count);
+            Assert.Equal(3, result.Count);
             Assert.Equal(new DateTimeOffset(2024, 2, 28, 0, 0, 0,TimeSpan.Zero), result[0]);
-            Assert.Equal(new DateTimeOffset(2024, 2, 29, 0, 0, 0,TimeSpan.Zero), result[1]);
-            Assert.Equal(new DateTimeOffset(2024, 3, 1, 0, 0, 0, TimeSpan.Zero), result[2]);
-            Assert.Equal(new DateTimeOffset(2024, 3, 2, 0, 0, 0, TimeSpan.Zero), result[3]);
-            Assert.Equal(new DateTimeOffset(2024, 3, 3, 0, 0, 0, TimeSpan.Zero), result[4]);
-  
+            Assert.Equal(new DateTimeOffset(2024, 3, 2, 0, 0, 0,TimeSpan.Zero),  result[1]);
+            Assert.Equal(new DateTimeOffset(2024, 3, 5, 0, 0, 0, TimeSpan.Zero), result[2]);
+            
         }
 
         [Fact]
@@ -292,17 +282,21 @@ namespace MyScheduler
         {
             var taskManager = new TaskManager();
 
+            var task = new TaskEntity();
+            task.TypeTask = TypeTask.Recurring;
+            task.CurrentDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
+            task.Recurrence = 3;
+
             var result = taskManager.GetRecurrentDays(
-                new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero),
-                1,
-                null,
+                task,
                 3
              );
 
             Assert.Equal(3, result.Count);
             Assert.Equal(new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero), result[0]);
-            Assert.Equal(new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero),   result[1]);
-            Assert.Equal(new DateTimeOffset(2026, 1, 2, 0, 0, 0, TimeSpan.Zero),   result[2]);
+            Assert.Equal(new DateTimeOffset(2026, 1, 3, 0, 0, 0, TimeSpan.Zero),   result[1]);
+            Assert.Equal(new DateTimeOffset(2026, 1, 6, 0, 0, 0, TimeSpan.Zero),   result[2]);
 
         }
 
@@ -313,11 +307,11 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Once;
-            task.currentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
-            task.startDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
-            task.eventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
-            task.endDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
+            task.TypeTask = TypeTask.Once;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
+            task.EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
+            task.EndDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
 
             var result = taskManager.GetNextExecution(task);
 
@@ -334,10 +328,10 @@ namespace MyScheduler
             var taskManager = new TaskManager();
 
             var task = new TaskEntity();
-            task.typeTask = TypeTask.Once;
-            task.startDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
-            task.eventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
-            task.currentDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
+            task.TypeTask = TypeTask.Once;
+            task.StartDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
+            task.EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
+            task.CurrentDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
 
             var result = taskManager.GetNextExecution(task);
 
@@ -346,6 +340,30 @@ namespace MyScheduler
             Assert.Equal("Occurs once. Schedule will be used on 10/10/2025 at 16:30 starting on 10/10/2025", result.Value.description);
 
         }
+
+        [Fact]
+        public void EndDateSameAsStartDate()
+        {
+
+            var taskManager = new TaskManager();
+
+            var task = new TaskEntity();
+            task.TypeTask = TypeTask.Once;
+            task.CurrentDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
+            task.StartDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
+            task.EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
+           
+            task.EndDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
+
+            var result = taskManager.GetNextExecution(task);
+
+            Assert.True(result.IsSuccess, result.Error);
+            Assert.Equal(new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero), result.Value.executionTime);
+            Assert.Equal("Occurs once. Schedule will be used on 10/10/2025 at 16:30 starting on 10/10/2025", result.Value.description);
+
+        }
+
+        
 
 
 

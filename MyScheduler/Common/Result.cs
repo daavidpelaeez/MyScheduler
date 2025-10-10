@@ -13,9 +13,9 @@ namespace MyScheduler.Common
         protected Result(bool isSuccess, string error)
         {
             if (isSuccess && !string.IsNullOrEmpty(error))
-                throw new InvalidOperationException("Un resultado exitoso no puede tener error.");
+                throw new InvalidOperationException("Success cant have an error");
             if (!isSuccess && string.IsNullOrEmpty(error))
-                throw new InvalidOperationException("Un resultado fallido debe tener un error.");
+                throw new InvalidOperationException("Failure should have almost 1 error");
 
             IsSuccess = isSuccess;
             Error = error;
@@ -34,7 +34,7 @@ namespace MyScheduler.Common
             get
             {
                 if (!IsSuccess)
-                    throw new InvalidOperationException("No puedes acceder a Value cuando el resultado es fallo.");
+                    throw new InvalidOperationException("You cant access to a value if the result is an error");
                 return _value;
             }
         }
