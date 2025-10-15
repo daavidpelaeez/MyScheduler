@@ -1,6 +1,7 @@
 ﻿using MyScheduler.Entities;
 using MyScheduler.Enums;
 using MyScheduler.Services;
+using MyScheduler.Validators;
 
 namespace MyScheduler
 {
@@ -34,7 +35,7 @@ namespace MyScheduler
             var result = TaskValidator.ValidateTask(task);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("The event date is required for tasks of type Once.", result.Error);
+            Assert.Contains("EventDate is required for Once tasks.", result.Error);
         }
 
         [Fact]
@@ -133,7 +134,7 @@ namespace MyScheduler
 
             var result = TaskValidator.ValidateTask(task);
             Assert.True(result.IsFailure);
-            Assert.Contains("The event date must be after the current date.", result.Error);
+            Assert.Contains("The event date must be in the future.", result.Error);
         }
 
         [Fact]
@@ -244,7 +245,7 @@ namespace MyScheduler
             var result = TaskValidator.ValidateTask(task);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("event date must be after the current date", result.Error.ToLower());
+            Assert.Contains("The event date must be in the future.", result.Error);
         }
 
         [Fact]
@@ -327,7 +328,7 @@ namespace MyScheduler
             var result = TaskValidator.ValidateTask(task);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("The event date must be after the current date.", result.Error);
+            Assert.Contains("The event date must be in the future.", result.Error);
             Assert.Contains("The event date cannot be before the start date.", result.Error);
             Assert.Contains("Once tasks cannot have a recurrence", result.Error);
         }
@@ -364,7 +365,7 @@ namespace MyScheduler
             var result = TaskValidator.ValidateTask(task);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("The task recurrence cannot be more than 1000", result.Error);
+            Assert.Contains("Recurrence cannot be more than 1000.", result.Error);
         }
 
         [Fact]
@@ -380,7 +381,7 @@ namespace MyScheduler
             var result = TaskValidator.ValidateTask(task);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("1 year ago", result.Error);
+            Assert.Contains("1 year in the past", result.Error);
         }
 
         [Fact]

@@ -13,6 +13,13 @@ namespace MyScheduler.Entities
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
         public int Recurrence { get; set; }
-       
+        public TimeUnit? TimeUnit { get; set; }             
+        public int? TimeUnitNumberOf { get; set; }
+        public List<DayOfWeek> DaysOfWeek { get; set; } = new List<DayOfWeek>();
+        public int WeeklyRecurrence { get; set; }
+        public TimeSpan? ExecutionTimeOfOneDay { get; set; }
+        public TimeSpan? DailyStartTime { get; set; }    
+        public TimeSpan? DailyEndTime { get; set; }      
+
     }
 }

@@ -6,8 +6,8 @@ namespace MyScheduler.Entities
 {
     public class TaskOutput
     {
-        public DateTimeOffset executionTime { get; set; }
-        public string description { get; set; }
+        public DateTimeOffset ExecutionTime { get; set; } 
+        public string Description { get; set; } = string.Empty; 
 
     }
 }
