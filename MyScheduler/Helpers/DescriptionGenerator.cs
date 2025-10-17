@@ -22,7 +22,8 @@ namespace MyScheduler.Services.Helpers
                     return $"Occurs every {taskConfig.WeeklyRecurrence} weeks on {GetWeeklyDescription(taskConfig.DaysOfWeek)} at {taskConfig.ExecutionTimeOfOneDay}, starting {taskConfig.StartDate.Date.ToShortDateString()}";
 
                 case TypeTask.WeeklyEvery:
-                    return "";
+                    return $"Occurs every {taskConfig.WeeklyRecurrence} weeks on {GetWeeklyDescription(taskConfig.DaysOfWeek)} every {taskConfig.TimeUnitNumberOf} {taskConfig.TimeUnit.ToString().ToLower()} between {taskConfig.DailyStartTime!.Value.Hours}:{taskConfig.DailyStartTime!.Value.Minutes} " +
+                        $"and {taskConfig.DailyEndTime!.Value.Hours}:{taskConfig.DailyEndTime!.Value.Minutes} starting on {taskConfig.StartDate.Date.ToShortDateString()}";
 
                 default:
                     return "Description not available for this task type.";
@@ -40,7 +41,8 @@ namespace MyScheduler.Services.Helpers
             if (days.Count == 2)
                 return $"{days[0].ToString().ToLower()} and {days[1].ToString().ToLower()}";
 
-            var allExceptLast = string.Join(", ", days.Take(days.Count - 1)).ToLower();
+            var allExceptLast = string.Join(", ", days.Take(days.Count-1)).ToLower();
+
             return $"{allExceptLast} and {days.Last()}".ToLower();
         }
     }

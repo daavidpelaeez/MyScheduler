@@ -31,6 +31,4 @@ namespace MyScheduler.Validators
                 errors.AppendLine("TimeUnitNumberOf should not be set for WeeklyOnce.");
         }
     }
-
-
 }
