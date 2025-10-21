@@ -6,7 +6,7 @@
 
 ## ✨ Features
 
-- ✅ Support for multiple task types (`Once`, `Recurring`)
+- ✅ Support for multiple task types (`Once`, `Recurring`, `WeeklyOnce`, `WeeklyEvery`)
 - 🔍 Thorough validation of scheduling parameters
 - ⏱️ Automatic calculation of next execution time
 - 🧩 Extensible architecture for custom task types and scheduling logic
