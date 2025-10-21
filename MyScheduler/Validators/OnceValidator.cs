@@ -5,14 +5,14 @@ using System.Text;
 
 namespace MyScheduler.Validators
 {
-    public static class OnceTaskValidator
+    public static class OnceValidator
     {
-        public static void Validate(TaskEntity task, StringBuilder errors)
+        public static void Validate(ScheduleEntity scheduleConfig, StringBuilder errors)
         {
-            if (!task.EventDate.HasValue)
+            if (!scheduleConfig.EventDate.HasValue)
                 errors.AppendLine("EventDate is required for Once tasks.");
 
-            if (task.Recurrence > 0)
+            if (scheduleConfig.Recurrence > 0)
                 errors.AppendLine("Once tasks cannot have a recurrence.");
         }
     }

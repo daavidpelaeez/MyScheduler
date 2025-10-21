@@ -5,11 +5,11 @@ using System.Text;
 
 namespace MyScheduler.Validators
 {
-    public static class RecurringTaskValidator
+    public static class RecurringValidator
     {
-        public static void Validate(TaskEntity task, StringBuilder errors)
+        public static void Validate(ScheduleEntity scheduleConfig, StringBuilder errors)
         {
-            if (task.Recurrence < 1)
+            if (scheduleConfig.Recurrence < 1)
                 errors.AppendLine("Recurring tasks must have a recurrence greater than 0.");
         }
     }

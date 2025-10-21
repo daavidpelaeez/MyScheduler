@@ -5,10 +5,10 @@ using System.Text;
 
 namespace MyScheduler.Entities
 {
-    public class TaskEntity
+    public class ScheduleEntity
     {
         public DateTimeOffset CurrentDate { get; set; }
-        public TypeTask TypeTask { get; set; }
+        public Enums.Type Type { get; set; }
         public DateTimeOffset? EventDate { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }

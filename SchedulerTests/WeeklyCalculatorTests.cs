@@ -4,9 +4,7 @@ using MyScheduler.Helpers;
 using MyScheduler.Services;
 using MyScheduler.Services.Helpers;
 using MyScheduler.Services.TaskCalculators;
-using MyScheduler.Validators;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+
 
 
 namespace MyScheduler
@@ -14,6 +12,7 @@ namespace MyScheduler
     public class WeeklyCalculatorTests
     {
         //Once
+        //
         [Fact]
         public void WeeklyOnce_ShouldPass_WhenCheckingCorrectDescription()
         {
@@ -23,10 +22,10 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskManager = new TaskManager();
+            var taskManager = new ScheduleManager();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyOnce;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyOnce;
             taskConfig.ExecutionTimeOfOneDay = new TimeSpan(13, 30, 0);
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 4;
@@ -48,10 +47,10 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskManager = new TaskManager();
+            var taskManager = new ScheduleManager();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyOnce;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyOnce;
             taskConfig.ExecutionTimeOfOneDay = new TimeSpan(13, 30, 0);
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 4;
@@ -77,11 +76,11 @@ namespace MyScheduler
 
             listOfDays.Add(DayOfWeek.Monday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyEveryTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyEvery;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 1;
             taskConfig.StartDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
@@ -94,7 +93,7 @@ namespace MyScheduler
 
             var result = taskManager.GetNextExecution(taskConfig, 10);
 
-            String expectedDescription = $"Occurs every 1 weeks on monday every 2 hours between 13:30 and 19:30 starting on 17/10/2025";
+            String expectedDescription = $"Occurs every 1 weeks on monday every 2 hours between 13:30:00 and 19:30:00 starting on 17/10/2025";
            
 
             DateTimeOffset expectedExecutionTime = new DateTimeOffset(2025, 10, 20, 13, 30, 0, TimeSpan.Zero);
@@ -112,15 +111,15 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyOnce;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyOnce;
             taskConfig.ExecutionTimeOfOneDay = new TimeSpan(13, 30, 0);
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 3;
             taskConfig.StartDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
             taskConfig.CurrentDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
            
-            WeeklyOnceTaskCalculator weeklyOnceCalculator = new WeeklyOnceTaskCalculator();
+            WeeklyOnceCalculator weeklyOnceCalculator = new WeeklyOnceCalculator();
 
             var result = weeklyOnceCalculator.CalculateWeeklyOnceConfig(taskConfig, 5);
 
@@ -146,11 +145,11 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyEveryTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyEvery;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 4;
             taskConfig.StartDate = new DateTimeOffset(2025, 10, 19, 0, 0, 0, TimeSpan.Zero);
@@ -182,11 +181,11 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyEveryTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyOnce;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyOnce;
             taskConfig.ExecutionTimeOfOneDay = new TimeSpan(13, 30, 0);
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 4;
@@ -219,11 +218,11 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyEveryTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyEvery;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 4;
             taskConfig.StartDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero);
@@ -252,11 +251,11 @@ namespace MyScheduler
 
             listOfDays.Add(DayOfWeek.Monday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyEveryTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyEvery;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 2;
             taskConfig.StartDate = new DateTimeOffset(2025, 10, 20, 0, 0, 0, TimeSpan.Zero);
@@ -287,11 +286,11 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyEveryTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyEvery;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 4;
             taskConfig.StartDate = new DateTimeOffset(2025, 10, 19, 0, 0, 0, TimeSpan.Zero);
@@ -314,14 +313,14 @@ namespace MyScheduler
 
         //Common
         [Fact]
-        public void GetMatchingDays_ShouldAdvanceCorrectly_WithGivenSundayJump()
+        public void GetMatchingDays_ShouldAdvanceCorrectly_WhenGivenSundayJump()
         {
           
             var startDate = new DateTimeOffset(new DateTime(2025, 10, 12)); 
             var currentDate = startDate;
             var daysOfWeek = new List<DayOfWeek> { DayOfWeek.Sunday, DayOfWeek.Monday, DayOfWeek.Tuesday };
 
-            var taskConfig = new TaskEntity
+            var taskConfig = new ScheduleEntity
             {
                 StartDate = startDate,
                 CurrentDate = currentDate,
@@ -353,11 +352,11 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyEveryTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyEvery;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 4;
             taskConfig.StartDate = new DateTimeOffset(2025, 10, 19, 0, 0, 0, TimeSpan.Zero);
@@ -387,11 +386,11 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyEveryTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyEvery;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 4;
             taskConfig.StartDate = new DateTimeOffset(2025, 10, 19, 0, 0, 0, TimeSpan.Zero);
@@ -417,11 +416,11 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyEveryTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyEvery;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 4;
             taskConfig.StartDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
@@ -454,11 +453,11 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyEveryTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyEvery;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 4;
             taskConfig.StartDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
@@ -490,11 +489,11 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyEveryTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyEvery;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 4;
             taskConfig.StartDate = new DateTimeOffset(2025, 10, 27, 0, 0, 0, TimeSpan.Zero);
@@ -533,11 +532,11 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Tuesday);
             listOfDays.Add(DayOfWeek.Sunday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyOnceTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyOnceCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyOnce;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyOnce;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 2;
             taskConfig.StartDate = new DateTimeOffset(2025, 10, 27, 0, 0, 0, TimeSpan.Zero);
@@ -565,11 +564,11 @@ namespace MyScheduler
 
             listOfDays.Add(DayOfWeek.Monday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyOnceTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyOnceCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyOnce;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyOnce;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 1;
             taskConfig.StartDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
@@ -593,11 +592,11 @@ namespace MyScheduler
 
             listOfDays.Add(DayOfWeek.Monday);
 
-            var taskManager = new TaskManager();
-            var weManager = new WeeklyEveryTaskCalculator();
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
 
-            var taskConfig = new TaskEntity();
-            taskConfig.TypeTask = TypeTask.WeeklyEvery;
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
             taskConfig.DaysOfWeek = listOfDays;
             taskConfig.WeeklyRecurrence = 1;
             taskConfig.StartDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
@@ -620,9 +619,117 @@ namespace MyScheduler
             Assert.Equal(expected, result);
         }
 
+        [Fact]
+        public void WeeklyOnce_ShouldPass_WhenNoDatesAvailable()
+        {
+            var listOfDays = new List<DayOfWeek>();
+
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyOnceCalculator();
+
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyOnce;
+            taskConfig.DaysOfWeek = listOfDays;
+            taskConfig.WeeklyRecurrence = 1;
+            taskConfig.StartDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
+            taskConfig.CurrentDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
+            taskConfig.ExecutionTimeOfOneDay = new TimeSpan(13, 30, 0);
+            taskConfig.EndDate = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero);
+
+            var result = weManager.GetNextExecutionWeeklyOnce(taskConfig,10);
+
+            
+            Assert.Contains("No next execution found",result.Error);
+            Assert.True(result.IsFailure);
+
+        }
+
+        [Fact]
+        public void WeeklyOnce_ShouldPass_WhenUsingMaxOccurrences()
+        {
+            var listOfDays = new List<DayOfWeek>();
+            listOfDays.Add(DayOfWeek.Monday);
+            listOfDays.Add(DayOfWeek.Tuesday);
+
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyOnceCalculator();
+
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyOnce;
+            taskConfig.DaysOfWeek = listOfDays;
+            taskConfig.WeeklyRecurrence = 2;
+            taskConfig.StartDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
+            taskConfig.CurrentDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
+            taskConfig.ExecutionTimeOfOneDay = new TimeSpan(13, 30, 0);
+
+            List<DateTimeOffset> expectedDates = new List<DateTimeOffset>();
+            expectedDates.Add(new DateTimeOffset(2025, 10, 27, 13, 30, 0, 0, TimeSpan.Zero));
+            expectedDates.Add(new DateTimeOffset(2025, 10, 28, 13, 30, 0, 0, TimeSpan.Zero));
+            expectedDates.Add(new DateTimeOffset(2025, 11, 10, 13, 30, 0, 0, TimeSpan.Zero));
+
+            var result = weManager.CalculateWeeklyOnceConfig(taskConfig, 3);
+
+            Assert.Equal(result,expectedDates);
+
+        }
+
+        [Fact]
+        public void WeeklyEvery_ShouldPass_WhenGetWeeklyDescription2Days()
+        {
+            var listOfDays = new List<DayOfWeek>();
+
+            listOfDays.Add(DayOfWeek.Monday);
+            listOfDays.Add(DayOfWeek.Tuesday);
+
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
+
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
+            taskConfig.DaysOfWeek = listOfDays;
+            taskConfig.WeeklyRecurrence = 1;
+            taskConfig.StartDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
+            taskConfig.CurrentDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
+            taskConfig.EndDate = new DateTimeOffset(2025, 10, 21, 0, 0, 0, TimeSpan.Zero);
+            taskConfig.DailyStartTime = new TimeSpan(13, 30, 0);
+            taskConfig.DailyEndTime = new TimeSpan(19, 30, 0);
+            taskConfig.TimeUnit = TimeUnit.Hours;
+            taskConfig.TimeUnitNumberOf = 2;
+
+            var result = DescriptionGenerator.GetWeeklyDescription(taskConfig.DaysOfWeek);
+
+           
+            Assert.Equal("monday and tuesday",result);
+        }
+
+        [Fact]
+        public void WeeklyEvery_ShouldPass_WhenGetWeeklyDescription0Days()
+        {
+            var listOfDays = new List<DayOfWeek>();
 
 
+            var taskManager = new ScheduleManager();
+            var weManager = new WeeklyEveryCalculator();
+
+            var taskConfig = new ScheduleEntity();
+            taskConfig.Type = Enums.Type.WeeklyEvery;
+            taskConfig.DaysOfWeek = listOfDays;
+            taskConfig.WeeklyRecurrence = 1;
+            taskConfig.StartDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
+            taskConfig.CurrentDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
+            taskConfig.EndDate = new DateTimeOffset(2025, 10, 21, 0, 0, 0, TimeSpan.Zero);
+            taskConfig.DailyStartTime = new TimeSpan(13, 30, 0);
+            taskConfig.DailyEndTime = new TimeSpan(19, 30, 0);
+            taskConfig.TimeUnit = TimeUnit.Hours;
+            taskConfig.TimeUnitNumberOf = 2;
+
+            var result = DescriptionGenerator.GetWeeklyDescription(taskConfig.DaysOfWeek);
 
 
+            Assert.Equal("No days specified", result);
+        }
+
+
+        // 
     }
 }
