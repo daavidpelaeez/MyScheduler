@@ -1,8 +1,9 @@
 ﻿using MyScheduler.Entities;
+using MyScheduler.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 
 namespace MyScheduler.Helpers
 {
@@ -31,11 +32,24 @@ namespace MyScheduler.Helpers
             return result;
         }
 
-        public static bool sameWeekDayChecker(List<DayOfWeek> daysOfWeek)
+        public static bool SameWeekDayChecker(List<DayOfWeek> daysOfWeek)
         {
             bool daysRepeated = daysOfWeek.Count != daysOfWeek.Distinct().Count();
 
             return daysRepeated;
+        }
+
+       public static TimeSpan IntervalCalculator(ScheduleEntity scheduleConfig)
+        {
+            int timeUnitNumberOf = scheduleConfig.TimeUnitNumberOf;
+
+            return scheduleConfig.TimeUnit switch
+            {
+                TimeUnit.Hours => TimeSpan.FromHours(timeUnitNumberOf),
+                TimeUnit.Minutes => TimeSpan.FromMinutes(timeUnitNumberOf),
+                TimeUnit.Seconds => TimeSpan.FromSeconds(timeUnitNumberOf),
+                _ => throw new ArgumentException("Unit Time not supported"),
+            };
         }
     }
 }

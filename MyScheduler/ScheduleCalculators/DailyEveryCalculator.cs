@@ -1,17 +1,15 @@
-﻿using MyScheduler.Common;
-using MyScheduler.Entities;
-using MyScheduler.Enums;
+﻿using MyScheduler.Entities;
 using MyScheduler.Helpers;
-using MyScheduler.Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MyScheduler.Services.TaskCalculators
+
+namespace MyScheduler.ScheduleCalculators
 {
-    public class WeeklyEveryCalculator
+    public class DailyEveryCalculator
     {
-        public Result<ScheduleOutput> GetNextExecutionWeeklyEvery(ScheduleEntity scheduleConfig, int? maxOccurrences)
+        public Result<ScheduleOutput> GetNextExecutionDailyEvery(ScheduleEntity scheduleConfig, int? maxOccurrences)
         {
             var dates = CalculateWeeklyRecurringConfig(scheduleConfig, maxOccurrences);
 
@@ -30,16 +28,16 @@ namespace MyScheduler.Services.TaskCalculators
         public List<DateTimeOffset> CalculateWeeklyRecurringConfig(ScheduleEntity scheduleConfig, int? maxOccurrences)
         {
             var result = new List<DateTimeOffset>();
-            var days = WeeklyScheduleHelper.GetMatchingDays(scheduleConfig, maxOccurrences);
-            var interval = IntervalCalculator(scheduleConfig);
+            var days = DailySchedulerHelper.GetRecurrentDays(scheduleConfig,maxOccurrences);
+            var interval = WeeklyScheduleHelper.IntervalCalculator(scheduleConfig);
             var startTime = scheduleConfig.DailyStartTime;
             var endTime = scheduleConfig.DailyEndTime;
             int count = 0;
 
             foreach (var day in days)
             {
-                for (var currentTime = startTime; 
-                    currentTime >= startTime && currentTime <= endTime; 
+                for (var currentTime = startTime;
+                    currentTime >= startTime && currentTime <= endTime;
                     currentTime = currentTime.Value.Add(interval))
                 {
                     if (!scheduleConfig.EndDate.HasValue && count >= maxOccurrences)
@@ -53,17 +51,6 @@ namespace MyScheduler.Services.TaskCalculators
             return result;
         }
 
-        private TimeSpan IntervalCalculator(ScheduleEntity scheduleConfig)
-        {
-            int timeUnitNumberOf = scheduleConfig.TimeUnitNumberOf!.Value;
 
-            return scheduleConfig.TimeUnit switch
-            {
-                TimeUnit.Hours   => TimeSpan.FromHours(timeUnitNumberOf),
-                TimeUnit.Minutes => TimeSpan.FromMinutes(timeUnitNumberOf),
-                TimeUnit.Seconds => TimeSpan.FromSeconds(timeUnitNumberOf),
-                _ => throw new ArgumentException("Unit Time not supported"),
-            };
-        }
     }
 }

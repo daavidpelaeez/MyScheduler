@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyScheduler.Common
+namespace MyScheduler.Helpers
 {
     public class Result
     {

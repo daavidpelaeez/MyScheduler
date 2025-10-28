@@ -1,12 +1,11 @@
-﻿using MyScheduler.Common;
+﻿
 using MyScheduler.Entities;
 using MyScheduler.Helpers;
-using MyScheduler.Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MyScheduler.Services.TaskCalculators
+namespace MyScheduler.ScheduleCalculators
 {
     public class WeeklyOnceCalculator
     {

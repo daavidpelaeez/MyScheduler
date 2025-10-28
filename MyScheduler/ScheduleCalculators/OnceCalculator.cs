@@ -1,13 +1,13 @@
-﻿using MyScheduler.Common;
+﻿
 using MyScheduler.Entities;
-using MyScheduler.Services.Helpers;
+using MyScheduler.Helpers;
 using System;
 
-namespace MyScheduler.Services.TaskCalculators
+namespace MyScheduler.ScheduleCalculators
 {
     public class OnceCalculator
     {
-        public Result<ScheduleOutput> GetNextExecutionOnce(ScheduleEntity scheduleConfig,int? numOccurrences)
+        public Result<ScheduleOutput> GetNextExecutionOnce(ScheduleEntity scheduleConfig)
         {
             var output = new ScheduleOutput
             {

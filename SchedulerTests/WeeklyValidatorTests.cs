@@ -1,6 +1,8 @@
 ﻿using MyScheduler.Entities;
 using MyScheduler.Enums;
 using MyScheduler.Services;
+using MyScheduler.Validators;
+using System.Text;
 
 
 
@@ -13,7 +15,7 @@ namespace MyScheduler
         public void WeeklyOnce_ShouldFail_WhenDaysOfWeekIsEmpty()
         {
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyOnce;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyOnce;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
@@ -29,7 +31,7 @@ namespace MyScheduler
         public void WeeklyEvery_ShouldFail_WhenDaysOfWeekIsEmpty()
         {
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
@@ -48,7 +50,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyOnce;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyOnce;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -68,7 +70,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -91,18 +93,21 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyOnce;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyOnce;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.WeeklyRecurrence = 2;
             schedulerConfig.ExecutionTimeOfOneDay = null;
+            schedulerConfig.DailyFrequencyOnce = true;
+            schedulerConfig.ExecutionTimeOfOneDay = null;
+            schedulerConfig.Enabled = true;
 
             var schedulerManager = new ScheduleManager();
             var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
             Assert.True(result.IsFailure);
-            Assert.Contains("ExecutionTimeOfOneDay is required for WeeklyOnce.", result.Error);
+            Assert.Contains("ExecutionTimeOfOneDay is required", result.Error);
         }
 
         [Fact]
@@ -112,7 +117,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyOnce;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyOnce;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -120,11 +125,14 @@ namespace MyScheduler
             schedulerConfig.WeeklyRecurrence = 2;
             schedulerConfig.DailyStartTime = new TimeSpan(13, 30, 0);
             schedulerConfig.ExecutionTimeOfOneDay = null;
+            schedulerConfig.DailyFrequencyOnce = true;
+            schedulerConfig.ExecutionTimeOfOneDay = new TimeSpan(13,30,0);
+            schedulerConfig.Enabled = true;
 
             var schedulerManager = new ScheduleManager();
             var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
             Assert.True(result.IsFailure);
-            Assert.Contains("DailyStartTime should not be set for WeeklyOnce.", result.Error);
+            Assert.Contains("Daily start time cannot be set for a daily frequency one task", result.Error);
         }
 
         [Fact]
@@ -134,19 +142,21 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyOnce;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyOnce;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
-            schedulerConfig.EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
-            schedulerConfig.WeeklyRecurrence = 2;
-            schedulerConfig.ExecutionTimeOfOneDay = null;
+            schedulerConfig.EndDate = new DateTimeOffset(2025, 10, 21, 0, 0, 0, TimeSpan.Zero);
+            schedulerConfig.WeeklyRecurrence = 1;
+            schedulerConfig.DailyFrequencyOnce = true;
             schedulerConfig.DailyEndTime = new TimeSpan(13, 30, 0);
+            schedulerConfig.ExecutionTimeOfOneDay = new TimeSpan(13, 30, 0);
+            schedulerConfig.Enabled = true;
 
             var schedulerManager = new ScheduleManager();
             var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
             Assert.True(result.IsFailure);
-            Assert.Contains("DailyEndTime should not be set for WeeklyOnce.", result.Error);
+            Assert.Contains("Daily end time cannot be set for a daily frequency one task", result.Error);
         }
 
         [Fact]
@@ -156,7 +166,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyOnce;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyOnce;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -165,11 +175,13 @@ namespace MyScheduler
             schedulerConfig.ExecutionTimeOfOneDay = null;
             schedulerConfig.DailyEndTime = new TimeSpan(13, 30, 0);
             schedulerConfig.TimeUnit = TimeUnit.Hours;
+            schedulerConfig.DailyFrequencyOnce = true;
+            schedulerConfig.Enabled = true;
 
             var schedulerManager = new ScheduleManager();
             var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
             Assert.True(result.IsFailure);
-            Assert.Contains("TimeUnit should not be set for WeeklyOnce.", result.Error);
+            Assert.Contains("Time unit cannot be set for a daily frequency one task", result.Error);
         }
 
         [Fact]
@@ -179,7 +191,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyOnce;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyOnce;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -189,11 +201,13 @@ namespace MyScheduler
             schedulerConfig.DailyEndTime = new TimeSpan(13, 30, 0);
             schedulerConfig.TimeUnit = TimeUnit.Hours;
             schedulerConfig.TimeUnitNumberOf = 1;
+            schedulerConfig.Enabled = true;
+            schedulerConfig.DailyFrequencyOnce = true;
 
             var schedulerManager = new ScheduleManager();
             var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
             Assert.True(result.IsFailure);
-            Assert.Contains("TimeUnitNumberOf should not be set for WeeklyOnce.", result.Error);
+            Assert.Contains("Time unit cannot be set for a daily frequency one task", result.Error);
         }
 
         //Every
@@ -204,7 +218,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -226,7 +240,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -247,7 +261,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -269,7 +283,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -291,19 +305,24 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
-            schedulerConfig.WeeklyRecurrence = 2;
+            schedulerConfig.DailyFrequencyEvery = true;
+            schedulerConfig.TimeUnit = TimeUnit.Hours;
             schedulerConfig.ExecutionTimeOfOneDay = new TimeSpan(13, 30, 0);
-
+            schedulerConfig.TimeUnitNumberOf = 2;
+            schedulerConfig.WeeklyRecurrence = 2;
+            schedulerConfig.DailyStartTime = new TimeSpan(13, 30, 0); 
+            schedulerConfig.DailyEndTime = new TimeSpan(17, 30, 0);
+            schedulerConfig.Enabled = true;
 
             var schedulerManager = new ScheduleManager();
             var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
             Assert.True(result.IsFailure);
-            Assert.Contains("ExecutionTimeOfOneDay should not be set for WeeklyEvery.", result.Error);
+            Assert.Contains("Execution time of day cannot be set for a daily frequency every task", result.Error);
         }
 
         [Fact]
@@ -313,7 +332,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -336,7 +355,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -359,16 +378,18 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero);
+            schedulerConfig.DailyFrequencyEvery = true;
             schedulerConfig.WeeklyRecurrence = 2;
             schedulerConfig.DailyStartTime = new TimeSpan(13, 30, 0);
             schedulerConfig.DailyEndTime = new TimeSpan(13, 50, 0);
             schedulerConfig.TimeUnit = TimeUnit.Hours;
             schedulerConfig.TimeUnitNumberOf = 2;
+            schedulerConfig.Enabled = true;
 
             var schedulerManager = new ScheduleManager();
             var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
@@ -383,7 +404,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero);
@@ -407,7 +428,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero);
@@ -434,13 +455,15 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyOnce;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyOnce;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.EndDate = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero);
+            schedulerConfig.DailyFrequencyOnce = true;
             schedulerConfig.WeeklyRecurrence = 2;
             schedulerConfig.ExecutionTimeOfOneDay = new TimeSpan(13, 30, 0);
+            schedulerConfig.Enabled = true;
 
 
             var schedulerManager = new ScheduleManager();
@@ -457,16 +480,18 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.EndDate = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.WeeklyRecurrence = 2;
+            schedulerConfig.DailyFrequencyEvery = true;
             schedulerConfig.TimeUnit = TimeUnit.Hours;
             schedulerConfig.TimeUnitNumberOf = 1;
             schedulerConfig.DailyStartTime = new TimeSpan(13, 0, 0);
             schedulerConfig.DailyEndTime = new TimeSpan(17, 0, 0);
+            schedulerConfig.Enabled = true;
 
             var schedulerManager = new ScheduleManager();
             var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
@@ -488,7 +513,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -517,7 +542,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyOnce;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyOnce;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -542,7 +567,7 @@ namespace MyScheduler
             
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyOnce;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyOnce;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -569,7 +594,7 @@ namespace MyScheduler
             listOfDays.Add(DayOfWeek.Monday);
 
             var schedulerConfig = new ScheduleEntity();
-            schedulerConfig.Type = Enums.Type.WeeklyEvery;
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
             schedulerConfig.DaysOfWeek = listOfDays;
             schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
             schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
@@ -584,5 +609,175 @@ namespace MyScheduler
 
             Assert.Contains("You must specified end date or num occurrences", result.Error);
         }
+
+        [Fact]
+        public void WeeklyEvery_ShouldFail_WhenStartDateLessThanMinValue()
+        {
+            List<DayOfWeek> listOfDays = new List<DayOfWeek>();
+            listOfDays.Add(DayOfWeek.Monday);
+
+            var schedulerConfig = new ScheduleEntity();
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
+            schedulerConfig.DaysOfWeek = listOfDays;
+            schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
+            schedulerConfig.StartDate = DateTimeOffset.MinValue;
+            schedulerConfig.EndDate = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero);
+            schedulerConfig.WeeklyRecurrence = 2;
+            schedulerConfig.TimeUnit = TimeUnit.Hours;
+            schedulerConfig.TimeUnitNumberOf = 1;
+            schedulerConfig.DailyStartTime = new TimeSpan(13, 0, 0);
+            schedulerConfig.DailyEndTime = new TimeSpan(17, 0, 0);
+
+            var schedulerManager = new ScheduleManager();
+            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+
+            Assert.Contains("StartDate cannot be less or equal than Min value", result.Error);
+        }
+
+        [Fact]
+        public void WeeklyEvery_ShouldFail_WhenStartDateMoreThanMaxValue()
+        {
+            List<DayOfWeek> listOfDays = new List<DayOfWeek>();
+            listOfDays.Add(DayOfWeek.Monday);
+
+            var schedulerConfig = new ScheduleEntity();
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
+            schedulerConfig.DaysOfWeek = listOfDays;
+            schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
+            schedulerConfig.StartDate = DateTimeOffset.MaxValue;
+            
+            schedulerConfig.WeeklyRecurrence = 2;
+            schedulerConfig.TimeUnit = TimeUnit.Hours;
+            schedulerConfig.TimeUnitNumberOf = 1;
+            schedulerConfig.DailyStartTime = new TimeSpan(13, 0, 0);
+            schedulerConfig.DailyEndTime = new TimeSpan(17, 0, 0);
+
+            var schedulerManager = new ScheduleManager();
+            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+
+            Assert.Contains("StartDate cannot be more or equal than Max value", result.Error);
+        }
+
+        [Fact]
+        public void WeeklyEvery_ShouldFail_WhenEndDateMoreThanMaxValue()
+        {
+            List<DayOfWeek> listOfDays = new List<DayOfWeek>();
+            listOfDays.Add(DayOfWeek.Monday);
+
+            var schedulerConfig = new ScheduleEntity();
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
+            schedulerConfig.DaysOfWeek = listOfDays;
+            schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
+            schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
+            schedulerConfig.EndDate = DateTimeOffset.MaxValue;
+            schedulerConfig.WeeklyRecurrence = 2;
+            schedulerConfig.TimeUnit = TimeUnit.Hours;
+            schedulerConfig.TimeUnitNumberOf = 1;
+            schedulerConfig.DailyStartTime = new TimeSpan(13, 0, 0);
+            schedulerConfig.DailyEndTime = new TimeSpan(17, 0, 0);
+
+            var schedulerManager = new ScheduleManager();
+            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+
+            Assert.Contains("EndDate cannot be more or equal than Max value.", result.Error);
+        }
+
+        [Fact]
+        public void WeeklyEvery_ShouldFail_WhenNoEndDateAndNoOccurrences()
+        {
+            List<DayOfWeek> listOfDays = new List<DayOfWeek>();
+            listOfDays.Add(DayOfWeek.Monday);
+
+            var schedulerConfig = new ScheduleEntity();
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
+            schedulerConfig.DaysOfWeek = listOfDays;
+            schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
+            schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
+            schedulerConfig.WeeklyRecurrence = 2;
+            schedulerConfig.TimeUnit = TimeUnit.Hours;
+            schedulerConfig.TimeUnitNumberOf = 1;
+            schedulerConfig.DailyStartTime = new TimeSpan(13, 0, 0);
+            schedulerConfig.DailyEndTime = new TimeSpan(17, 0, 0);
+
+            var schedulerManager = new ScheduleManager();
+            var result = schedulerManager.GetNextExecution(schedulerConfig, -1);
+
+            Assert.Contains("You must specified end date or num occurrences", result.Error);
+        }
+
+        [Fact]
+        public void WeeklyEvery_ShouldFail_WhenEndDateBeforeCurrentDate()
+        {
+            List<DayOfWeek> listOfDays = new List<DayOfWeek>();
+            listOfDays.Add(DayOfWeek.Monday);
+
+            var schedulerConfig = new ScheduleEntity();
+            schedulerConfig.ScheduleType = Enums.ScheduleType.WeeklyEvery;
+            schedulerConfig.DaysOfWeek = listOfDays;
+            schedulerConfig.CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
+            schedulerConfig.StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero);
+            schedulerConfig.EndDate = new DateTimeOffset(2025,10,14,0,0,0, TimeSpan.Zero);
+            schedulerConfig.WeeklyRecurrence = 2;
+            schedulerConfig.TimeUnit = TimeUnit.Hours;
+            schedulerConfig.TimeUnitNumberOf = 1;
+            schedulerConfig.DailyStartTime = new TimeSpan(13, 0, 0);
+            schedulerConfig.DailyEndTime = new TimeSpan(17, 0, 0);
+
+            var schedulerManager = new ScheduleManager();
+            var result = schedulerManager.GetNextExecution(schedulerConfig, -1);
+
+            Assert.Contains("The end date of a recurring scheduleConfig must be after the current date.", result.Error);
+        }
+
+        [Fact]
+        public void Validate_ShouldFail_WhenEndDateBeforeCurrentDate()
+        {
+            var errors = new StringBuilder();
+            var config = new ScheduleEntity
+            {
+                CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
+                EndDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero)
+            };
+
+            CommonRules.Validate(config, errors, 1);
+
+            Assert.Contains("The end date of a recurring scheduleConfig must be after the current date.", errors.ToString());
+        }
+
+        [Fact]
+        public void Validate_ShouldPass_WhenEndDateAfterCurrentDate()
+        {
+            var errors = new StringBuilder();
+            var config = new ScheduleEntity
+            {
+                CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
+                EndDate = new DateTimeOffset(2025, 10, 20, 0, 0, 0, TimeSpan.Zero)
+            };
+
+            CommonRules.Validate(config, errors, 1);
+
+            Assert.DoesNotContain("The end date of a recurring scheduleConfig must be after the current date.", errors.ToString());
+        }
+
+        [Fact]
+        public void Validate_ShouldIgnore_WhenEndDateIsNull()
+        {
+            var errors = new StringBuilder();
+            var config = new ScheduleEntity
+            {
+                CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
+                EndDate = null
+            };
+
+            CommonRules.Validate(config, errors, 1);
+
+            Assert.DoesNotContain("The end date of a recurring scheduleConfig must be after the current date.", errors.ToString());
+        }
+
+
+
     }
 }

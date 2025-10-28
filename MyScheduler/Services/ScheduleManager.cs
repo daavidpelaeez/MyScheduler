@@ -1,8 +1,9 @@
-﻿using MyScheduler.Common;
+﻿
 using MyScheduler.Entities;
 using MyScheduler.Enums;
-using MyScheduler.Services.TaskCalculators;
+using MyScheduler.ScheduleCalculators;
 using MyScheduler.Validators;
+using MyScheduler.Helpers;
 
 namespace MyScheduler.Services
 {
@@ -17,13 +18,14 @@ namespace MyScheduler.Services
                 return Result<ScheduleOutput>.Failure(validation.Error);
             }
 
-            return scheduleConfig.Type switch
+            return scheduleConfig.ScheduleType switch
             {
-                Type.Once => new OnceCalculator().GetNextExecutionOnce(scheduleConfig,numOccurrences),
-                Type.Recurring => new RecurringCalculator().GetNextExecutionRecurring(scheduleConfig, numOccurrences),
-                Type.WeeklyOnce => new WeeklyOnceCalculator().GetNextExecutionWeeklyOnce(scheduleConfig, numOccurrences),
-                Type.WeeklyEvery => new WeeklyEveryCalculator().GetNextExecutionWeeklyEvery(scheduleConfig, numOccurrences),
-                _ => Result<ScheduleOutput>.Failure("scheduleConfig type not supported")
+                ScheduleType.Once => new OnceCalculator().GetNextExecutionOnce(scheduleConfig),
+                ScheduleType.DailyOnce => new DailyOnceCalculator().GetNextExecutionDailyOnce(scheduleConfig, numOccurrences),
+                ScheduleType.DailyEvery => new DailyEveryCalculator().GetNextExecutionDailyEvery(scheduleConfig, numOccurrences),
+                ScheduleType.WeeklyOnce => new WeeklyOnceCalculator().GetNextExecutionWeeklyOnce(scheduleConfig, numOccurrences),
+                ScheduleType.WeeklyEvery => new WeeklyEveryCalculator().GetNextExecutionWeeklyEvery(scheduleConfig, numOccurrences),
+                _ => throw new System.NotImplementedException(),
             };
         }
     }

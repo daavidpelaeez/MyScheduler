@@ -1,8 +1,7 @@
-﻿using MyScheduler.Common;
+﻿
 using MyScheduler.Entities;
-using MyScheduler.Enums;
-using System;
-using System.Collections.Generic;
+using MyScheduler.Helpers;
+using MyScheduler.ScheduleCalculators;
 using System.Text;
 
 namespace MyScheduler.Validators
@@ -15,22 +14,26 @@ namespace MyScheduler.Validators
 
             CommonRules.Validate(scheduleConfig, errors,numOccurrences);
 
-            switch (scheduleConfig.Type)
+            switch (scheduleConfig.ScheduleType)
             {
-                case Enums.Type.Once:
+                case Enums.ScheduleType.Once:
                     OnceValidator.Validate(scheduleConfig, errors);
                     break;
 
-                case Enums.Type.Recurring:
-                    RecurringValidator.Validate(scheduleConfig, errors);
+                case Enums.ScheduleType.DailyOnce:
+                    DailyOnceValidator.Validate(scheduleConfig, errors);
                     break;
 
-                case Enums.Type.WeeklyOnce:
+                case Enums.ScheduleType.WeeklyOnce:
                     WeeklyOnceValidator.Validate(scheduleConfig, errors);
                     break;
 
-                case Enums.Type.WeeklyEvery:
+                case Enums.ScheduleType.WeeklyEvery:
                     WeeklyEveryValidator.Validate(scheduleConfig, errors);
+                    break;
+
+                case Enums.ScheduleType.DailyEvery:
+                    DailyEveryValidator.Validate(scheduleConfig, errors);
                     break;
 
                 default:

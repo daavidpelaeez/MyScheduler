@@ -7,19 +7,22 @@ namespace MyScheduler.Entities
 {
     public class ScheduleEntity
     {
-        public DateTimeOffset CurrentDate { get; set; }
-        public Enums.Type Type { get; set; }
+        public DateTimeOffset CurrentDate { get; set; } = DateTimeOffset.Now;
+        public Enums.ScheduleType ScheduleType { get; set; } 
         public DateTimeOffset? EventDate { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
         public int Recurrence { get; set; }
-        public TimeUnit? TimeUnit { get; set; }             
-        public int? TimeUnitNumberOf { get; set; }
-        public List<DayOfWeek> DaysOfWeek { get; set; } = new List<DayOfWeek>();
+        public TimeUnit? TimeUnit { get; set; }
+        public int TimeUnitNumberOf { get; set; } = 0;
+        public List<DayOfWeek> DaysOfWeek { get; set; } = new List<DayOfWeek>(); 
         public int WeeklyRecurrence { get; set; }
         public TimeSpan? ExecutionTimeOfOneDay { get; set; }
         public TimeSpan? DailyStartTime { get; set; }    
         public TimeSpan? DailyEndTime { get; set; }      
+        public bool Enabled { get; set; } 
+        public bool DailyFrequencyOnce { get; set; } 
+        public bool DailyFrequencyEvery { get; set; }
 
     }
 }

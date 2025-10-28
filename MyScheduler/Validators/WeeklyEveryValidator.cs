@@ -10,7 +10,9 @@ namespace MyScheduler.Validators
     {
         public static void Validate(ScheduleEntity scheduleConfig, StringBuilder errors)
         {
-            if (scheduleConfig.DaysOfWeek == null || scheduleConfig.DaysOfWeek.Count < 1)
+            DailyFrequencyCommonRules.CheckDailyCommonRules(scheduleConfig, errors);
+
+            if (scheduleConfig.DaysOfWeek.Count < 1)
                 errors.AppendLine("DaysOfWeek must be selected for WeeklyEvery.");
 
             if (scheduleConfig.WeeklyRecurrence < 1)
@@ -19,7 +21,7 @@ namespace MyScheduler.Validators
             if (scheduleConfig.TimeUnit == null)
                 errors.AppendLine("TimeUnit is required for WeeklyEvery.");
 
-            if (!scheduleConfig.TimeUnitNumberOf.HasValue || scheduleConfig.TimeUnitNumberOf < 1)
+            if (scheduleConfig.TimeUnitNumberOf < 1)
                 errors.AppendLine("TimeUnitNumberOf must be a positive number for WeeklyEvery.");
 
             if (scheduleConfig.DailyStartTime == null)
@@ -28,16 +30,13 @@ namespace MyScheduler.Validators
             if (scheduleConfig.DailyEndTime == null)
                 errors.AppendLine("DailyEndTime is required for WeeklyEvery.");
 
-            if (scheduleConfig.ExecutionTimeOfOneDay != null)
-                errors.AppendLine("ExecutionTimeOfOneDay should not be set for WeeklyEvery.");
-
             if (scheduleConfig.DailyStartTime > scheduleConfig.DailyEndTime)
                 errors.AppendLine("DailyStartTime cannot be after the DailyEndTime.");
 
             if (scheduleConfig.DailyStartTime == scheduleConfig.DailyEndTime)
                 errors.AppendLine("DailyStartTime cannot be the same as DailyEndTime.");
 
-            if (WeeklyScheduleHelper.sameWeekDayChecker(scheduleConfig.DaysOfWeek!))
+            if (WeeklyScheduleHelper.SameWeekDayChecker(scheduleConfig.DaysOfWeek!))
                 errors.AppendLine("Check days of the week they cant be repeated");
 
         }
