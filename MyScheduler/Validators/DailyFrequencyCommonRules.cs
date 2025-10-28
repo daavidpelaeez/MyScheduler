@@ -18,7 +18,7 @@ namespace MyScheduler.Validators
             if (!schedulerConfig.DailyFrequencyEvery && !schedulerConfig.DailyFrequencyOnce)
                 errors.AppendLine("Daily frequency cannot be empty for daily tasks");
 
-            // para DailyOnce 
+            // para RecurringDailyOnce 
             if (schedulerConfig.DailyFrequencyOnce)
             {
                 if (schedulerConfig.TimeUnitNumberOf > 0)
@@ -36,11 +36,11 @@ namespace MyScheduler.Validators
                 if (schedulerConfig.ExecutionTimeOfOneDay == null)
                     errors.AppendLine("ExecutionTimeOfOneDay is required");
 
-                if (schedulerConfig.ScheduleType == ScheduleType.DailyEvery)
+                if (schedulerConfig.ScheduleType == ScheduleType.RecurringDailyRange)
                     errors.AppendLine("You cannot set daily frequency once in a daily every task type");
             }
 
-            // para DailyEvery ---
+            // para RecurringDailyRange ---
             if (schedulerConfig.DailyFrequencyEvery)
             {
                 if (schedulerConfig.ExecutionTimeOfOneDay != null)
@@ -58,7 +58,7 @@ namespace MyScheduler.Validators
                 if (schedulerConfig.DailyEndTime == null)
                     errors.AppendLine("You need to set a daily end time");
 
-                if (schedulerConfig.ScheduleType == ScheduleType.DailyOnce)
+                if (schedulerConfig.ScheduleType == ScheduleType.RecurringDailyOnce)
                     errors.AppendLine("You cannot set daily frequency every in a daily once task type");
             }
         }

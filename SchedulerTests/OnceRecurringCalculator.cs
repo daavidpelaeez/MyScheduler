@@ -14,7 +14,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Once,
+                ScheduleType = Enums.ScheduleType.OneTime,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
@@ -35,7 +35,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.DailyOnce,
+                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 1,
@@ -58,7 +58,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.DailyOnce,
+                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
                 DailyFrequencyOnce = true,
@@ -81,7 +81,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Once,
+                ScheduleType = Enums.ScheduleType.OneTime,
                 CurrentDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 6, 0, 0, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero),
@@ -101,7 +101,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.DailyOnce,
+                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 0,
@@ -121,7 +121,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.DailyOnce,
+                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
                 CurrentDate = new DateTimeOffset(2025, 10, 4, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
@@ -141,7 +141,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.DailyOnce,
+                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 2,
@@ -163,7 +163,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Once,
+                ScheduleType = Enums.ScheduleType.OneTime,
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero)
@@ -182,7 +182,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Once,
+                ScheduleType = Enums.ScheduleType.OneTime,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
@@ -202,7 +202,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.DailyOnce,
+                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 2,
@@ -224,7 +224,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.DailyOnce,
+                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 1,
@@ -246,7 +246,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.DailyOnce,
+                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 3,
@@ -268,7 +268,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Once,
+                ScheduleType = Enums.ScheduleType.OneTime,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
@@ -290,7 +290,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Once,
+                ScheduleType = Enums.ScheduleType.OneTime,
                 StartDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
@@ -311,7 +311,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Once,
+                ScheduleType = Enums.ScheduleType.OneTime,
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),

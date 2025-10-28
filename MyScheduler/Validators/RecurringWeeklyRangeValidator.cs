@@ -6,29 +6,29 @@ using System.Text;
 
 namespace MyScheduler.Validators
 {
-    public static class WeeklyEveryValidator
+    public static class RecurringWeeklyRangeValidator
     {
         public static void Validate(ScheduleEntity scheduleConfig, StringBuilder errors)
         {
             DailyFrequencyCommonRules.CheckDailyCommonRules(scheduleConfig, errors);
 
             if (scheduleConfig.DaysOfWeek.Count < 1)
-                errors.AppendLine("DaysOfWeek must be selected for WeeklyEvery.");
+                errors.AppendLine("DaysOfWeek must be selected for RecurringWeeklyRange.");
 
             if (scheduleConfig.WeeklyRecurrence < 1)
                 errors.AppendLine("WeeklyRecurrence must be at least 1.");
 
             if (scheduleConfig.TimeUnit == null)
-                errors.AppendLine("TimeUnit is required for WeeklyEvery.");
+                errors.AppendLine("TimeUnit is required for RecurringWeeklyRange.");
 
             if (scheduleConfig.TimeUnitNumberOf < 1)
-                errors.AppendLine("TimeUnitNumberOf must be a positive number for WeeklyEvery.");
+                errors.AppendLine("TimeUnitNumberOf must be a positive number for RecurringWeeklyRange.");
 
             if (scheduleConfig.DailyStartTime == null)
-                errors.AppendLine("DailyStartTime is required for WeeklyEvery.");
+                errors.AppendLine("DailyStartTime is required for RecurringWeeklyRange.");
 
             if (scheduleConfig.DailyEndTime == null)
-                errors.AppendLine("DailyEndTime is required for WeeklyEvery.");
+                errors.AppendLine("DailyEndTime is required for RecurringWeeklyRange.");
 
             if (scheduleConfig.DailyStartTime > scheduleConfig.DailyEndTime)
                 errors.AppendLine("DailyStartTime cannot be after the DailyEndTime.");

@@ -1,15 +1,15 @@
-﻿using MyScheduler.Entities;
+﻿
+using MyScheduler.Entities;
 using MyScheduler.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace MyScheduler.ScheduleCalculators
 {
-    public class DailyEveryCalculator
+    public class RecurringWeeklyRangeCalculator
     {
-        public Result<ScheduleOutput> GetNextExecutionDailyEvery(ScheduleEntity scheduleConfig, int? maxOccurrences)
+        public Result<ScheduleOutput> GetNextExecutionWeeklyEvery(ScheduleEntity scheduleConfig, int? maxOccurrences)
         {
             var dates = CalculateWeeklyRecurringConfig(scheduleConfig, maxOccurrences);
 
@@ -28,7 +28,7 @@ namespace MyScheduler.ScheduleCalculators
         public List<DateTimeOffset> CalculateWeeklyRecurringConfig(ScheduleEntity scheduleConfig, int? maxOccurrences)
         {
             var result = new List<DateTimeOffset>();
-            var days = DailySchedulerHelper.GetRecurrentDays(scheduleConfig,maxOccurrences);
+            var days = WeeklyScheduleHelper.GetMatchingDays(scheduleConfig, maxOccurrences);
             var interval = WeeklyScheduleHelper.IntervalCalculator(scheduleConfig);
             var startTime = scheduleConfig.DailyStartTime;
             var endTime = scheduleConfig.DailyEndTime;
@@ -36,8 +36,8 @@ namespace MyScheduler.ScheduleCalculators
 
             foreach (var day in days)
             {
-                for (var currentTime = startTime;
-                    currentTime >= startTime && currentTime <= endTime;
+                for (var currentTime = startTime; 
+                    currentTime >= startTime && currentTime <= endTime; 
                     currentTime = currentTime.Value.Add(interval))
                 {
                     if (!scheduleConfig.EndDate.HasValue && count >= maxOccurrences)
@@ -50,7 +50,6 @@ namespace MyScheduler.ScheduleCalculators
 
             return result;
         }
-
 
     }
 }

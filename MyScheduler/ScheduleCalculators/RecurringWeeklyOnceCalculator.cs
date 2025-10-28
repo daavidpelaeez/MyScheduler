@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace MyScheduler.ScheduleCalculators
 {
-    public class WeeklyOnceCalculator
+    public class RecurringWeeklyOnceCalculator
     {
         public Result<ScheduleOutput> GetNextExecutionWeeklyOnce(ScheduleEntity scheduleConfig, int? numOccurrences)
         {

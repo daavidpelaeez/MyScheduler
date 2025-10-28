@@ -16,24 +16,24 @@ namespace MyScheduler.Validators
 
             switch (scheduleConfig.ScheduleType)
             {
-                case Enums.ScheduleType.Once:
+                case Enums.ScheduleType.OneTime:
                     OnceValidator.Validate(scheduleConfig, errors);
                     break;
 
-                case Enums.ScheduleType.DailyOnce:
-                    DailyOnceValidator.Validate(scheduleConfig, errors);
+                case Enums.ScheduleType.RecurringDailyOnce:
+                    RecurringDailyOnceValidator.Validate(scheduleConfig, errors);
                     break;
 
-                case Enums.ScheduleType.WeeklyOnce:
-                    WeeklyOnceValidator.Validate(scheduleConfig, errors);
+                case Enums.ScheduleType.RecurringWeeklyOnce:
+                    RecurringWeeklyOnceValidator.Validate(scheduleConfig, errors);
                     break;
 
-                case Enums.ScheduleType.WeeklyEvery:
-                    WeeklyEveryValidator.Validate(scheduleConfig, errors);
+                case Enums.ScheduleType.RecurringWeeklyRange:
+                    RecurringWeeklyRangeValidator.Validate(scheduleConfig, errors);
                     break;
 
-                case Enums.ScheduleType.DailyEvery:
-                    DailyEveryValidator.Validate(scheduleConfig, errors);
+                case Enums.ScheduleType.RecurringDailyRange:
+                    RecurringDailyRangeValidator.Validate(scheduleConfig, errors);
                     break;
 
                 default:

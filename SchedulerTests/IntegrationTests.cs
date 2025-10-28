@@ -12,7 +12,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.Once;
+            config.ScheduleType = ScheduleType.OneTime;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.EventDate = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero);
 
@@ -32,7 +32,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.DailyOnce;
+            config.ScheduleType = ScheduleType.RecurringDailyOnce;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 28, 0, 0, 0, TimeSpan.Zero);
             config.DailyFrequencyOnce = true;
@@ -55,7 +55,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.DailyEvery;
+            config.ScheduleType = ScheduleType.RecurringDailyRange;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.DailyFrequencyEvery = true;
@@ -81,7 +81,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.WeeklyOnce;
+            config.ScheduleType = ScheduleType.RecurringWeeklyOnce;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.DailyFrequencyOnce = true;
@@ -105,7 +105,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.WeeklyEvery;
+            config.ScheduleType = ScheduleType.RecurringWeeklyRange;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.WeeklyRecurrence = 1;
@@ -133,7 +133,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.DailyOnce;
+            config.ScheduleType = ScheduleType.RecurringDailyOnce;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.DailyFrequencyOnce = true;
@@ -153,7 +153,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.DailyOnce;
+            config.ScheduleType = ScheduleType.RecurringDailyOnce;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 27, 0, 0, 0, TimeSpan.Zero);
             config.DailyFrequencyOnce = true;
@@ -173,7 +173,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.WeeklyOnce;
+            config.ScheduleType = ScheduleType.RecurringWeeklyOnce;
             config.DailyFrequencyOnce = true;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
@@ -194,7 +194,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.WeeklyOnce;
+            config.ScheduleType = ScheduleType.RecurringWeeklyOnce;
             config.DailyFrequencyOnce = true;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
@@ -215,7 +215,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.WeeklyOnce;
+            config.ScheduleType = ScheduleType.RecurringWeeklyOnce;
             config.DailyFrequencyOnce = true;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
@@ -236,7 +236,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.DailyOnce;
+            config.ScheduleType = ScheduleType.RecurringDailyOnce;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.DailyFrequencyOnce = true;
@@ -255,7 +255,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.DailyOnce;
+            config.ScheduleType = ScheduleType.RecurringDailyOnce;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.DailyFrequencyOnce = true;
@@ -275,7 +275,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.DailyEvery;
+            config.ScheduleType = ScheduleType.RecurringDailyRange;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.DailyFrequencyEvery = true;
@@ -297,7 +297,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.WeeklyOnce;
+            config.ScheduleType = ScheduleType.RecurringWeeklyOnce;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.WeeklyRecurrence = 1;
@@ -308,7 +308,7 @@ namespace MyScheduler
             var result = manager.GetNextExecution(config, 5);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("DaysOfWeek must be selected for WeeklyOnce.", result.Error);
+            Assert.Contains("DaysOfWeek must be selected for RecurringWeeklyOnce.", result.Error);
         }
 
         [Fact]
@@ -316,7 +316,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.DailyOnce;
+            config.ScheduleType = ScheduleType.RecurringDailyOnce;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 28, 0, 0, 0, TimeSpan.Zero);
             config.EndDate = new DateTimeOffset(2025, 10, 27, 0, 0, 0, TimeSpan.Zero);
@@ -336,7 +336,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = false; 
-            config.ScheduleType = ScheduleType.DailyOnce;
+            config.ScheduleType = ScheduleType.RecurringDailyOnce;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 26, 0, 0, 0, TimeSpan.Zero);
             config.Recurrence = 1;
@@ -355,7 +355,7 @@ namespace MyScheduler
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
-            config.ScheduleType = ScheduleType.WeeklyEvery;
+            config.ScheduleType = ScheduleType.RecurringWeeklyRange;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.WeeklyRecurrence = 1;
@@ -382,7 +382,7 @@ namespace MyScheduler
             var config1 = new ScheduleEntity
             {
                 Enabled = true,
-                ScheduleType = ScheduleType.DailyOnce,
+                ScheduleType = ScheduleType.RecurringDailyOnce,
                 StartDate = new DateTimeOffset(2024, 2, 28, 0, 0, 0, TimeSpan.Zero), // Leap year
                 CurrentDate = new DateTimeOffset(2024, 2, 28, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 1,
@@ -400,7 +400,7 @@ namespace MyScheduler
             var config2 = new ScheduleEntity
             {
                 Enabled = true,
-                ScheduleType = ScheduleType.DailyOnce,
+                ScheduleType = ScheduleType.RecurringDailyOnce,
                 StartDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero),
                 CurrentDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 1,
@@ -420,7 +420,7 @@ namespace MyScheduler
             var config = new ScheduleEntity
             {
                 Enabled = true,
-                ScheduleType = ScheduleType.DailyOnce,
+                ScheduleType = ScheduleType.RecurringDailyOnce,
                 StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero),
                 CurrentDate = new DateTimeOffset(2025, 10, 26, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 0, 
@@ -432,7 +432,7 @@ namespace MyScheduler
             var result = manager.GetNextExecution(config, 5);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("DailyOnce tasks must have a recurrence greater than 0.", result.Error);
+            Assert.Contains("RecurringDailyOnce tasks must have a recurrence greater than 0.", result.Error);
         }
 
     }

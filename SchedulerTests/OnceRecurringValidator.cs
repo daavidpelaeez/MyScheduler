@@ -12,7 +12,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.Once;
+            schedule.ScheduleType = Enums.ScheduleType.OneTime;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
             schedule.EventDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
@@ -29,14 +29,14 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.Once;
+            schedule.ScheduleType = Enums.ScheduleType.OneTime;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
 
             var result = Validator.ValidateTask(schedule,10);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("EventDate is required for Once tasks.", result.Error);
+            Assert.Contains("EventDate is required for OneTime tasks.", result.Error);
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
             schedule.Recurrence = 0;
@@ -52,7 +52,7 @@ namespace MyScheduler
             var result = Validator.ValidateTask(schedule, 10);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("DailyOnce tasks must have a recurrence greater than 0.", result.Error);
+            Assert.Contains("RecurringDailyOnce tasks must have a recurrence greater than 0.", result.Error);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
             schedule.Recurrence = -1;
@@ -68,7 +68,7 @@ namespace MyScheduler
             var result = Validator.ValidateTask(schedule    , 10);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("DailyOnce tasks must have a recurrence greater than 0.", result.Error);
+            Assert.Contains("RecurringDailyOnce tasks must have a recurrence greater than 0.", result.Error);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
             schedule.EventDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
@@ -93,7 +93,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.EventDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
@@ -110,7 +110,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
             schedule.EventDate = new DateTimeOffset(2025, 10, 11, 0, 0, 0, TimeSpan.Zero);
@@ -127,7 +127,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero);
             schedule.EventDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero);
@@ -142,7 +142,7 @@ namespace MyScheduler
         public void OnceTask_WithEndDateAfterEventDate_ShouldPass()
         {
             var schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Once;
+            schedule.ScheduleType = Enums.ScheduleType.OneTime;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
             schedule.EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero);
@@ -159,7 +159,7 @@ namespace MyScheduler
         public void OnceTask_EventDateAfterEndDate_ShouldFail()
         {
             var schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Once;
+            schedule.ScheduleType = Enums.ScheduleType.OneTime;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
             schedule.EventDate = new DateTimeOffset(2025, 10, 12, 0, 0, 0, TimeSpan.Zero);
@@ -175,7 +175,7 @@ namespace MyScheduler
         public void RecurringTask_EndDateBeforeCurrentDate_ShouldFail()
         {
             var schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
@@ -191,7 +191,7 @@ namespace MyScheduler
         public void RecurringTask_WithoutEventDate_WithoutEndDate_RecurrencePositive_ShouldPass()
         {
             var schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
             schedule.DailyFrequencyOnce = true;
@@ -209,7 +209,7 @@ namespace MyScheduler
         public void RecurringTask_StartDateAfterEndDate_ShouldFail()
         {
             var schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 4, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 11, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
@@ -225,7 +225,7 @@ namespace MyScheduler
         public void OnceTask_WithRecurrenceGreaterThanZero_ShouldFail()
         {
             var schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Once;
+            schedule.ScheduleType = Enums.ScheduleType.OneTime;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
             schedule.EventDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
@@ -241,7 +241,7 @@ namespace MyScheduler
         public void EventDateInPast_ShouldFail()
         {
             var schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
             schedule.EventDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
@@ -258,7 +258,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
@@ -278,7 +278,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
             schedule.DailyFrequencyOnce = true;
@@ -297,7 +297,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.Once;
+            schedule.ScheduleType = Enums.ScheduleType.OneTime;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 10, 10, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 10, 9, 0, 0, TimeSpan.Zero);
             schedule.EventDate = new DateTimeOffset(2025, 10, 10, 10, 0, 0, TimeSpan.Zero);
@@ -314,7 +314,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
@@ -334,7 +334,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.Once;
+            schedule.ScheduleType = Enums.ScheduleType.OneTime;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 11, 0, 0, 0, TimeSpan.Zero);
             schedule.EventDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
@@ -345,7 +345,7 @@ namespace MyScheduler
             Assert.True(result.IsFailure);
             Assert.Contains("The event date must be in the future.", result.Error);
             Assert.Contains("The event date cannot be before the start date.", result.Error);
-            Assert.Contains("Once tasks cannot have a recurrence", result.Error);
+            Assert.Contains("OneTime tasks cannot have a recurrence", result.Error);
         }
 
 
@@ -354,7 +354,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.EventDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero);
@@ -375,7 +375,7 @@ namespace MyScheduler
         {
             var schedule = new ScheduleEntity();
 
-            schedule.ScheduleType = Enums.ScheduleType.DailyOnce;
+            schedule.ScheduleType = Enums.ScheduleType.RecurringDailyOnce;
             schedule.CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero);
             schedule.StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero);
             schedule.Recurrence = 1200;

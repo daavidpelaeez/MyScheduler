@@ -39,17 +39,17 @@ namespace MyScheduler.Validators
             if (scheduleConfig.EndDate.HasValue && scheduleConfig.EndDate >= DateTimeOffset.MaxValue)
                 errors.AppendLine("EndDate cannot be more or equal than Max value.");
 
-            if (scheduleConfig.ScheduleType == Enums.ScheduleType.Once && (scheduleConfig.DailyFrequencyEvery || scheduleConfig.DailyFrequencyOnce))
-                errors.AppendLine("Once tasks cannot have daily frequency");
+            if (scheduleConfig.ScheduleType == Enums.ScheduleType.OneTime && (scheduleConfig.DailyFrequencyEvery || scheduleConfig.DailyFrequencyOnce))
+                errors.AppendLine("OneTime tasks cannot have daily frequency");
 
-            if (scheduleConfig.ScheduleType == Enums.ScheduleType.Once && (scheduleConfig.WeeklyRecurrence > 0 || scheduleConfig.DaysOfWeek.Count > 0))
-                errors.AppendLine("Once tasks cannot have weekly configuration");
+            if (scheduleConfig.ScheduleType == Enums.ScheduleType.OneTime && (scheduleConfig.WeeklyRecurrence > 0 || scheduleConfig.DaysOfWeek.Count > 0))
+                errors.AppendLine("OneTime tasks cannot have weekly configuration");
 
-            if (scheduleConfig.ScheduleType == Enums.ScheduleType.Once && scheduleConfig.ExecutionTimeOfOneDay != null)
-                errors.AppendLine("Once tasks cannot have execution once on daily frequency");
+            if (scheduleConfig.ScheduleType == Enums.ScheduleType.OneTime && scheduleConfig.ExecutionTimeOfOneDay != null)
+                errors.AppendLine("OneTime tasks cannot have execution once on daily frequency");
 
-            if (scheduleConfig.ScheduleType == Enums.ScheduleType.Once && (scheduleConfig.TimeUnit != null || scheduleConfig.TimeUnitNumberOf > 0 || scheduleConfig.DailyStartTime != null || scheduleConfig.DailyEndTime != null))
-                errors.AppendLine("Once tasks cannot have daily frequency configuration");
+            if (scheduleConfig.ScheduleType == Enums.ScheduleType.OneTime && (scheduleConfig.TimeUnit != null || scheduleConfig.TimeUnitNumberOf > 0 || scheduleConfig.DailyStartTime != null || scheduleConfig.DailyEndTime != null))
+                errors.AppendLine("OneTime tasks cannot have daily frequency configuration");
 
             if (scheduleConfig.Recurrence > maxRecurrence)
                 errors.AppendLine("Recurrence cannot be more than 1000.");
@@ -57,10 +57,10 @@ namespace MyScheduler.Validators
             if (scheduleConfig.Enabled == false)
                 errors.AppendLine("The form its not enabled, check enable checkbox");
 
-            if (scheduleConfig.DailyFrequencyEvery && scheduleConfig.ScheduleType == ScheduleType.DailyOnce)
+            if (scheduleConfig.DailyFrequencyEvery && scheduleConfig.ScheduleType == ScheduleType.RecurringDailyOnce)
                 errors.AppendLine("You cannot set daily frequency every in a daily once task type");
 
-            if (scheduleConfig.DailyFrequencyOnce && scheduleConfig.ScheduleType == ScheduleType.DailyEvery)
+            if (scheduleConfig.DailyFrequencyOnce && scheduleConfig.ScheduleType == ScheduleType.RecurringDailyRange)
                 errors.AppendLine("You cannot set daily frequency once in a daily every task type");
 
 

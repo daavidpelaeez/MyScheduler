@@ -6,14 +6,14 @@ using System.Text;
 
 namespace MyScheduler.Validators
 {
-    public static class WeeklyOnceValidator
+    public static class RecurringWeeklyOnceValidator
     {
         public static void Validate(ScheduleEntity scheduleConfig, StringBuilder errors)
         {
             DailyFrequencyCommonRules.CheckDailyCommonRules(scheduleConfig, errors);
 
             if (scheduleConfig.DaysOfWeek.Count < 1)
-                errors.AppendLine("DaysOfWeek must be selected for WeeklyOnce.");
+                errors.AppendLine("DaysOfWeek must be selected for RecurringWeeklyOnce.");
 
             if(scheduleConfig.ExecutionTimeOfOneDay < TimeSpan.Zero)
                 errors.AppendLine("ExecutionTimeOfOneDay is wrong");

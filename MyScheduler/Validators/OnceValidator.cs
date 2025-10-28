@@ -10,10 +10,10 @@ namespace MyScheduler.Validators
         public static void Validate(ScheduleEntity scheduleConfig, StringBuilder errors)
         {
             if (!scheduleConfig.EventDate.HasValue)
-                errors.AppendLine("EventDate is required for Once tasks.");
+                errors.AppendLine("EventDate is required for OneTime tasks.");
 
             if (scheduleConfig.Recurrence > 0)
-                errors.AppendLine("Once tasks cannot have a recurrence.");
+                errors.AppendLine("OneTime tasks cannot have a recurrence.");
         }
     }
 

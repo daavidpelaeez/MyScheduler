@@ -11,21 +11,21 @@ namespace MyScheduler.Helpers
         {
             switch (scheduleConfig.ScheduleType)
             {
-                case Enums.ScheduleType.Once:
+                case Enums.ScheduleType.OneTime:
                     return $"Occurs once. Schedule on {scheduleConfig.EventDate!.Value.Date.ToShortDateString()} at {scheduleConfig.EventDate.Value.DateTime.ToShortTimeString()}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
 
-                case Enums.ScheduleType.DailyOnce:
+                case Enums.ScheduleType.RecurringDailyOnce:
                     return $"Occurs every {scheduleConfig.Recurrence} day(s). Next on {scheduleConfig.EventDate!.Value.Date.ToShortDateString()}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
 
-                case Enums.ScheduleType.WeeklyOnce:
+                case Enums.ScheduleType.RecurringDailyRange:
+                    return $"Occurs every {scheduleConfig.Recurrence} day(s) from {scheduleConfig.DailyStartTime} to {scheduleConfig.DailyEndTime} every {scheduleConfig.TimeUnitNumberOf} {scheduleConfig.TimeUnit.ToString().ToLower()} ";
+
+                case Enums.ScheduleType.RecurringWeeklyOnce:
                     return $"Occurs every {scheduleConfig.WeeklyRecurrence} weeks on {GetWeeklyDescription(scheduleConfig.DaysOfWeek)} at {scheduleConfig.ExecutionTimeOfOneDay}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
 
-                case Enums.ScheduleType.WeeklyEvery:
+                case Enums.ScheduleType.RecurringWeeklyRange:
                     return $"Occurs every {scheduleConfig.WeeklyRecurrence} weeks on {GetWeeklyDescription(scheduleConfig.DaysOfWeek)} every {scheduleConfig.TimeUnitNumberOf} {scheduleConfig.TimeUnit.ToString().ToLower()} between {scheduleConfig.DailyStartTime!.Value} " +
                         $"and {scheduleConfig.DailyEndTime!.Value} starting on {scheduleConfig.StartDate.Date.ToShortDateString()}";
-
-                case Enums.ScheduleType.DailyEvery:
-                    return $"Occurs every {scheduleConfig.Recurrence} day(s) from {scheduleConfig.DailyStartTime} to {scheduleConfig.DailyEndTime} every {scheduleConfig.TimeUnitNumberOf} {scheduleConfig.TimeUnit.ToString().ToLower()} ";
 
                 default:
                     return "Description not available for this task type.";

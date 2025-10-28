@@ -1,17 +1,17 @@
-﻿
-using MyScheduler.Entities;
+﻿using MyScheduler.Entities;
 using MyScheduler.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace MyScheduler.ScheduleCalculators
 {
-    public class WeeklyEveryCalculator
+    public class RecurringDailyRangeCalculator
     {
-        public Result<ScheduleOutput> GetNextExecutionWeeklyEvery(ScheduleEntity scheduleConfig, int? maxOccurrences)
+        public Result<ScheduleOutput> GetNextExecutionDailyEvery(ScheduleEntity scheduleConfig, int? maxOccurrences)
         {
-            var dates = CalculateWeeklyRecurringConfig(scheduleConfig, maxOccurrences);
+            var dates = CalculateNextExecutions(scheduleConfig, maxOccurrences);
 
             if (dates.Count == 0)
                 return Result<ScheduleOutput>.Failure("No next execution avaliable in that range");
@@ -25,10 +25,10 @@ namespace MyScheduler.ScheduleCalculators
             return Result<ScheduleOutput>.Success(output);
         }
 
-        public List<DateTimeOffset> CalculateWeeklyRecurringConfig(ScheduleEntity scheduleConfig, int? maxOccurrences)
+        public List<DateTimeOffset> CalculateNextExecutions(ScheduleEntity scheduleConfig, int? maxOccurrences)
         {
             var result = new List<DateTimeOffset>();
-            var days = WeeklyScheduleHelper.GetMatchingDays(scheduleConfig, maxOccurrences);
+            var days = DailySchedulerHelper.GetRecurrentDays(scheduleConfig,maxOccurrences);
             var interval = WeeklyScheduleHelper.IntervalCalculator(scheduleConfig);
             var startTime = scheduleConfig.DailyStartTime;
             var endTime = scheduleConfig.DailyEndTime;
@@ -36,8 +36,8 @@ namespace MyScheduler.ScheduleCalculators
 
             foreach (var day in days)
             {
-                for (var currentTime = startTime; 
-                    currentTime >= startTime && currentTime <= endTime; 
+                for (var currentTime = startTime;
+                    currentTime >= startTime && currentTime <= endTime;
                     currentTime = currentTime.Value.Add(interval))
                 {
                     if (!scheduleConfig.EndDate.HasValue && count >= maxOccurrences)
@@ -50,6 +50,7 @@ namespace MyScheduler.ScheduleCalculators
 
             return result;
         }
+
 
     }
 }

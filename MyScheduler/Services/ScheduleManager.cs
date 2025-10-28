@@ -20,11 +20,11 @@ namespace MyScheduler.Services
 
             return scheduleConfig.ScheduleType switch
             {
-                ScheduleType.Once => new OnceCalculator().GetNextExecutionOnce(scheduleConfig),
-                ScheduleType.DailyOnce => new DailyOnceCalculator().GetNextExecutionDailyOnce(scheduleConfig, numOccurrences),
-                ScheduleType.DailyEvery => new DailyEveryCalculator().GetNextExecutionDailyEvery(scheduleConfig, numOccurrences),
-                ScheduleType.WeeklyOnce => new WeeklyOnceCalculator().GetNextExecutionWeeklyOnce(scheduleConfig, numOccurrences),
-                ScheduleType.WeeklyEvery => new WeeklyEveryCalculator().GetNextExecutionWeeklyEvery(scheduleConfig, numOccurrences),
+                ScheduleType.OneTime => new OnceCalculator().GetNextExecutionOnce(scheduleConfig),
+                ScheduleType.RecurringDailyOnce => new RecurringDailyOnceCalculator().GetNextExecutionDailyOnce(scheduleConfig, numOccurrences),
+                ScheduleType.RecurringDailyRange => new RecurringDailyRangeCalculator().GetNextExecutionDailyEvery(scheduleConfig, numOccurrences),
+                ScheduleType.RecurringWeeklyOnce => new RecurringWeeklyOnceCalculator().GetNextExecutionWeeklyOnce(scheduleConfig, numOccurrences),
+                ScheduleType.RecurringWeeklyRange => new RecurringWeeklyRangeCalculator().GetNextExecutionWeeklyEvery(scheduleConfig, numOccurrences),
                 _ => throw new System.NotImplementedException(),
             };
         }

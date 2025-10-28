@@ -6,7 +6,7 @@ using System;
 
 namespace MyScheduler.ScheduleCalculators
 {
-    public class DailyOnceCalculator
+    public class RecurringDailyOnceCalculator
     {
         public Result<ScheduleOutput> GetNextExecutionDailyOnce(ScheduleEntity scheduleConfig, int? numOccurrences)
         {

@@ -13,7 +13,7 @@ namespace MyScheduler.Helpers
             var listOfDays = new List<DateTimeOffset>();
             int count = 0;
 
-            var selectedHour = (scheduleConfig.ScheduleType == Enums.ScheduleType.DailyOnce) ? scheduleConfig.ExecutionTimeOfOneDay!.Value : TimeSpan.Zero;
+            var selectedHour = (scheduleConfig.ScheduleType == Enums.ScheduleType.RecurringDailyOnce) ? scheduleConfig.ExecutionTimeOfOneDay!.Value : TimeSpan.Zero;
 
             var endDate = scheduleConfig.EndDate ?? DateTimeOffset.MaxValue;
 
