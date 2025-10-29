@@ -1,9 +1,10 @@
 ﻿
 using MyScheduler.Entities;
 using MyScheduler.Enums;
+using MyScheduler.Helpers;
 using MyScheduler.ScheduleCalculators;
 using MyScheduler.Validators;
-using MyScheduler.Helpers;
+using System;
 
 namespace MyScheduler.Services
 {
@@ -11,22 +12,53 @@ namespace MyScheduler.Services
     {
         public Result<ScheduleOutput> GetNextExecution(ScheduleEntity scheduleConfig, int? numOccurrences)
         {
-            var validation = Validator.ValidateTask(scheduleConfig,numOccurrences);
+            var validation = Validator.ValidateTask(scheduleConfig, numOccurrences);
 
             if (validation.IsFailure)
-            {
                 return Result<ScheduleOutput>.Failure(validation.Error);
+
+                var result = CalculateNext(scheduleConfig, numOccurrences);
+                if (result == null)
+                    return Result<ScheduleOutput>.Failure("Configuration not valid!");
+
+                return result;
+
+        }
+
+        private Result<ScheduleOutput> CalculateNext(ScheduleEntity scheduleConfig, int? numOccurrences)
+        {
+            if (scheduleConfig.ScheduleType == ScheduleType.Once)
+            {
+                var calc = new OnceTimeCalculator();
+                return calc.GetNextExecutionOnce(scheduleConfig);
             }
 
-            return scheduleConfig.ScheduleType switch
+            if (scheduleConfig.ScheduleType == ScheduleType.Recurring)
             {
-                ScheduleType.OneTime => new OnceCalculator().GetNextExecutionOnce(scheduleConfig),
-                ScheduleType.RecurringDailyOnce => new RecurringDailyOnceCalculator().GetNextExecutionDailyOnce(scheduleConfig, numOccurrences),
-                ScheduleType.RecurringDailyRange => new RecurringDailyRangeCalculator().GetNextExecutionDailyEvery(scheduleConfig, numOccurrences),
-                ScheduleType.RecurringWeeklyOnce => new RecurringWeeklyOnceCalculator().GetNextExecutionWeeklyOnce(scheduleConfig, numOccurrences),
-                ScheduleType.RecurringWeeklyRange => new RecurringWeeklyRangeCalculator().GetNextExecutionWeeklyEvery(scheduleConfig, numOccurrences),
-                _ => throw new System.NotImplementedException(),
-            };
+                if (scheduleConfig.Occurs == Occurs.Daily)
+                {
+                    if (scheduleConfig.DailyFrequencyOnceCheckbox)
+                        return new RecurringDailyOnceCalculator().GetNextExecutionDailyOnce(scheduleConfig, numOccurrences);
+
+                    if (scheduleConfig.DailyFrequencyEveryCheckbox)
+                        return new RecurringDailyRangeCalculator().GetNextExecutionDailyEvery(scheduleConfig, numOccurrences);
+                }
+
+                if (scheduleConfig.Occurs == Occurs.Weekly)
+                {
+                    if (scheduleConfig.DailyFrequencyOnceCheckbox)
+                        return new RecurringWeeklyOnceCalculator().GetNextExecutionWeeklyOnce(scheduleConfig, numOccurrences);
+
+                    if (scheduleConfig.DailyFrequencyEveryCheckbox)
+                        return new RecurringWeeklyRangeCalculator().GetNextExecutionWeeklyEvery(scheduleConfig, numOccurrences);
+                }
+
+            }
+
+            return Result<ScheduleOutput>.Failure("Error calculando la siguiente ejecucion");
         }
+
     }
 }
+
+

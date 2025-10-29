@@ -1,5 +1,6 @@
 ﻿
 using MyScheduler.Entities;
+using MyScheduler.Enums;
 using MyScheduler.Helpers;
 using MyScheduler.ScheduleCalculators;
 using System.Text;
@@ -12,36 +13,61 @@ namespace MyScheduler.Validators
         {
             var errors = new StringBuilder();
 
-            CommonRules.Validate(scheduleConfig, errors,numOccurrences);
+            CommonRules.Validate(scheduleConfig, errors, numOccurrences);
+
+            if (errors.Length > 0)
+                return Result<ScheduleEntity>.Failure(errors.ToString());
 
             switch (scheduleConfig.ScheduleType)
             {
-                case Enums.ScheduleType.OneTime:
+                case Enums.ScheduleType.Once:
+
                     OnceValidator.Validate(scheduleConfig, errors);
+
                     break;
 
-                case Enums.ScheduleType.RecurringDailyOnce:
-                    RecurringDailyOnceValidator.Validate(scheduleConfig, errors);
-                    break;
+                case Enums.ScheduleType.Recurring:
 
-                case Enums.ScheduleType.RecurringWeeklyOnce:
-                    RecurringWeeklyOnceValidator.Validate(scheduleConfig, errors);
-                    break;
+                    ValidateRecurring(scheduleConfig, errors);
 
-                case Enums.ScheduleType.RecurringWeeklyRange:
-                    RecurringWeeklyRangeValidator.Validate(scheduleConfig, errors);
-                    break;
-
-                case Enums.ScheduleType.RecurringDailyRange:
-                    RecurringDailyRangeValidator.Validate(scheduleConfig, errors);
-                    break;
-
-                default:
-                    errors.AppendLine("Unsupported scheduleConfig type.");
                     break;
             }
 
-            return errors.Length == 0  ? Result<ScheduleEntity>.Success(scheduleConfig) : Result<ScheduleEntity>.Failure(errors.ToString());
+            return errors.Length == 0 ? Result<ScheduleEntity>.Success(scheduleConfig) : Result<ScheduleEntity>.Failure(errors.ToString());
+        }
+
+        public static void ValidateRecurring(ScheduleEntity scheduleConfig, StringBuilder errors)
+        {
+            switch (scheduleConfig.Occurs)
+            {
+                case Occurs.Daily:
+                    if (scheduleConfig.DailyFrequencyOnceCheckbox)
+                        RecurringDailyOnceValidator.Validate(scheduleConfig, errors);
+
+                    else if (scheduleConfig.DailyFrequencyEveryCheckbox)
+                        RecurringDailyRangeValidator.Validate(scheduleConfig, errors);
+
+                    else
+                        errors.AppendLine("You need to select daily frequency once or every");
+
+                    break;
+
+                case Occurs.Weekly:
+                    if (scheduleConfig.DailyFrequencyOnceCheckbox)
+                        RecurringWeeklyOnceValidator.Validate(scheduleConfig, errors);
+
+                    else if (scheduleConfig.DailyFrequencyEveryCheckbox)
+                        RecurringWeeklyRangeValidator.Validate(scheduleConfig, errors);
+
+                    else
+                        errors.AppendLine("You need to select daily frequency once or every");
+
+                    break;
+
+                default:
+                    errors.AppendLine("You need to select daily frequency once or every");
+                    break;
+            }
         }
     }
 

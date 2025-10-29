@@ -27,7 +27,7 @@ namespace MyScheduler.ScheduleCalculators
         public List<DateTimeOffset> CalculateWeeklyOnceConfig(ScheduleEntity scheduleConfig, int? maxOccurrences)
         {
             var result = new List<DateTimeOffset>();
-            var selectedHour = scheduleConfig.ExecutionTimeOfOneDay!.Value;
+            var selectedHour = scheduleConfig.DailyOnceExecutionTime!.Value;
             var days = WeeklyScheduleHelper.GetMatchingDays(scheduleConfig, maxOccurrences);
 
 

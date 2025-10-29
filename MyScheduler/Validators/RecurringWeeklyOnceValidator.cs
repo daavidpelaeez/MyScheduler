@@ -15,8 +15,8 @@ namespace MyScheduler.Validators
             if (scheduleConfig.DaysOfWeek.Count < 1)
                 errors.AppendLine("DaysOfWeek must be selected for RecurringWeeklyOnce.");
 
-            if(scheduleConfig.ExecutionTimeOfOneDay < TimeSpan.Zero)
-                errors.AppendLine("ExecutionTimeOfOneDay is wrong");
+            if(scheduleConfig.DailyOnceExecutionTime < TimeSpan.Zero)
+                errors.AppendLine("DailyOnceExecutionTime is wrong");
 
             if (scheduleConfig.WeeklyRecurrence < 1)
                 errors.AppendLine("WeeklyRecurrence must be at least 1.");

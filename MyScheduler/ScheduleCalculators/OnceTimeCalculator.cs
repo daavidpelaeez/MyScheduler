@@ -5,7 +5,7 @@ using System;
 
 namespace MyScheduler.ScheduleCalculators
 {
-    public class OnceCalculator
+    public class OnceTimeCalculator
     {
         public Result<ScheduleOutput> GetNextExecutionOnce(ScheduleEntity scheduleConfig)
         {

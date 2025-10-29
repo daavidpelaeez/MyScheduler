@@ -1,69 +1,61 @@
 ﻿using MyScheduler.Entities;
 using MyScheduler.Enums;
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace MyScheduler.Validators
 {
     public static class DailyFrequencyCommonRules
     {
-
-        public static void CheckDailyCommonRules(ScheduleEntity schedulerConfig, StringBuilder errors)
+        public static void CheckDailyCommonRules(ScheduleEntity scheduleConfig, StringBuilder errors)
         {
-            // Validaciones básicas 
-            if (schedulerConfig.DailyFrequencyOnce && schedulerConfig.DailyFrequencyEvery)
+            if (scheduleConfig.DailyFrequencyOnceCheckbox && scheduleConfig.DailyFrequencyEveryCheckbox)
                 errors.AppendLine("Daily frequency cannot be once and every at the same time");
 
-            if (!schedulerConfig.DailyFrequencyEvery && !schedulerConfig.DailyFrequencyOnce)
+            if (!scheduleConfig.DailyFrequencyOnceCheckbox && !scheduleConfig.DailyFrequencyEveryCheckbox)
                 errors.AppendLine("Daily frequency cannot be empty for daily tasks");
 
-            // para RecurringDailyOnce 
-            if (schedulerConfig.DailyFrequencyOnce)
+            if (scheduleConfig.DailyFrequencyOnceCheckbox)
             {
-                if (schedulerConfig.TimeUnitNumberOf > 0)
+                if (scheduleConfig.TimeUnitNumberOf > 0)
                     errors.AppendLine("Daily tasks cannot have timeUnitNumberOf");
 
-                if (schedulerConfig.TimeUnit != null)
-                    errors.AppendLine("Time unit cannot be set for a daily frequency one task");
+                if (scheduleConfig.TimeUnit != null)
+                    errors.AppendLine("Time unit cannot be set for a daily frequency once task");
 
-                if (schedulerConfig.DailyStartTime != null)
-                    errors.AppendLine("Daily start time cannot be set for a daily frequency one task");
+                if (scheduleConfig.DailyStartTime != null)
+                    errors.AppendLine("Daily start time cannot be set for a daily frequency once task");
 
-                if (schedulerConfig.DailyEndTime != null)
-                    errors.AppendLine("Daily end time cannot be set for a daily frequency one task");
+                if (scheduleConfig.DailyEndTime != null)
+                    errors.AppendLine("Daily end time cannot be set for a daily frequency once task");
 
-                if (schedulerConfig.ExecutionTimeOfOneDay == null)
-                    errors.AppendLine("ExecutionTimeOfOneDay is required");
+                if (scheduleConfig.DailyOnceExecutionTime == null)
+                    errors.AppendLine("DailyOnceExecutionTime is required");
 
-                if (schedulerConfig.ScheduleType == ScheduleType.RecurringDailyRange)
+                if (scheduleConfig.ScheduleType == ScheduleType.Recurring && scheduleConfig.DailyFrequencyEveryCheckbox)
                     errors.AppendLine("You cannot set daily frequency once in a daily every task type");
             }
 
-            // para RecurringDailyRange ---
-            if (schedulerConfig.DailyFrequencyEvery)
+            if (scheduleConfig.DailyFrequencyEveryCheckbox)
             {
-                if (schedulerConfig.ExecutionTimeOfOneDay != null)
+                if (scheduleConfig.DailyOnceExecutionTime != null)
                     errors.AppendLine("Execution time of day cannot be set for a daily frequency every task");
 
-                if (schedulerConfig.TimeUnit == null)
+                if (scheduleConfig.TimeUnit == null)
                     errors.AppendLine("You need to set a time unit for daily every configurations");
 
-                if (schedulerConfig.TimeUnitNumberOf < 1)
-                    errors.AppendLine("You need to set a time unit number of greater than 1");
+                if (scheduleConfig.TimeUnitNumberOf < 1)
+                    errors.AppendLine("You need to set a time unit number of greater than 0");
 
-                if (schedulerConfig.DailyStartTime == null)
+                if (scheduleConfig.DailyStartTime == null)
                     errors.AppendLine("You need to set a daily start time");
 
-                if (schedulerConfig.DailyEndTime == null)
+                if (scheduleConfig.DailyEndTime == null)
                     errors.AppendLine("You need to set a daily end time");
 
-                if (schedulerConfig.ScheduleType == ScheduleType.RecurringDailyOnce)
+                if (scheduleConfig.ScheduleType == ScheduleType.Recurring && scheduleConfig.DailyFrequencyOnceCheckbox)
                     errors.AppendLine("You cannot set daily frequency every in a daily once task type");
             }
         }
-
-
-
     }
 }

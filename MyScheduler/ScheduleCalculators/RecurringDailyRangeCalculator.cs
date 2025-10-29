@@ -36,14 +36,14 @@ namespace MyScheduler.ScheduleCalculators
 
             foreach (var day in days)
             {
-                for (var currentTime = startTime;
-                    currentTime >= startTime && currentTime <= endTime;
-                    currentTime = currentTime.Value.Add(interval))
+                for (var currentTime = startTime!.Value;
+                 currentTime >= startTime.Value && currentTime <= endTime!.Value;
+                 currentTime = currentTime.Add(interval))
                 {
                     if (!scheduleConfig.EndDate.HasValue && count >= maxOccurrences)
                         break;
 
-                    result.Add(day + currentTime.Value);
+                    result.Add(day + currentTime);
                     count++;
                 }
             }

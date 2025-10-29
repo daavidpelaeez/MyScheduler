@@ -1,4 +1,5 @@
 ﻿using MyScheduler.Entities;
+using MyScheduler.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,13 +8,19 @@ namespace MyScheduler.Helpers
 {
     public static class DailySchedulerHelper
     {
-
         public static List<DateTimeOffset> GetRecurrentDays(ScheduleEntity scheduleConfig, int? limitOccurrences)
         {
             var listOfDays = new List<DateTimeOffset>();
             int count = 0;
 
-            var selectedHour = (scheduleConfig.ScheduleType == Enums.ScheduleType.RecurringDailyOnce) ? scheduleConfig.ExecutionTimeOfOneDay!.Value : TimeSpan.Zero;
+            TimeSpan selectedHour = TimeSpan.Zero;
+
+            if (scheduleConfig.ScheduleType == Enums.ScheduleType.Recurring &&
+                scheduleConfig.Occurs == Occurs.Daily &&
+                scheduleConfig.DailyOnceExecutionTime.HasValue)
+            {
+                selectedHour = scheduleConfig.DailyOnceExecutionTime.Value;
+            }
 
             var endDate = scheduleConfig.EndDate ?? DateTimeOffset.MaxValue;
 
@@ -23,8 +30,8 @@ namespace MyScheduler.Helpers
             {
                 if (currentDateIterator >= scheduleConfig.CurrentDate)
                 {
-                        listOfDays.Add(currentDateIterator + selectedHour);
-                        count++;
+                    listOfDays.Add(currentDateIterator.Add(selectedHour)); 
+                    count++;
                 }
             }
 

@@ -2,6 +2,7 @@
 using MyScheduler.Enums;
 using MyScheduler.Services;
 using Xunit;
+using System;
 
 namespace MyScheduler
 {
@@ -14,7 +15,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.OneTime,
+                ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
@@ -35,18 +36,19 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
+                ScheduleType = ScheduleType.Recurring,
+                Occurs = Occurs.Daily,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 1,
-                DailyFrequencyOnce = true,
-                ExecutionTimeOfOneDay = new TimeSpan(13, 30, 0),
+                DailyFrequencyOnceCheckbox = true,
+                DailyOnceExecutionTime = new TimeSpan(13, 30, 0),
                 Enabled = true
             };
 
             var result = taskManager.GetNextExecution(schedule, 10);
 
-            Assert.True(result.IsSuccess,result.Error);
+            Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 10, 9, 13, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
             Assert.Equal("Occurs every 1 day(s). Next on 09/10/2025, starting 09/10/2025", result.Value.Description);
         }
@@ -58,11 +60,12 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
+                ScheduleType = ScheduleType.Recurring,
+                Occurs = Occurs.Daily,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
-                DailyFrequencyOnce = true,
-                ExecutionTimeOfOneDay= new TimeSpan(13, 30,0),
+                DailyFrequencyOnceCheckbox = true,
+                DailyOnceExecutionTime = new TimeSpan(13, 30, 0),
                 Recurrence = 1,
                 Enabled = true
             };
@@ -81,17 +84,18 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.OneTime,
+                ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 6, 0, 0, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero),
+                Enabled = true,
                 Recurrence = 2
             };
 
-            var result = taskManager.GetNextExecution(schedule, null);
+            var result = taskManager.GetNextExecution(schedule, 10);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("once", result.Error.ToLower());
+            Assert.Contains("onetime tasks cannot have a ", result.Error.ToLower());
         }
 
         [Fact]
@@ -101,7 +105,10 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
+                ScheduleType = ScheduleType.Recurring,
+                Occurs = Occurs.Daily,
+                DailyFrequencyOnceCheckbox = true,
+                DailyOnceExecutionTime = TimeSpan.Zero,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 0,
@@ -111,7 +118,7 @@ namespace MyScheduler
             var result = taskManager.GetNextExecution(schedule, 10);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("dailyonce tasks must have a recurrence", result.Error.ToLower());
+            Assert.Contains("recurringdailyonce tasks must have a recurrence", result.Error.ToLower());
         }
 
         [Fact]
@@ -121,7 +128,8 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
+                ScheduleType = ScheduleType.Recurring,
+                Occurs = Occurs.Daily,
                 CurrentDate = new DateTimeOffset(2025, 10, 4, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
@@ -141,12 +149,13 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
+                ScheduleType = ScheduleType.Recurring,
+                Occurs = Occurs.Daily,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 2,
-                DailyFrequencyOnce = true,
-                ExecutionTimeOfOneDay = new TimeSpan(13,30,0),
+                DailyFrequencyOnceCheckbox = true,
+                DailyOnceExecutionTime = new TimeSpan(13, 30, 0),
                 Enabled = true
             };
 
@@ -163,7 +172,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.OneTime,
+                ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero)
@@ -182,7 +191,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.OneTime,
+                ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
@@ -202,18 +211,19 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
+                ScheduleType = ScheduleType.Recurring,
+                Occurs = Occurs.Daily,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 2,
-                DailyFrequencyOnce = true,
-                ExecutionTimeOfOneDay = new TimeSpan(13, 30, 0),
+                DailyFrequencyOnceCheckbox = true,
+                DailyOnceExecutionTime = new TimeSpan(13, 30, 0),
                 Enabled = true
             };
 
             var result = taskManager.GetNextExecution(schedule, 10);
 
-            Assert.True(result.IsSuccess,result.Error);
+            Assert.True(result.IsSuccess, result.Error);
             Assert.Equal("Occurs every 2 day(s). Next on 09/10/2025, starting 05/10/2025", result.Value.Description);
         }
 
@@ -224,12 +234,13 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
+                ScheduleType = ScheduleType.Recurring,
+                Occurs = Occurs.Daily,
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 1,
-                DailyFrequencyOnce = true,
-                ExecutionTimeOfOneDay= new TimeSpan(13, 30,0),
+                DailyFrequencyOnceCheckbox = true,
+                DailyOnceExecutionTime = new TimeSpan(13, 30, 0),
                 Enabled = true
             };
 
@@ -246,12 +257,13 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.RecurringDailyOnce,
+                ScheduleType = ScheduleType.Recurring,
+                Occurs = Occurs.Daily,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 3,
-                DailyFrequencyOnce = true,
-                ExecutionTimeOfOneDay = new TimeSpan(13, 30, 0),
+                DailyFrequencyOnceCheckbox = true,
+                DailyOnceExecutionTime = new TimeSpan(13, 30, 0),
                 Enabled = true
             };
 
@@ -268,7 +280,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.OneTime,
+                ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
@@ -276,7 +288,7 @@ namespace MyScheduler
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule,10);
+            var result = taskManager.GetNextExecution(schedule, 10);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
@@ -290,11 +302,11 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.OneTime,
+                ScheduleType = ScheduleType.Once,
                 StartDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
-                Enabled = true,
+                Enabled = true
             };
 
             var result = taskManager.GetNextExecution(schedule, 10);
@@ -311,7 +323,7 @@ namespace MyScheduler
 
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.OneTime,
+                ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
@@ -324,7 +336,6 @@ namespace MyScheduler
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
             Assert.Equal("Occurs once. Schedule on 10/10/2025 at 14:30, starting 10/10/2025", result.Value.Description);
-
         }
     }
 }
