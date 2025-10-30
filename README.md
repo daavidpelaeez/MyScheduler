@@ -1,16 +1,35 @@
 # 🗓️ MyScheduler
 
-**MyScheduler** is a .NET class library that provides a robust and extensible framework for task scheduling. It enables developers to manage and automate the execution of one-time and recurring tasks with ease.
+**MyScheduler** is a .NET class library that provides a robust and extensible framework for task scheduling.  
+It enables developers to manage and automate the execution of one-time and recurring tasks with clear, modular configuration.
 
 ---
 
 ## ✨ Features
 
-- ✅ Support for multiple task types (`Once`, `Recurring`, `WeeklyOnce`, `WeeklyEvery`)
+- ✅ Supports separated scheduling model via two enums:
+  - `ScheduleType`: `Once`, `Recurring`
+  - `Occurs`: `Daily`, `Weekly`
+- 🔘 Flexible daily frequency configuration:
+  - `DailyFrequencyOnceCheckbox`
+  - `DailyFrequencyEveryCheckbox`
 - 🔍 Thorough validation of scheduling parameters
-- ⏱️ Automatic calculation of next execution time
-- 🧩 Extensible architecture for custom task types and scheduling logic
-- 🧪 Unit tested with xUnit for reliability
+- ⏱️ Automatic calculation of next execution time through `ScheduleManager`
+- 🧩 Extensible architecture for adding custom recurrence logic
+- 🧪 Fully unit and integration tested with xUnit for reliability
+
+---
+
+## 🧠 New Architecture Overview
+
+| Component | Responsibility |
+|------------|----------------|
+| **ScheduleEntity** | Holds scheduling configuration (type, recurrence, frequency, and timing) |
+| **ScheduleType** | Defines if a task runs `Once` or `Recurring` |
+| **Occurs** | Defines recurrence context (`Daily` or `Weekly`) |
+| **DailyFrequencyOnceCheckbox / DailyFrequencyEveryCheckbox** | Choose whether the recurrence runs once per day or at regular intervals |
+| **Validator** | Validates all scheduling combinations according to the selected configuration |
+| **ScheduleManager** | Calculates next execution date/time and builds a human-readable description |
 
 ---
 
@@ -28,5 +47,3 @@ You can add **MyScheduler** to your project via NuGet (once published) or includ
 
 ```bash
 git clone https://github.com/daavidpelaeez/MyScheduler.git
-
-
