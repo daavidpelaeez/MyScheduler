@@ -412,9 +412,17 @@ namespace MyScheduler
             config.DailyEndTime = new TimeSpan(3, 3, 0);
 
             var rdc = new RecurringDailyRangeCalculator();
-            var result = rdc.CalculateNextExecutions(config, 10);
+            var result = rdc.CalculateNextExecutions(config, 4);
 
-            var expected = new List<DateTimeOffset>();
+            var expected = new List<DateTimeOffset>() { 
+            
+                new DateTimeOffset(2025,10,26,2,59,58,0,TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025,10,26,2,59,59,0,TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025,10,26,3,0,0,0,TimeSpan.FromHours(1)),
+                new DateTimeOffset(2025,10,26,3,0,1,0,TimeSpan.FromHours(1))
+
+
+            };
 
             Assert.Equal(expected, result);
         }
@@ -437,9 +445,17 @@ namespace MyScheduler
             config.DailyEndTime = new TimeSpan(3, 3, 0);
 
             var rdc = new RecurringWeeklyRangeCalculator();
-            var result = rdc.CalculateWeeklyRecurringConfig(config, 10);
+            var result = rdc.CalculateWeeklyRecurringConfig(config, 4);
 
-            var expected = new List<DateTimeOffset>();
+            var expected = new List<DateTimeOffset>() {
+
+                new DateTimeOffset(2025,10,26,2,59,58,0,TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025,10,26,2,59,59,0,TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025,10,26,3,0,0,0,TimeSpan.FromHours(1)),
+                new DateTimeOffset(2025,10,26,3,0,1,0,TimeSpan.FromHours(1))
+
+
+            };
 
             Assert.Equal(expected, result);
         }
