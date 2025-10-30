@@ -599,7 +599,7 @@ namespace MyScheduler
             var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
 
             Assert.True(result.IsSuccess, result.Error);
-            Assert.Equal(new DateTimeOffset(2025, 10, 27, 13, 0, 0, TimeSpan.Zero), result.Value.ExecutionTime);
+            Assert.Equal(new DateTimeOffset(2025, 10, 27, 13, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
         }
 
         // Duplicate days

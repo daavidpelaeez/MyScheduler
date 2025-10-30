@@ -34,16 +34,19 @@ namespace MyScheduler.ScheduleCalculators
             var endTime = scheduleConfig.DailyEndTime;
             int count = 0;
 
-            foreach (var day in days)
+
+            foreach (var day in days) 
             {
                 for (var currentTime = startTime!.Value;
-                 currentTime >= startTime.Value && currentTime <= endTime!.Value;
-                 currentTime = currentTime.Add(interval))
+                     currentTime >= startTime.Value && currentTime <= endTime!.Value;
+                     currentTime = currentTime.Add(interval))
                 {
                     if (!scheduleConfig.EndDate.HasValue && count >= maxOccurrences)
                         break;
 
-                    result.Add(day + currentTime);
+                    var dateWithOffset = DateTimeZoneHelper.ToDateTimeOffset(day.Date, currentTime);
+
+                    result.Add(dateWithOffset);
                     count++;
                 }
             }

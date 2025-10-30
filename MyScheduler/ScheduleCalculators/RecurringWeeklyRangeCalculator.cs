@@ -4,6 +4,7 @@ using MyScheduler.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace MyScheduler.ScheduleCalculators
 {
@@ -34,6 +35,7 @@ namespace MyScheduler.ScheduleCalculators
             var endTime = scheduleConfig.DailyEndTime;
             int count = 0;
 
+
             foreach (var day in days)
             {
                 for (var currentTime = startTime; 
@@ -43,7 +45,9 @@ namespace MyScheduler.ScheduleCalculators
                     if (!scheduleConfig.EndDate.HasValue && count >= maxOccurrences)
                         break;
 
-                    result.Add(day + currentTime.Value);
+                    var dateWithOffset = DateTimeZoneHelper.ToDateTimeOffset(day.Date, currentTime.Value);
+
+                    result.Add(dateWithOffset);
                     count++;
                 }
             }

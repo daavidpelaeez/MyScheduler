@@ -12,14 +12,9 @@ namespace MyScheduler.Helpers
             switch (scheduleConfig.ScheduleType)
             {
                 case Enums.ScheduleType.Once:
-
-                    if (scheduleConfig.EventDate.HasValue)
-                        return $"Occurs once. Schedule on {scheduleConfig.EventDate.Value.Date.ToShortDateString()} at {scheduleConfig.EventDate.Value.DateTime.ToShortTimeString()}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
-                    else
-                        return "Occurs once. Event date not specified.";
+                        return $"Occurs once. Schedule on {scheduleConfig.EventDate!.Value.Date.ToShortDateString()} at {scheduleConfig.EventDate.Value.DateTime.ToShortTimeString()}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
 
                 case Enums.ScheduleType.Recurring:
-
                     return GetRecurringDescription(scheduleConfig);
 
                 default:
@@ -33,15 +28,14 @@ namespace MyScheduler.Helpers
             {
                 if (scheduleConfig.DailyFrequencyOnceCheckbox)
                 {
-                    if (scheduleConfig.EventDate.HasValue)
-                        return $"Occurs every {scheduleConfig.Recurrence} day(s). Next on {scheduleConfig.EventDate.Value.Date.ToShortDateString()}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
-                    else
-                        return $"Occurs every {scheduleConfig.Recurrence} day(s), starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
+                   return $"Occurs every {scheduleConfig.Recurrence} day(s). Next on {scheduleConfig.EventDate!.Value.Date.ToShortDateString()}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
                 }
-                else if (scheduleConfig.DailyFrequencyEveryCheckbox)
+
+                if (scheduleConfig.DailyFrequencyEveryCheckbox)
                 {
                     return $"Occurs every {scheduleConfig.Recurrence} day(s) from {scheduleConfig.DailyStartTime} to {scheduleConfig.DailyEndTime} every {scheduleConfig.TimeUnitNumberOf} {scheduleConfig.TimeUnit?.ToString().ToLower()}";
                 }
+
             }
             else if (scheduleConfig.Occurs == Enums.Occurs.Weekly)
             {
@@ -55,6 +49,7 @@ namespace MyScheduler.Helpers
                 {
                     return $"Occurs every {scheduleConfig.WeeklyRecurrence} weeks on {days} every {scheduleConfig.TimeUnitNumberOf} {scheduleConfig.TimeUnit?.ToString().ToLower()} between {scheduleConfig.DailyStartTime} and {scheduleConfig.DailyEndTime}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
                 }
+
             }
 
             return "Recurring schedule description not available.";

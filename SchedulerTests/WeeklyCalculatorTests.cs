@@ -11,7 +11,7 @@ namespace MyScheduler
 {
     public class WeeklyCalculatorTests
     {
-        // Recurring Weekly - Once (description)
+
         [Fact]
         public void WeeklyOnce_ShouldPass_WhenCheckingCorrectDescription()
         {
@@ -34,7 +34,6 @@ namespace MyScheduler
             Assert.Equal(expectedDescription, result);
         }
 
-        // Recurring Weekly - Once (GetNextExecution)
         [Fact]
         public void WeeklyOnce_ShouldPass_WhenCheckingCorrectOutput()
         {
@@ -64,7 +63,7 @@ namespace MyScheduler
             Assert.Equal(expectedExecutionTime, result.Value.ExecutionTime);
         }
 
-        // Recurring Weekly - Once (occurrences calculation)
+
         [Fact]
         public void WeeklyOnce_ShouldPass_WhenUsingOccurrences()
         {
@@ -97,7 +96,7 @@ namespace MyScheduler
             Assert.Equal(expectedExecutions, result);
         }
 
-        // Recurring Weekly - Every (GetNextExecution)
+
         [Fact]
         public void WeeklyEvery_ShouldPass_WhenCheckingCorrectOuput()
         {
@@ -124,13 +123,13 @@ namespace MyScheduler
             var result = manager.GetNextExecution(taskConfig, 10);
 
             string expectedDescription = "Occurs every 1 weeks on monday every 2 hours between 13:30:00 and 19:30:00, starting 17/10/2025";
-            DateTimeOffset expectedExecutionTime = new DateTimeOffset(2025, 10, 20, 13, 30, 0, TimeSpan.Zero);
+            DateTimeOffset expectedExecutionTime = new DateTimeOffset(2025, 10, 20, 13, 30, 0, TimeSpan.FromHours(2));
 
             Assert.Equal(expectedDescription, result.Value.Description);
             Assert.Equal(expectedExecutionTime, result.Value.ExecutionTime);
         }
 
-        // Recurring Weekly - Every (occurrences calculation)
+
         [Fact]
         public void WeeklyEvery_ShouldPass_WhenCalculateConfig()
         {
@@ -157,10 +156,10 @@ namespace MyScheduler
 
             var expected = new List<DateTimeOffset>
             {
-                new DateTimeOffset(2025, 10, 19, 13, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 19, 15, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 19, 17, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 19, 19, 30, 0, TimeSpan.Zero)
+                new DateTimeOffset(2025, 10, 19, 13, 30, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 19, 15, 30, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 19, 17, 30, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 19, 19, 30, 0, TimeSpan.FromHours(2))
             };
 
             Assert.Equal(expected, result);
@@ -193,9 +192,9 @@ namespace MyScheduler
 
             var expected = new List<DateTimeOffset>
             {
-                new DateTimeOffset(2025, 10, 19, 13, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 19, 14, 15, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 19, 15, 0, 0, TimeSpan.Zero)
+                new DateTimeOffset(2025, 10, 19, 13, 30, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 19, 14, 15, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 19, 15, 0, 0, TimeSpan.FromHours(2))
             };
 
             Assert.Equal(expected, result);
@@ -227,9 +226,9 @@ namespace MyScheduler
 
             var expected = new List<DateTimeOffset>
             {
-                new DateTimeOffset(2025, 10, 19, 13, 59, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 19, 13, 59, 27, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 19, 13, 59, 54, TimeSpan.Zero)
+                new DateTimeOffset(2025, 10, 19, 13, 59, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 19, 13, 59, 27, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 19, 13, 59, 54, TimeSpan.FromHours(2))
             };
 
             Assert.Equal(expected, result);
@@ -261,9 +260,9 @@ namespace MyScheduler
 
             var expected = new List<DateTimeOffset>
             {
-                new DateTimeOffset(2025, 10, 20, 16, 0, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 20, 18, 0, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 20, 20, 0, 0, TimeSpan.Zero)
+                new DateTimeOffset(2025, 10, 20, 16, 0, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 20, 18, 0, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 20, 20, 0, 0, TimeSpan.FromHours(2))
             };
 
             Assert.Equal(expected, result);
@@ -294,8 +293,8 @@ namespace MyScheduler
 
             var expected = new List<DateTimeOffset>
             {
-                new DateTimeOffset(2025, 10, 19, 13, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 19, 15, 30, 0, TimeSpan.Zero)
+                new DateTimeOffset(2025, 10, 19, 13, 30, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 19, 15, 30, 0, TimeSpan.FromHours(2))
             };
 
             Assert.Equal(expected, result);
@@ -356,8 +355,8 @@ namespace MyScheduler
 
             var expected = new List<DateTimeOffset>
             {
-                new DateTimeOffset(2025, 10, 19, 13, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 19, 15, 30, 0, TimeSpan.Zero)
+                new DateTimeOffset(2025, 10, 19, 13, 30, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 19, 15, 30, 0, TimeSpan.FromHours(2))
             };
 
             Assert.Equal(expected, result);
@@ -415,11 +414,11 @@ namespace MyScheduler
 
             var expected = new List<DateTimeOffset>
             {
-                new DateTimeOffset(2026, 1, 4, 13, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2026, 1, 4, 15, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2026, 1, 4, 17, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2026, 1, 4, 19, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2026, 1, 26, 13, 30, 0, TimeSpan.Zero)
+                new DateTimeOffset(2026, 1, 4, 13, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2026, 1, 4, 15, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2026, 1, 4, 17, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2026, 1, 4, 19, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2026, 1, 26, 13, 30, 0, TimeSpan.FromHours(1))
             };
 
             Assert.Equal(expected, result);
@@ -451,10 +450,10 @@ namespace MyScheduler
 
             var expected = new List<DateTimeOffset>
             {
-                new DateTimeOffset(2026, 1, 4, 13, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2026, 1, 4, 15, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2026, 1, 4, 17, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2026, 1, 4, 19, 30, 0, TimeSpan.Zero)
+                new DateTimeOffset(2026, 1, 4, 13, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2026, 1, 4, 15, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2026, 1, 4, 17, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2026, 1, 4, 19, 30, 0, TimeSpan.FromHours(1))
             };
 
             Assert.Equal(expected, result);
@@ -486,14 +485,14 @@ namespace MyScheduler
 
             var expected = new List<DateTimeOffset>
             {
-                new DateTimeOffset(2025, 10, 27, 13, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 27, 15, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 27, 17, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 27, 19, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 28, 13, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 28, 15, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 28, 17, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 28, 19, 30, 0, TimeSpan.Zero)
+                new DateTimeOffset(2025, 10, 27, 13, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2025, 10, 27, 15, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2025, 10, 27, 17, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2025, 10, 27, 19, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2025, 10, 28, 13, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2025, 10, 28, 15, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2025, 10, 28, 17, 30, 0, TimeSpan.FromHours(1)),
+                new DateTimeOffset(2025, 10, 28, 19, 30, 0, TimeSpan.FromHours(1))
             };
 
             Assert.Equal(expected, result);
@@ -585,10 +584,10 @@ namespace MyScheduler
 
             var expected = new List<DateTimeOffset>
             {
-                new DateTimeOffset(2025, 10, 20, 13, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 20, 15, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 20, 17, 30, 0, TimeSpan.Zero),
-                new DateTimeOffset(2025, 10, 20, 19, 30, 0, TimeSpan.Zero)
+                new DateTimeOffset(2025, 10, 20, 13, 30, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 20, 15, 30, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 20, 17, 30, 0, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2025, 10, 20, 19, 30, 0, TimeSpan.FromHours(2))
             };
 
             Assert.Equal(expected, result);
