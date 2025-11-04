@@ -50,7 +50,7 @@ namespace MyScheduler
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 10, 9, 13, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
-            Assert.Equal("Occurs every 1 day(s). Next on 09/10/2025, starting 09/10/2025", result.Value.Description);
+            Assert.Equal("Occurs every 1 day(s) at 13:30:00, starting 09/10/2025", result.Value.Description);
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace MyScheduler
 
             Assert.True(result.IsSuccess);
             Assert.Equal(new DateTimeOffset(2025, 10, 8, 13, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
-            Assert.Equal("Occurs every 1 day(s). Next on 08/10/2025, starting 05/10/2025", result.Value.Description);
+            Assert.Equal("Occurs every 1 day(s) at 13:30:00, starting 05/10/2025", result.Value.Description);
         }
 
         [Fact]
@@ -224,7 +224,7 @@ namespace MyScheduler
             var result = taskManager.GetNextExecution(schedule, 10);
 
             Assert.True(result.IsSuccess, result.Error);
-            Assert.Equal("Occurs every 2 day(s). Next on 09/10/2025, starting 05/10/2025", result.Value.Description);
+            Assert.Equal("Occurs every 2 day(s) at 13:30:00, starting 05/10/2025", result.Value.Description);
         }
 
         [Fact]

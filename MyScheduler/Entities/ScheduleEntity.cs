@@ -7,7 +7,7 @@ namespace MyScheduler.Entities
 {
     public class ScheduleEntity
     {
-        public DateTimeOffset CurrentDate { get; set; } = DateTimeOffset.Now;
+        public DateTimeOffset CurrentDate { get; set; }
         public Enums.ScheduleType ScheduleType { get; set; } 
         public DateTimeOffset? EventDate { get; set; }
         public DateTimeOffset StartDate { get; set; }
@@ -23,7 +23,16 @@ namespace MyScheduler.Entities
         public TimeSpan? DailyEndTime { get; set; }      
         public bool Enabled { get; set; } 
         public bool DailyFrequencyOnceCheckbox { get; set; } 
-        public bool DailyFrequencyEveryCheckbox { get; set; }
+        public bool DailyFrequencyRangeCheckbox { get; set; }
+        public bool MonthlyFrequencyDayCheckbox { get; set; }         
+        public int MonthlyDayNumber { get; set; }                    
+        public int MonthlyDayRecurrence { get; set; }                  
+        public bool MonthlyFrequencyTheCheckbox { get; set; }         
+        public MonthlyTheOrder? MonthlyTheOrder { get; set; }                   
+        public MonthlyDayOfWeek? MonthlyTheDayOfWeek { get; set; }               
+        public int MonthlyTheRecurrence { get; set; }                 
+
+
 
     }
 }

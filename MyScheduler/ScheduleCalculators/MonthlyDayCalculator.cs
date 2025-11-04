@@ -1,0 +1,62 @@
+﻿using MyScheduler.Entities;
+using MyScheduler.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+
+namespace MyScheduler.ScheduleCalculators
+{
+    public class MonthlyDayCalculator
+    {
+
+        public Result<ScheduleOutput> GetNextExecution(ScheduleEntity scheduleConfig, int? numOccurrences)
+        {
+            var dates = CalculateNextExecution(scheduleConfig, numOccurrences);
+
+            return (dates.Count > 0) ? Result<ScheduleOutput>.Success(OutputHelper.OutputBuilder(dates.First(), DescriptionGenerator.GetDescription(scheduleConfig)))
+                : Result<ScheduleOutput>.Failure("No next execution found");
+        }
+
+        public List<DateTimeOffset> CalculateNextExecution(ScheduleEntity scheduleConfig, int? numOccurrences)
+        {
+            var resultList = new List<DateTimeOffset>();
+            int dayNumber = scheduleConfig.MonthlyDayNumber;
+            int monthRecurrence = scheduleConfig.MonthlyDayRecurrence;
+
+            DateTimeOffset endDate = scheduleConfig.EndDate ?? DateTimeOffset.MaxValue;
+
+            var currentMonth = scheduleConfig.StartDate;
+
+            for (int count = 0; currentMonth <= endDate; currentMonth = currentMonth.AddMonths(monthRecurrence))
+            {
+                var day = GetValidDay(currentMonth.Year, currentMonth.Month, dayNumber);
+
+                var targetDate = new DateTimeOffset(currentMonth.Year, currentMonth.Month, day, 0, 0, 0, TimeSpan.Zero);
+
+                if (numOccurrences.HasValue && count >= numOccurrences)
+                    break;
+
+                if (targetDate >= scheduleConfig.StartDate)
+                {
+                    resultList.Add(targetDate);
+                    count++;
+                }
+                   
+
+            }
+
+            return resultList;
+
+        }
+
+        private int GetValidDay(int year, int month, int dayNumber)
+        {
+            int daysInMonth = DateTime.DaysInMonth(year, month);
+            return (dayNumber > daysInMonth) ? daysInMonth : dayNumber;
+        }
+
+
+
+    }
+}

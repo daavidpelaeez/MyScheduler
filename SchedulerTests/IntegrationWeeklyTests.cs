@@ -8,7 +8,7 @@ using Xunit;
 
 namespace MyScheduler
 {
-    public class IntegrationTests
+    public class IntegrationWeeklyTests
     {
         [Fact]
         public void OnceSchedule_HappyPath_ReturnsExpectedOutput()
@@ -22,7 +22,7 @@ namespace MyScheduler
             var manager = new ScheduleManager();
             var result = manager.GetNextExecution(config, 10);
 
-            Assert.True(result.IsSuccess);
+            Assert.True(result.IsSuccess, result.Error);
             var expectedTime = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero);
             var expectedDescription = "Occurs once. Schedule on 31/10/2025 at 00:00, starting 25/10/2025";
 
@@ -48,7 +48,7 @@ namespace MyScheduler
 
             Assert.True(result.IsSuccess);
             var expectedTime = new DateTimeOffset(2025, 10, 29, 13, 30, 0, TimeSpan.Zero);
-            var expectedDescription = "Occurs every 2 day(s). Next on 29/10/2025, starting 25/10/2025";
+            var expectedDescription = "Occurs every 2 day(s) at 13:30:00, starting 25/10/2025";
 
             Assert.Equal(expectedTime, result.Value.ExecutionTime);
             Assert.Equal(expectedDescription, result.Value.Description);
@@ -64,7 +64,7 @@ namespace MyScheduler
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.Recurrence = 2;
-            config.DailyFrequencyEveryCheckbox = true;
+            config.DailyFrequencyRangeCheckbox = true;
             config.TimeUnit = TimeUnit.Hours;
             config.TimeUnitNumberOf = 2;
             config.DailyStartTime = new TimeSpan(13, 30, 0);
@@ -75,7 +75,7 @@ namespace MyScheduler
 
             Assert.True(result.IsSuccess);
             var expectedTime = new DateTimeOffset(2025, 10, 25, 13, 30, 0, TimeSpan.FromHours(2));
-            var expectedDescription = "Occurs every 2 day(s) from 13:30:00 to 15:30:00 every 2 hours";
+            var expectedDescription = "Occurs every 2 day(s) every 2 hours between 13:30:00 and 15:30:00, starting 25/10/2025";
 
             Assert.Equal(expectedTime, result.Value.ExecutionTime);
             Assert.Equal(expectedDescription, result.Value.Description);
@@ -98,9 +98,9 @@ namespace MyScheduler
             var manager = new ScheduleManager();
             var result = manager.GetNextExecution(config, 5);
 
-            Assert.True(result.IsSuccess);
+            Assert.True(result.IsSuccess,result.Error);
             var expectedTime = new DateTimeOffset(2025, 10, 27, 10, 0, 0, TimeSpan.Zero);
-            var expectedDescription = "Occurs every 1 weeks on monday and wednesday at 10:00:00, starting 25/10/2025";
+            var expectedDescription = "Occurs every 1 week(s) on monday and wednesday at 10:00:00, starting 25/10/2025";
 
             Assert.Equal(expectedTime, result.Value.ExecutionTime);
             Assert.Equal(expectedDescription, result.Value.Description);
@@ -117,7 +117,7 @@ namespace MyScheduler
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.WeeklyRecurrence = 1;
             config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday };
-            config.DailyFrequencyEveryCheckbox = true;
+            config.DailyFrequencyRangeCheckbox = true;
             config.DailyStartTime = new TimeSpan(9, 0, 0);
             config.DailyEndTime = new TimeSpan(12, 0, 0);
             config.TimeUnit = TimeUnit.Hours;
@@ -128,7 +128,7 @@ namespace MyScheduler
 
             Assert.True(result.IsSuccess, result.Error);
             var expectedTime = new DateTimeOffset(2025, 10, 27, 9, 0, 0, TimeSpan.FromHours(1));
-            var expectedDescription = "Occurs every 1 weeks on monday every 2 hours between 09:00:00 and 12:00:00, starting 25/10/2025";
+            var expectedDescription = "Occurs every 1 week(s) on monday every 2 hours between 09:00:00 and 12:00:00, starting 25/10/2025";
 
             Assert.Equal(expectedTime, result.Value.ExecutionTime);
             Assert.Equal(expectedDescription, result.Value.Description);
@@ -184,7 +184,7 @@ namespace MyScheduler
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.Recurrence = 1;
-            config.DailyFrequencyEveryCheckbox = true;
+            config.DailyFrequencyRangeCheckbox = true;
             config.TimeUnit = null;
             config.TimeUnitNumberOf = 2;
             config.DailyStartTime = new TimeSpan(9, 0, 0);
@@ -256,7 +256,7 @@ namespace MyScheduler
             configLeap.DailyOnceExecutionTime = new TimeSpan(10, 0, 0);
 
             var resLeap = manager.GetNextExecution(configLeap, 1);
-            Assert.True(resLeap.IsSuccess);
+            Assert.True(resLeap.IsSuccess,resLeap.Error);
             Assert.Equal(new DateTimeOffset(2024, 2, 28, 10, 0, 0, TimeSpan.Zero), resLeap.Value.ExecutionTime);
 
             var configYearEnd = new ScheduleEntity();
@@ -270,7 +270,7 @@ namespace MyScheduler
             configYearEnd.DailyOnceExecutionTime = new TimeSpan(23, 59, 0);
 
             var resYear = manager.GetNextExecution(configYearEnd, 1);
-            Assert.True(resYear.IsSuccess);
+            Assert.True(resYear.IsSuccess, resYear.Error);
             Assert.Equal(new DateTimeOffset(2025, 12, 31, 23, 59, 0, TimeSpan.Zero), resYear.Value.ExecutionTime);
         }
 
@@ -284,7 +284,7 @@ namespace MyScheduler
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.Recurrence = 1;
-            config.DailyFrequencyEveryCheckbox = true;
+            config.DailyFrequencyRangeCheckbox = true;
             config.TimeUnit = TimeUnit.Minutes;
             config.TimeUnitNumberOf = 30;
             config.DailyStartTime = new TimeSpan(8, 15, 0);
@@ -308,7 +308,7 @@ namespace MyScheduler
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.Recurrence = 1;
-            config.DailyFrequencyEveryCheckbox = true;
+            config.DailyFrequencyRangeCheckbox = true;
             config.TimeUnit = TimeUnit.Hours;
             config.TimeUnitNumberOf = 0;
             config.DailyStartTime = new TimeSpan(9, 0, 0);
@@ -332,7 +332,7 @@ namespace MyScheduler
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.Recurrence = 1;
             config.DailyFrequencyOnceCheckbox = true;
-            config.DailyFrequencyEveryCheckbox = true;
+            config.DailyFrequencyRangeCheckbox = true;
             config.DailyOnceExecutionTime = new TimeSpan(10, 0, 0);
             config.TimeUnit = TimeUnit.Hours;
             config.TimeUnitNumberOf = 1;
@@ -357,7 +357,7 @@ namespace MyScheduler
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.WeeklyRecurrence = 1;
             config.DaysOfWeek = new List<DayOfWeek>();
-            config.DailyFrequencyEveryCheckbox = true;
+            config.DailyFrequencyRangeCheckbox = true;
             config.TimeUnit = TimeUnit.Hours;
             config.TimeUnitNumberOf = 2;
             config.DailyStartTime = new TimeSpan(9, 0, 0);
@@ -381,7 +381,7 @@ namespace MyScheduler
             config.CurrentDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
             config.WeeklyRecurrence = 1;
             config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday };
-            config.DailyFrequencyEveryCheckbox = true;
+            config.DailyFrequencyRangeCheckbox = true;
             config.TimeUnit = null;
             config.TimeUnitNumberOf = 2;
             config.DailyStartTime = new TimeSpan(9, 0, 0);
@@ -405,7 +405,7 @@ namespace MyScheduler
             config.CurrentDate = new DateTimeOffset(2025, 10, 26, 0, 0, 0, TimeSpan.Zero);
             config.WeeklyRecurrence = 1;
             config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday };
-            config.DailyFrequencyEveryCheckbox = true;
+            config.DailyFrequencyRangeCheckbox = true;
             config.TimeUnit = TimeUnit.Seconds;
             config.TimeUnitNumberOf = 1;
             config.DailyStartTime = new TimeSpan(2, 59, 58);
@@ -438,7 +438,7 @@ namespace MyScheduler
             config.CurrentDate = new DateTimeOffset(2025, 10, 26, 0, 0, 0, TimeSpan.Zero);
             config.WeeklyRecurrence = 1;
             config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Sunday };
-            config.DailyFrequencyEveryCheckbox = true;
+            config.DailyFrequencyRangeCheckbox = true;
             config.TimeUnit = TimeUnit.Seconds;
             config.TimeUnitNumberOf = 1;
             config.DailyStartTime = new TimeSpan(2, 59, 58);
@@ -453,8 +453,6 @@ namespace MyScheduler
                 new DateTimeOffset(2025,10,26,2,59,59,0,TimeSpan.FromHours(2)),
                 new DateTimeOffset(2025,10,26,3,0,0,0,TimeSpan.FromHours(1)),
                 new DateTimeOffset(2025,10,26,3,0,1,0,TimeSpan.FromHours(1))
-
-
             };
 
             Assert.Equal(expected, result);
@@ -471,7 +469,7 @@ namespace MyScheduler
             config.CurrentDate = new DateTimeOffset(2025, 10, 26, 0, 0, 0, TimeSpan.Zero);
             config.WeeklyRecurrence = 1;
             config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Sunday };
-            config.DailyFrequencyEveryCheckbox = true;
+            config.DailyFrequencyRangeCheckbox = true;
             config.TimeUnit = TimeUnit.Seconds;
             config.TimeUnitNumberOf = 1;
             config.DailyStartTime = new TimeSpan(3, 0, 0 );

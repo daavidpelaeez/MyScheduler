@@ -9,10 +9,10 @@ namespace MyScheduler.Validators
     {
         public static void CheckDailyCommonRules(ScheduleEntity scheduleConfig, StringBuilder errors)
         {
-            if (scheduleConfig.DailyFrequencyOnceCheckbox && scheduleConfig.DailyFrequencyEveryCheckbox)
+            if (scheduleConfig.DailyFrequencyOnceCheckbox && scheduleConfig.DailyFrequencyRangeCheckbox)
                 errors.AppendLine("Daily frequency cannot be once and every at the same time");
 
-            if (!scheduleConfig.DailyFrequencyOnceCheckbox && !scheduleConfig.DailyFrequencyEveryCheckbox)
+            if (!scheduleConfig.DailyFrequencyOnceCheckbox && !scheduleConfig.DailyFrequencyRangeCheckbox)
                 errors.AppendLine("Daily frequency cannot be empty for daily tasks");
 
             if (scheduleConfig.DailyFrequencyOnceCheckbox)
@@ -32,11 +32,11 @@ namespace MyScheduler.Validators
                 if (scheduleConfig.DailyOnceExecutionTime == null)
                     errors.AppendLine("DailyOnceExecutionTime is required");
 
-                if (scheduleConfig.ScheduleType == ScheduleType.Recurring && scheduleConfig.DailyFrequencyEveryCheckbox)
+                if (scheduleConfig.ScheduleType == ScheduleType.Recurring && scheduleConfig.DailyFrequencyRangeCheckbox)
                     errors.AppendLine("You cannot set daily frequency once in a daily every task type");
             }
 
-            if (scheduleConfig.DailyFrequencyEveryCheckbox)
+            if (scheduleConfig.DailyFrequencyRangeCheckbox)
             {
                 if (scheduleConfig.DailyOnceExecutionTime != null)
                     errors.AppendLine("Execution time of day cannot be set for a daily frequency every task");

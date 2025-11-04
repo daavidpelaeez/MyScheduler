@@ -49,10 +49,10 @@ namespace MyScheduler.Validators
             {
                 if (scheduleConfig.Occurs == Occurs.Daily)
                 {
-                    if (scheduleConfig.DailyFrequencyEveryCheckbox && scheduleConfig.DailyFrequencyOnceCheckbox)
+                    if (scheduleConfig.DailyFrequencyRangeCheckbox && scheduleConfig.DailyFrequencyOnceCheckbox)
                         errors.AppendLine("You cannot set daily frequency every and once at the same time");
 
-                    if (!scheduleConfig.DailyFrequencyOnceCheckbox && !scheduleConfig.DailyFrequencyEveryCheckbox)
+                    if (!scheduleConfig.DailyFrequencyOnceCheckbox && !scheduleConfig.DailyFrequencyRangeCheckbox)
                         errors.AppendLine("Daily recurring task must specify either 'once' or 'every' frequency");
                 }
             }

@@ -14,16 +14,9 @@ namespace MyScheduler.ScheduleCalculators
         {
             var dates = CalculateWeeklyRecurringConfig(scheduleConfig, maxOccurrences);
 
-            if (dates.Count == 0)
-                return Result<ScheduleOutput>.Failure("No next execution avaliable in that range");
-
-            var output = new ScheduleOutput
-            {
-                ExecutionTime = dates.First(),
-                Description = DescriptionGenerator.GetDescription(scheduleConfig)
-            };
-
-            return Result<ScheduleOutput>.Success(output);
+            return (dates.Count > 0) ? Result<ScheduleOutput>.Success(OutputHelper.OutputBuilder(dates.First(), DescriptionGenerator.GetDescription(scheduleConfig))) :
+                Result<ScheduleOutput>.Failure("No next execution found");
+          
         }
 
         public List<DateTimeOffset> CalculateWeeklyRecurringConfig(ScheduleEntity scheduleConfig, int? maxOccurrences)

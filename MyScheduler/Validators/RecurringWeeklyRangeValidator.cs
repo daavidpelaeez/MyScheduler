@@ -1,5 +1,6 @@
 ﻿using MyScheduler.Entities;
 using MyScheduler.Helpers;
+using MyScheduler.ScheduleCalculators;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -38,6 +39,7 @@ namespace MyScheduler.Validators
 
             if (WeeklyScheduleHelper.SameWeekDayChecker(scheduleConfig.DaysOfWeek!))
                 errors.AppendLine("Check days of the week they cant be repeated");
+
 
         }
     }

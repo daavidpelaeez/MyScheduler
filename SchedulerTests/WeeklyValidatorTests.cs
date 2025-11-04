@@ -46,7 +46,7 @@ namespace MyScheduler
                 StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
                 DailyOnceExecutionTime = new TimeSpan(13, 30, 0),
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 Enabled = true
             };
 
@@ -98,7 +98,7 @@ namespace MyScheduler
                 StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
                 DailyOnceExecutionTime = new TimeSpan(13, 30, 0),
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 Enabled = true
             };
 
@@ -270,7 +270,7 @@ namespace MyScheduler
                 WeeklyRecurrence = 2,
                 DailyEndTime = new TimeSpan(13, 30, 0),
                 TimeUnitNumberOf = 1,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 Enabled = true
             };
 
@@ -297,7 +297,7 @@ namespace MyScheduler
                 EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
                 WeeklyRecurrence = 2,
                 DailyEndTime = new TimeSpan(13, 30, 0),
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 TimeUnit = TimeUnit.Hours,
                 Enabled = true
             };
@@ -325,7 +325,7 @@ namespace MyScheduler
                 EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
                 WeeklyRecurrence = 2,
                 DailyEndTime = new TimeSpan(13, 30, 0),
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 TimeUnit = TimeUnit.Hours,
                 TimeUnitNumberOf = 1,
                 Enabled = true
@@ -353,7 +353,7 @@ namespace MyScheduler
                 StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
                 WeeklyRecurrence = 2,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 TimeUnit = TimeUnit.Hours,
                 TimeUnitNumberOf = 1,
                 DailyStartTime = new TimeSpan(13, 30, 0),
@@ -381,7 +381,7 @@ namespace MyScheduler
                 CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 TimeUnit = TimeUnit.Hours,
                 DailyOnceExecutionTime = new TimeSpan(13, 30, 0),
                 TimeUnitNumberOf = 2,
@@ -415,7 +415,7 @@ namespace MyScheduler
                 WeeklyRecurrence = 2,
                 DailyStartTime = new TimeSpan(13, 30, 0),
                 DailyEndTime = new TimeSpan(12, 30, 0),
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 Enabled = true
             };
 
@@ -443,7 +443,7 @@ namespace MyScheduler
                 WeeklyRecurrence = 2,
                 DailyStartTime = new TimeSpan(13, 30, 0),
                 DailyEndTime = new TimeSpan(13, 30, 0),
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 Enabled = true
             };
 
@@ -468,7 +468,7 @@ namespace MyScheduler
                 CurrentDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 WeeklyRecurrence = 2,
                 DailyStartTime = new TimeSpan(13, 30, 0),
                 DailyEndTime = new TimeSpan(13, 50, 0),
@@ -480,7 +480,7 @@ namespace MyScheduler
             var schedulerManager = new ScheduleManager();
             var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
 
-            Assert.True(result.IsFailure);
+            Assert.True(result.IsFailure, result.Error);
             Assert.Contains("No next execution", result.Error);
         }
 
@@ -494,7 +494,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
                 DaysOfWeek = listOfDays,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 CurrentDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
@@ -524,7 +524,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
                 DaysOfWeek = listOfDays,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 CurrentDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
@@ -570,7 +570,7 @@ namespace MyScheduler
 
             Assert.True(result.IsSuccess);
             Assert.Equal(new DateTimeOffset(2025, 10, 27, 13, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
-            Assert.Contains("occurs every 2 weeks on monday", result.Value.Description.ToLower());
+            Assert.Contains("occurs every 2 week(s) on monday at 13:30", result.Value.Description.ToLower());
         }
 
         [Fact]
@@ -587,7 +587,7 @@ namespace MyScheduler
                 StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero),
                 WeeklyRecurrence = 2,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 TimeUnit = TimeUnit.Hours,
                 TimeUnitNumberOf = 1,
                 DailyStartTime = new TimeSpan(13, 0, 0),
@@ -617,7 +617,7 @@ namespace MyScheduler
                 CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero),
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 WeeklyRecurrence = 2,
                 TimeUnit = TimeUnit.Hours,
                 TimeUnitNumberOf = 1,

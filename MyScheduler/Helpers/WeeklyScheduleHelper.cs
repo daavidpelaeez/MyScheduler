@@ -48,7 +48,7 @@ namespace MyScheduler.Helpers
                 TimeUnit.Hours => TimeSpan.FromHours(timeUnitNumberOf),
                 TimeUnit.Minutes => TimeSpan.FromMinutes(timeUnitNumberOf),
                 TimeUnit.Seconds => TimeSpan.FromSeconds(timeUnitNumberOf),
-                _ => throw new ArgumentException("Unit Time not supported"),
+                _ => throw new ArgumentException("Time unit not supported"),
             };
         }
     }

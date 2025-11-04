@@ -29,7 +29,7 @@ namespace MyScheduler
             };
 
             var result = DescriptionGenerator.GetDescription(taskConfig);
-            string expectedDescription = "Occurs every 4 weeks on monday, tuesday and sunday at 13:30:00, starting 16/10/2025";
+            string expectedDescription = "Occurs every 4 week(s) on monday, tuesday and sunday at 13:30:00, starting 16/10/2025";
 
             Assert.Equal(expectedDescription, result);
         }
@@ -56,7 +56,7 @@ namespace MyScheduler
             var manager = new ScheduleManager();
             var result = manager.GetNextExecution(taskConfig, 10);
 
-            string expectedDescription = "Occurs every 4 weeks on monday, tuesday and sunday at 13:30:00, starting 16/10/2025";
+            string expectedDescription = "Occurs every 4 week(s) on monday, tuesday and sunday at 13:30:00, starting 16/10/2025";
             DateTimeOffset expectedExecutionTime = new DateTimeOffset(2025, 10, 19, 13, 30, 0, TimeSpan.Zero);
 
             Assert.Equal(expectedDescription, result.Value.Description);
@@ -106,7 +106,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 DaysOfWeek = listOfDays,
                 WeeklyRecurrence = 1,
                 StartDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
@@ -122,7 +122,7 @@ namespace MyScheduler
             var manager = new ScheduleManager();
             var result = manager.GetNextExecution(taskConfig, 10);
 
-            string expectedDescription = "Occurs every 1 weeks on monday every 2 hours between 13:30:00 and 19:30:00, starting 17/10/2025";
+            string expectedDescription = "Occurs every 1 week(s) on monday every 2 hours between 13:30:00 and 19:30:00, starting 17/10/2025";
             DateTimeOffset expectedExecutionTime = new DateTimeOffset(2025, 10, 20, 13, 30, 0, TimeSpan.FromHours(2));
 
             Assert.Equal(expectedDescription, result.Value.Description);
@@ -139,7 +139,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 DaysOfWeek = listOfDays,
                 WeeklyRecurrence = 4,
                 StartDate = new DateTimeOffset(2025, 10, 19, 0, 0, 0, TimeSpan.Zero),
@@ -174,7 +174,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 DailyOnceExecutionTime = new TimeSpan(13, 30, 0),
                 DaysOfWeek = listOfDays,
                 WeeklyRecurrence = 4,
@@ -209,7 +209,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 DaysOfWeek = listOfDays,
                 WeeklyRecurrence = 4,
                 StartDate = new DateTimeOffset(2025, 10, 16, 0, 0, 0, TimeSpan.Zero),
@@ -243,7 +243,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 DaysOfWeek = listOfDays,
                 WeeklyRecurrence = 2,
                 StartDate = new DateTimeOffset(2025, 10, 20, 0, 0, 0, TimeSpan.Zero),
@@ -277,7 +277,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 DaysOfWeek = listOfDays,
                 WeeklyRecurrence = 4,
                 StartDate = new DateTimeOffset(2025, 10, 19, 0, 0, 0, TimeSpan.Zero),
@@ -339,7 +339,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 DaysOfWeek = listOfDays,
                 WeeklyRecurrence = 4,
                 StartDate = new DateTimeOffset(2025, 10, 19, 0, 0, 0, TimeSpan.Zero),
@@ -371,7 +371,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 DaysOfWeek = listOfDays,
                 WeeklyRecurrence = 4,
                 StartDate = new DateTimeOffset(2025, 10, 19, 0, 0, 0, TimeSpan.Zero),
@@ -398,7 +398,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 DaysOfWeek = listOfDays,
                 WeeklyRecurrence = 4,
                 StartDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero),
@@ -433,7 +433,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 DaysOfWeek = listOfDays,
                 WeeklyRecurrence = 4,
                 StartDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero),
@@ -468,7 +468,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 DaysOfWeek = listOfDays,
                 WeeklyRecurrence = 4,
                 StartDate = new DateTimeOffset(2025, 10, 27, 0, 0, 0, TimeSpan.Zero),
@@ -567,7 +567,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
-                DailyFrequencyEveryCheckbox = true,
+                DailyFrequencyRangeCheckbox = true,
                 DaysOfWeek = listOfDays,
                 WeeklyRecurrence = 1,
                 StartDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
@@ -601,19 +601,20 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Recurring,
                 Occurs = Occurs.Weekly,
                 DailyFrequencyOnceCheckbox = true,
-                DaysOfWeek = new List<DayOfWeek>(),
+                DaysOfWeek = new List<DayOfWeek>() { DayOfWeek.Sunday},
                 WeeklyRecurrence = 1,
                 StartDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
                 CurrentDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
                 DailyOnceExecutionTime = new TimeSpan(13, 30, 0),
-                EndDate = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero)
+                EndDate = new DateTimeOffset(2025, 10, 18, 0, 0, 0, TimeSpan.Zero),
+                Enabled = true
             };
 
-            var onceCalc = new RecurringWeeklyOnceCalculator();
-            var result = onceCalc.GetNextExecutionWeeklyOnce(taskConfig, 10);
+            var onceCalc = new ScheduleManager();
+            var result = onceCalc.GetNextExecution(taskConfig, 10);
 
-            Assert.True(result.IsFailure);
-            Assert.Contains("No next execution found", result.Error);
+            Assert.True(result.IsFailure, result.Error);
+            Assert.Contains("No next execution", result.Error);
         }
 
         [Fact]
@@ -652,7 +653,7 @@ namespace MyScheduler
         {
             var listOfDays = new List<DayOfWeek> { DayOfWeek.Monday, DayOfWeek.Tuesday };
 
-            var result = DescriptionGenerator.GetWeeklyDescription(listOfDays);
+            var result = DescriptionGenerator.GetWeeklyDayList(listOfDays);
 
             Assert.Equal("monday and tuesday", result);
         }
@@ -662,7 +663,7 @@ namespace MyScheduler
         {
             var listOfDays = new List<DayOfWeek>();
 
-            var result = DescriptionGenerator.GetWeeklyDescription(listOfDays);
+            var result = DescriptionGenerator.GetWeeklyDayList(listOfDays);
 
             Assert.Equal("no days specified", result);
         }

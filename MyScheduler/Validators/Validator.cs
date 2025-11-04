@@ -44,7 +44,7 @@ namespace MyScheduler.Validators
                     if (scheduleConfig.DailyFrequencyOnceCheckbox)
                         RecurringDailyOnceValidator.Validate(scheduleConfig, errors);
 
-                    else if (scheduleConfig.DailyFrequencyEveryCheckbox)
+                    else if (scheduleConfig.DailyFrequencyRangeCheckbox)
                         RecurringDailyRangeValidator.Validate(scheduleConfig, errors);
 
                     else
@@ -53,14 +53,21 @@ namespace MyScheduler.Validators
                     break;
 
                 case Occurs.Weekly:
+
                     if (scheduleConfig.DailyFrequencyOnceCheckbox)
                         RecurringWeeklyOnceValidator.Validate(scheduleConfig, errors);
 
-                    else if (scheduleConfig.DailyFrequencyEveryCheckbox)
+                    else if (scheduleConfig.DailyFrequencyRangeCheckbox)
                         RecurringWeeklyRangeValidator.Validate(scheduleConfig, errors);
 
                     else
                         errors.AppendLine("You need to select daily frequency once or every");
+
+                    break;
+
+                case Occurs.Monthly:
+
+                    RecurringMonthlyValidator.Validate(scheduleConfig, errors);
 
                     break;
 

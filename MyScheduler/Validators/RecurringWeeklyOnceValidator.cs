@@ -1,5 +1,6 @@
 ﻿using MyScheduler.Entities;
 using MyScheduler.Helpers;
+using MyScheduler.ScheduleCalculators;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,8 @@ namespace MyScheduler.Validators
     {
         public static void Validate(ScheduleEntity scheduleConfig, StringBuilder errors)
         {
+            var recurringWeeklyOnceCalculator = new RecurringWeeklyOnceCalculator();
+
             DailyFrequencyCommonRules.CheckDailyCommonRules(scheduleConfig, errors);
 
             if (scheduleConfig.DaysOfWeek.Count < 1)
@@ -23,6 +26,8 @@ namespace MyScheduler.Validators
 
             if (WeeklyScheduleHelper.SameWeekDayChecker(scheduleConfig.DaysOfWeek!))
                 errors.AppendLine("Check days of the week they cant be repeated");
+
+
         }
     }
 }

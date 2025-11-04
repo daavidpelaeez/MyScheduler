@@ -1,6 +1,7 @@
 ﻿using MyScheduler.Entities;
 using MyScheduler.Helpers;
 using System;
+using System.Linq;
 
 
 
@@ -10,34 +11,13 @@ namespace MyScheduler.ScheduleCalculators
     {
         public Result<ScheduleOutput> GetNextExecutionDailyOnce(ScheduleEntity scheduleConfig, int? numOccurrences)
         {
-            var nextExecution = CalculateNextExecution(scheduleConfig,numOccurrences);
+            var nextExecution = DailySchedulerHelper.GetRecurrentDays(scheduleConfig, numOccurrences).First();
 
-            if (nextExecution == null)
-                return Result<ScheduleOutput>.Failure("No next execution for that schedule config");
+            scheduleConfig.EventDate = nextExecution;
 
-            var output = new ScheduleOutput
-            {
-                ExecutionTime = (DateTimeOffset)nextExecution!,
-                Description = DescriptionGenerator.GetDescription(scheduleConfig)
-            };
-
-            return Result<ScheduleOutput>.Success(output);
+            return Result<ScheduleOutput>.Success(OutputHelper.OutputBuilder(nextExecution, DescriptionGenerator.GetDescription(scheduleConfig)));
         }
 
-       private DateTimeOffset? CalculateNextExecution(ScheduleEntity scheduleConfig,int? numOccurrences)
-        {
-            var recurringDays = DailySchedulerHelper.GetRecurrentDays(scheduleConfig, numOccurrences);
 
-            foreach (var date in recurringDays)
-            {
-                if (date >= scheduleConfig.CurrentDate)
-                {
-                    scheduleConfig.EventDate = date;
-                    return date;
-                }
-            }
-
-            return null;
-        }
     }
 }

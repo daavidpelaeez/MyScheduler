@@ -22,40 +22,74 @@ namespace MyScheduler.Helpers
             }
         }
 
-        public static string GetRecurringDescription(ScheduleEntity scheduleConfig)
+        public static string GetRecurringDescription(ScheduleEntity s)
         {
-            if (scheduleConfig.Occurs == Enums.Occurs.Daily)
+            string description = "";
+
+            switch (s.Occurs)
             {
-                if (scheduleConfig.DailyFrequencyOnceCheckbox)
-                {
-                   return $"Occurs every {scheduleConfig.Recurrence} day(s). Next on {scheduleConfig.EventDate!.Value.Date.ToShortDateString()}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
-                }
+                case Enums.Occurs.Daily:
 
-                if (scheduleConfig.DailyFrequencyEveryCheckbox)
-                {
-                    return $"Occurs every {scheduleConfig.Recurrence} day(s) from {scheduleConfig.DailyStartTime} to {scheduleConfig.DailyEndTime} every {scheduleConfig.TimeUnitNumberOf} {scheduleConfig.TimeUnit?.ToString().ToLower()}";
-                }
+                    if (s.DailyFrequencyOnceCheckbox)
+                    {
+                        description = $"Occurs every {s.Recurrence} day(s) at {s.DailyOnceExecutionTime}, starting {s.StartDate.Date.ToShortDateString()}";
+                    }
+                    else if (s.DailyFrequencyRangeCheckbox)
+                    {
+                        description = $"Occurs every {s.Recurrence} day(s) every {s.TimeUnitNumberOf} {s.TimeUnit?.ToString().ToLower()} between {s.DailyStartTime} and {s.DailyEndTime}, starting {s.StartDate.Date.ToShortDateString()}";
+                    }
 
+                    break;
+
+                case Enums.Occurs.Weekly:
+
+                    var days = GetWeeklyDayList(s.DaysOfWeek);
+
+                    if (s.DailyFrequencyOnceCheckbox)
+                    {
+                        description = $"Occurs every {s.WeeklyRecurrence} week(s) on {days} at {s.DailyOnceExecutionTime}, starting {s.StartDate.Date.ToShortDateString()}";
+                    }
+                    else if (s.DailyFrequencyRangeCheckbox)
+                    {
+                        description = $"Occurs every {s.WeeklyRecurrence} week(s) on {days} every {s.TimeUnitNumberOf} {s.TimeUnit?.ToString().ToLower()} between {s.DailyStartTime} and {s.DailyEndTime}, starting {s.StartDate.Date.ToShortDateString()}";
+                    }
+                    break;
+
+                case Enums.Occurs.Monthly:
+
+                    if (s.MonthlyFrequencyDayCheckbox)
+                    {
+                        description = $"Occurs day {s.MonthlyDayNumber} every {s.MonthlyDayRecurrence} month(s)";
+                    }
+                    else if (s.MonthlyFrequencyTheCheckbox)
+                    {
+                        description = $"Occurs the {s.MonthlyTheOrder} {s.MonthlyTheDayOfWeek} of every {s.MonthlyTheRecurrence} month(s)";
+                    }
+
+                    if (s.DailyFrequencyOnceCheckbox)
+                    {
+                        description += $" at {s.DailyOnceExecutionTime}";
+                    }
+                    else if (s.DailyFrequencyRangeCheckbox)
+                    {
+                        description += $" every {s.TimeUnitNumberOf} {s.TimeUnit?.ToString().ToLower()} between {s.DailyStartTime} and {s.DailyEndTime}";
+                    }
+
+                    description += $", starting {s.StartDate.Date.ToShortDateString()}";
+
+                    break;
+
+                default:
+                    description = "Recurring schedule description not available.";
+                    break;
             }
-            else if (scheduleConfig.Occurs == Enums.Occurs.Weekly)
-            {
-                string days = GetWeeklyDescription(scheduleConfig.DaysOfWeek);
 
-                if (scheduleConfig.DailyFrequencyOnceCheckbox)
-                {
-                    return $"Occurs every {scheduleConfig.WeeklyRecurrence} weeks on {days} at {scheduleConfig.DailyOnceExecutionTime}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
-                }
-                else if (scheduleConfig.DailyFrequencyEveryCheckbox)
-                {
-                    return $"Occurs every {scheduleConfig.WeeklyRecurrence} weeks on {days} every {scheduleConfig.TimeUnitNumberOf} {scheduleConfig.TimeUnit?.ToString().ToLower()} between {scheduleConfig.DailyStartTime} and {scheduleConfig.DailyEndTime}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
-                }
-
-            }
-
-            return "Recurring schedule description not available.";
+            return string.IsNullOrWhiteSpace(description) ? "Recurring schedule description not available." : description;
         }
 
-        public static string GetWeeklyDescription(List<DayOfWeek> days)
+
+
+        public static string GetWeeklyDayList(List<DayOfWeek> days)
         {
             if (days == null || days.Count == 0)
                 return "no days specified";
@@ -66,7 +100,7 @@ namespace MyScheduler.Helpers
             if (days.Count == 2)
                 return $"{days[0].ToString().ToLower()} and {days[1].ToString().ToLower()}";
 
-            string allExceptLast = string.Join(", ", days.Take(days.Count - 1).Select(d => d.ToString().ToLower()));
+            string allExceptLast = string.Join(", ", days.Take(days.Count - 1)).ToLower();
             return $"{allExceptLast} and {days.Last().ToString().ToLower()}";
         }
     }

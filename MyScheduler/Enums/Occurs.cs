@@ -8,6 +8,7 @@ namespace MyScheduler.Enums
     public enum Occurs
     {
         Daily,
-        Weekly
+        Weekly,
+        Monthly
     }
 }

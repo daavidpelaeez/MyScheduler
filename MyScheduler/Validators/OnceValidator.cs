@@ -15,7 +15,7 @@ namespace MyScheduler.Validators
             if (scheduleConfig.Recurrence > 0)
                 errors.AppendLine("OneTime tasks cannot have a recurrence.");
 
-            if (scheduleConfig.DailyFrequencyEveryCheckbox || scheduleConfig.DailyFrequencyOnceCheckbox)
+            if (scheduleConfig.DailyFrequencyRangeCheckbox || scheduleConfig.DailyFrequencyOnceCheckbox)
                 errors.AppendLine("OneTime tasks cannot have daily frequency");
 
             if (scheduleConfig.WeeklyRecurrence > 0 || (scheduleConfig.DaysOfWeek != null && scheduleConfig.DaysOfWeek.Count > 0))

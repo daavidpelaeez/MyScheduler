@@ -11,18 +11,15 @@ namespace MyScheduler.Helpers
         public static List<DateTimeOffset> GetRecurrentDays(ScheduleEntity scheduleConfig, int? limitOccurrences)
         {
             var listOfDays = new List<DateTimeOffset>();
-            int count = 0;
-
-            TimeSpan selectedHour = TimeSpan.Zero;
+            var count = 0;
+            var selectedHour = TimeSpan.Zero;
+            var endDate = scheduleConfig.EndDate ?? DateTimeOffset.MaxValue;
 
             if (scheduleConfig.ScheduleType == Enums.ScheduleType.Recurring &&
-                scheduleConfig.Occurs == Occurs.Daily &&
-                scheduleConfig.DailyOnceExecutionTime.HasValue)
+                (scheduleConfig.Occurs == Occurs.Daily || scheduleConfig.Occurs == Occurs.Monthly) && scheduleConfig.DailyFrequencyOnceCheckbox)
             {
-                selectedHour = scheduleConfig.DailyOnceExecutionTime.Value;
+                selectedHour = scheduleConfig.DailyOnceExecutionTime!.Value;
             }
-
-            var endDate = scheduleConfig.EndDate ?? DateTimeOffset.MaxValue;
 
             for (var currentDateIterator = scheduleConfig.StartDate;
                  currentDateIterator <= endDate && (limitOccurrences == null || count < limitOccurrences);

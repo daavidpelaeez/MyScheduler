@@ -12,16 +12,9 @@ namespace MyScheduler.ScheduleCalculators
         public Result<ScheduleOutput> GetNextExecutionWeeklyOnce(ScheduleEntity scheduleConfig, int? numOccurrences)
         {
             var dates = CalculateWeeklyOnceConfig(scheduleConfig, numOccurrences);
-            if (dates.Count < 1)
-                return Result<ScheduleOutput>.Failure("No next execution found");
 
-            var output = new ScheduleOutput
-            {
-                ExecutionTime = dates.First(),
-                Description = DescriptionGenerator.GetDescription(scheduleConfig)
-            };
-
-            return Result<ScheduleOutput>.Success(output);
+            return (dates.Count > 0) ? Result<ScheduleOutput>.Success(OutputHelper.OutputBuilder(dates.First(),DescriptionGenerator.GetDescription(scheduleConfig))) :
+                Result<ScheduleOutput>.Failure("No next execution found");
         }
 
         public List<DateTimeOffset> CalculateWeeklyOnceConfig(ScheduleEntity scheduleConfig, int? maxOccurrences)
