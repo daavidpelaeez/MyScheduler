@@ -1,4 +1,5 @@
 ﻿using MyScheduler.Entities;
+using MyScheduler.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,12 +16,12 @@ namespace MyScheduler.Validators
                 DailyFrequencyCommonRules.CheckDailyCommonRules(scheduleConfig, errors);
             }
 
-            ValidateMutualExclusivity(scheduleConfig, errors);
+            ValidateCheckboxes(scheduleConfig, errors);
 
             if (scheduleConfig.MonthlyFrequencyDayCheckbox)
             {
                 ValidateDayConfiguration(scheduleConfig, errors);
-                
+
 
                 if (scheduleConfig.DailyFrequencyOnceCheckbox)
                 {
@@ -35,7 +36,7 @@ namespace MyScheduler.Validators
             if (scheduleConfig.MonthlyFrequencyTheCheckbox)
             {
                 ValidateTheConfiguration(scheduleConfig, errors);
-                
+
 
                 if (scheduleConfig.DailyFrequencyOnceCheckbox)
                 {
@@ -48,7 +49,7 @@ namespace MyScheduler.Validators
             }
         }
 
-        private static void ValidateMutualExclusivity(ScheduleEntity scheduleConfig, StringBuilder errors)
+        private static void ValidateCheckboxes(ScheduleEntity scheduleConfig, StringBuilder errors)
         {
 
             if (scheduleConfig.MonthlyFrequencyDayCheckbox && scheduleConfig.MonthlyFrequencyTheCheckbox)
@@ -70,7 +71,7 @@ namespace MyScheduler.Validators
                 errors.AppendLine("Monthly day number must be between 1 and 31.");
             }
 
-   
+
             if (scheduleConfig.MonthlyDayRecurrence < 1)
             {
                 errors.AppendLine("Monthly day recurrence must be greater than 0.");
@@ -146,29 +147,26 @@ namespace MyScheduler.Validators
             if (!scheduleConfig.MonthlyTheOrder.HasValue)
             {
                 errors.AppendLine("Monthly order (First, Second, Third, Fourth, Last) is required for The configuration.");
+            }
 
+            if (!scheduleConfig.MonthlyTheDayOfWeek.HasValue)
+            {
+                errors.AppendLine("Monthly day of week is required for The configuration.");
+            }
 
-                if (!scheduleConfig.MonthlyTheDayOfWeek.HasValue)
-                {
-                    errors.AppendLine("Monthly day of week is required for The configuration.");
-                }
+            if (scheduleConfig.MonthlyTheRecurrence < 1)
+            {
+                errors.AppendLine("Monthly The recurrence must be greater than 0.");
+            }
 
+            if (scheduleConfig.MonthlyDayNumber > 0)
+            {
+                errors.AppendLine("You cannot set monthly day number when using The configuration.");
+            }
 
-                if (scheduleConfig.MonthlyTheRecurrence < 1)
-                {
-                    errors.AppendLine("Monthly The recurrence must be greater than 0.");
-                }
-
-
-                if (scheduleConfig.MonthlyDayNumber > 0)
-                {
-                    errors.AppendLine("You cannot set monthly day number when using The configuration.");
-                }
-
-                if (scheduleConfig.MonthlyDayRecurrence > 0)
-                {
-                    errors.AppendLine("You cannot set Day recurrence when using The configuration.");
-                }
+            if (scheduleConfig.MonthlyDayRecurrence > 0)
+            {
+                errors.AppendLine("You cannot set Day recurrence when using The configuration.");
             }
         }
 

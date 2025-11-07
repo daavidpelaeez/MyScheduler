@@ -24,10 +24,10 @@ namespace MyScheduler.Entities
         public bool Enabled { get; set; } 
         public bool DailyFrequencyOnceCheckbox { get; set; } 
         public bool DailyFrequencyRangeCheckbox { get; set; }
-        public bool MonthlyFrequencyDayCheckbox { get; set; }         
+        public bool MonthlyFrequencyDayCheckbox { get; set; }
+        public bool MonthlyFrequencyTheCheckbox { get; set; }
         public int MonthlyDayNumber { get; set; }                    
-        public int MonthlyDayRecurrence { get; set; }                  
-        public bool MonthlyFrequencyTheCheckbox { get; set; }         
+        public int MonthlyDayRecurrence { get; set; }                      
         public MonthlyTheOrder? MonthlyTheOrder { get; set; }                   
         public MonthlyDayOfWeek? MonthlyTheDayOfWeek { get; set; }               
         public int MonthlyTheRecurrence { get; set; }                 

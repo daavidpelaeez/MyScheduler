@@ -24,7 +24,7 @@
 
 //            MonthlyDayCalculator mdc = new MonthlyDayCalculator();
 
-//            List<DateTimeOffset> result = mdc.CalculateNextExecution(schedule,10);
+//            List<DateTimeOffset> result = mdc.addHourToList(schedule,10);
 
 //            List<DateTimeOffset> expected = new List<DateTimeOffset> { new DateTimeOffset(2025,10,5,0,0,0,TimeSpan.Zero) };
 
@@ -45,7 +45,7 @@
 
 //            MonthlyTheCalculator mtc = new MonthlyTheCalculator();
 
-//            List<DateTimeOffset> result = mtc.CalculateNextExecution(schedule, 10);
+//            List<DateTimeOffset> result = mtc.addHourToList(schedule, 10);
 
 //            List<DateTimeOffset> expected = new List<DateTimeOffset> { new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero) };
 
@@ -67,7 +67,7 @@
 
 //            MonthlyDayDailyOnceCalculator mtc = new MonthlyDayDailyOnceCalculator();
 
-//            List<DateTimeOffset> result = mtc.CalculateNextExecution(schedule, 10);
+//            List<DateTimeOffset> result = mtc.addHourToList(schedule, 10);
 
 //            List<DateTimeOffset> expected = new List<DateTimeOffset> { new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero) };
 
@@ -115,7 +115,7 @@
 
 //            MonthlyTheDailyOnceCalculator mtc = new MonthlyTheDailyOnceCalculator();
 
-//            List<DateTimeOffset> result = mtc.CalculateNextExecution(schedule, 10);
+//            List<DateTimeOffset> result = mtc.addHourToList(schedule, 10);
 
 //            List<DateTimeOffset> expected = new List<DateTimeOffset> { new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero) };
 
