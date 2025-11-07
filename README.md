@@ -46,7 +46,8 @@ MyScheduler now supports **monthly recurrence** for task execution, greatly enha
 
 ## 🖼 Example (Monthly Recurrence UI)
 
-![image1](image1)
+<img width="748" height="765" alt="image" src="https://github.com/user-attachments/assets/4096f157-f097-47f8-bdc9-db930d981e57" />
+
 
 ---
 
