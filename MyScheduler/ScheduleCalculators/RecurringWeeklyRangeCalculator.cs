@@ -10,16 +10,16 @@ namespace MyScheduler.ScheduleCalculators
 {
     public class RecurringWeeklyRangeCalculator
     {
-        public Result<ScheduleOutput> GetNextExecutionWeeklyEvery(ScheduleEntity scheduleConfig, int? maxOccurrences)
+        public Result<ScheduleOutput> GetOutput(ScheduleEntity scheduleConfig, int? maxOccurrences)
         {
-            var dates = CalculateWeeklyRecurringConfig(scheduleConfig, maxOccurrences);
+            var dates = CalculateExecutions(scheduleConfig, maxOccurrences);
 
             return (dates.Count > 0) ? Result<ScheduleOutput>.Success(OutputHelper.OutputBuilder(dates.First(), DescriptionGenerator.GetDescription(scheduleConfig))) :
                 Result<ScheduleOutput>.Failure("No next execution found");
           
         }
 
-        public List<DateTimeOffset> CalculateWeeklyRecurringConfig(ScheduleEntity scheduleConfig, int? maxOccurrences)
+        public List<DateTimeOffset> CalculateExecutions(ScheduleEntity scheduleConfig, int? maxOccurrences)
         {
             var result = new List<DateTimeOffset>();
             var days = WeeklyScheduleHelper.GetMatchingDays(scheduleConfig, maxOccurrences);

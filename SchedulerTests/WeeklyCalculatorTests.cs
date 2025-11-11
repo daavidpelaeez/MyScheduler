@@ -82,7 +82,7 @@ namespace MyScheduler
             };
 
             var calculator = new RecurringWeeklyOnceCalculator();
-            var result = calculator.CalculateWeeklyOnceConfig(taskConfig, 5);
+            var result = calculator.CalculateExecutions(taskConfig, 5);
 
             var expectedExecutions = new List<DateTimeOffset>
             {
@@ -152,7 +152,7 @@ namespace MyScheduler
             };
 
             var weManager = new RecurringWeeklyRangeCalculator();
-            var result = weManager.CalculateWeeklyRecurringConfig(taskConfig, 10);
+            var result = weManager.CalculateExecutions(taskConfig, 10);
 
             var expected = new List<DateTimeOffset>
             {
@@ -188,7 +188,7 @@ namespace MyScheduler
             };
 
             var weManager = new RecurringWeeklyRangeCalculator();
-            var result = weManager.CalculateWeeklyRecurringConfig(taskConfig, 10);
+            var result = weManager.CalculateExecutions(taskConfig, 10);
 
             var expected = new List<DateTimeOffset>
             {
@@ -222,7 +222,7 @@ namespace MyScheduler
             };
 
             var weManager = new RecurringWeeklyRangeCalculator();
-            var result = weManager.CalculateWeeklyRecurringConfig(taskConfig, 10);
+            var result = weManager.CalculateExecutions(taskConfig, 10);
 
             var expected = new List<DateTimeOffset>
             {
@@ -256,7 +256,7 @@ namespace MyScheduler
             };
 
             var weManager = new RecurringWeeklyRangeCalculator();
-            var result = weManager.CalculateWeeklyRecurringConfig(taskConfig, 10);
+            var result = weManager.CalculateExecutions(taskConfig, 10);
 
             var expected = new List<DateTimeOffset>
             {
@@ -289,7 +289,7 @@ namespace MyScheduler
             };
 
             var weManager = new RecurringWeeklyRangeCalculator();
-            var result = weManager.CalculateWeeklyRecurringConfig(taskConfig, 2);
+            var result = weManager.CalculateExecutions(taskConfig, 2);
 
             var expected = new List<DateTimeOffset>
             {
@@ -351,7 +351,7 @@ namespace MyScheduler
             };
 
             var weManager = new RecurringWeeklyRangeCalculator();
-            var result = weManager.CalculateWeeklyRecurringConfig(taskConfig, 2);
+            var result = weManager.CalculateExecutions(taskConfig, 2);
 
             var expected = new List<DateTimeOffset>
             {
@@ -410,7 +410,7 @@ namespace MyScheduler
             };
 
             var weManager = new RecurringWeeklyRangeCalculator();
-            var result = weManager.CalculateWeeklyRecurringConfig(taskConfig, 5);
+            var result = weManager.CalculateExecutions(taskConfig, 5);
 
             var expected = new List<DateTimeOffset>
             {
@@ -446,7 +446,7 @@ namespace MyScheduler
             };
 
             var weManager = new RecurringWeeklyRangeCalculator();
-            var result = weManager.CalculateWeeklyRecurringConfig(taskConfig, 500);
+            var result = weManager.CalculateExecutions(taskConfig, 500);
 
             var expected = new List<DateTimeOffset>
             {
@@ -481,7 +481,7 @@ namespace MyScheduler
             };
 
             var weManager = new RecurringWeeklyRangeCalculator();
-            var result = weManager.CalculateWeeklyRecurringConfig(taskConfig, 500);
+            var result = weManager.CalculateExecutions(taskConfig, 500);
 
             var expected = new List<DateTimeOffset>
             {
@@ -518,7 +518,7 @@ namespace MyScheduler
             };
 
             var onceCalc = new RecurringWeeklyOnceCalculator();
-            var result = onceCalc.CalculateWeeklyOnceConfig(taskConfig, 500);
+            var result = onceCalc.CalculateExecutions(taskConfig, 500);
 
             var expected = new List<DateTimeOffset>
             {
@@ -548,7 +548,7 @@ namespace MyScheduler
             };
 
             var onceCalc = new RecurringWeeklyOnceCalculator();
-            var result = onceCalc.CalculateWeeklyOnceConfig(taskConfig, 500);
+            var result = onceCalc.CalculateExecutions(taskConfig, 500);
 
             var expected = new List<DateTimeOffset>
             {
@@ -580,7 +580,7 @@ namespace MyScheduler
             };
 
             var weManager = new RecurringWeeklyRangeCalculator();
-            var result = weManager.CalculateWeeklyRecurringConfig(taskConfig, 500);
+            var result = weManager.CalculateExecutions(taskConfig, 500);
 
             var expected = new List<DateTimeOffset>
             {
@@ -636,7 +636,7 @@ namespace MyScheduler
 
             var onceCalc = new RecurringWeeklyOnceCalculator();
 
-            var result = onceCalc.CalculateWeeklyOnceConfig(taskConfig, 3);
+            var result = onceCalc.CalculateExecutions(taskConfig, 3);
 
             var expectedDates = new List<DateTimeOffset>
             {

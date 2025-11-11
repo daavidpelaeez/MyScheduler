@@ -9,15 +9,15 @@ namespace MyScheduler.ScheduleCalculators
 {
     public class RecurringWeeklyOnceCalculator
     {
-        public Result<ScheduleOutput> GetNextExecutionWeeklyOnce(ScheduleEntity scheduleConfig, int? numOccurrences)
+        public Result<ScheduleOutput> GetOutput(ScheduleEntity scheduleConfig, int? numOccurrences)
         {
-            var dates = CalculateWeeklyOnceConfig(scheduleConfig, numOccurrences);
+            var dates = CalculateExecutions(scheduleConfig, numOccurrences);
 
             return (dates.Count > 0) ? Result<ScheduleOutput>.Success(OutputHelper.OutputBuilder(dates.First(),DescriptionGenerator.GetDescription(scheduleConfig))) :
                 Result<ScheduleOutput>.Failure("No next execution found");
         }
 
-        public List<DateTimeOffset> CalculateWeeklyOnceConfig(ScheduleEntity scheduleConfig, int? maxOccurrences)
+        public List<DateTimeOffset> CalculateExecutions(ScheduleEntity scheduleConfig, int? maxOccurrences)
         {
             var result = new List<DateTimeOffset>();
             var selectedHour = scheduleConfig.DailyOnceExecutionTime!.Value;

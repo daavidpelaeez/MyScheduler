@@ -9,7 +9,7 @@ namespace MyScheduler.ScheduleCalculators
 {
     public class RecurringDailyOnceCalculator
     {
-        public Result<ScheduleOutput> GetNextExecutionDailyOnce(ScheduleEntity scheduleConfig, int? numOccurrences)
+        public Result<ScheduleOutput> GetOutput(ScheduleEntity scheduleConfig, int? numOccurrences)
         {
             var nextExecution = DailySchedulerHelper.GetRecurrentDays(scheduleConfig, numOccurrences).First();
 

@@ -44,40 +44,40 @@ namespace MyScheduler.Services
             if (scheduleConfig.Occurs == Occurs.Daily)
             {
                 if (scheduleConfig.DailyFrequencyOnceCheckbox)
-                    return new RecurringDailyOnceCalculator().GetNextExecutionDailyOnce(scheduleConfig, numOccurrences);
+                    return new RecurringDailyOnceCalculator().GetOutput(scheduleConfig, numOccurrences);
 
                 if (scheduleConfig.DailyFrequencyRangeCheckbox)
-                    return new RecurringDailyRangeCalculator().GetNextExecutionDailyEvery(scheduleConfig, numOccurrences);
+                    return new RecurringDailyRangeCalculator().GetOutput(scheduleConfig, numOccurrences);
             }
 
             if (scheduleConfig.Occurs == Occurs.Weekly)
             {
                 if (scheduleConfig.DailyFrequencyOnceCheckbox)
-                    return new RecurringWeeklyOnceCalculator().GetNextExecutionWeeklyOnce(scheduleConfig, numOccurrences);
+                    return new RecurringWeeklyOnceCalculator().GetOutput(scheduleConfig, numOccurrences);
 
                 if (scheduleConfig.DailyFrequencyRangeCheckbox)
-                    return new RecurringWeeklyRangeCalculator().GetNextExecutionWeeklyEvery(scheduleConfig, numOccurrences);
+                    return new RecurringWeeklyRangeCalculator().GetOutput(scheduleConfig, numOccurrences);
             }
 
             if(scheduleConfig.Occurs == Occurs.Monthly)
             {
                 if (scheduleConfig.MonthlyFrequencyDayCheckbox && scheduleConfig.DailyFrequencyOnceCheckbox)
-                    return new MonthlyDayDailyOnceCalculator().GetNextExecution(scheduleConfig, numOccurrences);
+                    return new MonthlyDayDailyOnceCalculator().GetOutput(scheduleConfig, numOccurrences);
 
                 if (scheduleConfig.MonthlyFrequencyDayCheckbox && scheduleConfig.DailyFrequencyRangeCheckbox)
-                    return new MonthlyDayDailyRangeCalculator().GetNextExecution(scheduleConfig, numOccurrences);
+                    return new MonthlyDayDailyRangeCalculator().GetOutput(scheduleConfig, numOccurrences);
 
                 if (scheduleConfig.MonthlyFrequencyTheCheckbox && scheduleConfig.DailyFrequencyOnceCheckbox)
-                    return new MonthlyTheDailyOnceCalculator().GetNextExecution(scheduleConfig, numOccurrences);
+                    return new MonthlyTheDailyOnceCalculator().GetOutput(scheduleConfig, numOccurrences);
 
                 if (scheduleConfig.MonthlyFrequencyTheCheckbox && scheduleConfig.DailyFrequencyRangeCheckbox)
-                    return new MonthlyTheDailyRangeCalculator().GetNextExecution(scheduleConfig, numOccurrences);
+                    return new MonthlyTheDailyRangeCalculator().GetOutput(scheduleConfig, numOccurrences);
 
                 if (scheduleConfig.MonthlyFrequencyDayCheckbox)
-                    return new MonthlyDayCalculator().GetNextExecution(scheduleConfig, numOccurrences);
+                    return new MonthlyDayCalculator().GetOutput(scheduleConfig, numOccurrences);
 
                 if(scheduleConfig.MonthlyFrequencyTheCheckbox)
-                    return new MonthlyTheCalculator().GetNextExecution(scheduleConfig, numOccurrences);
+                    return new MonthlyTheCalculator().GetOutput(scheduleConfig, numOccurrences);
 
             }
 

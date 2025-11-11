@@ -93,7 +93,7 @@
 
 //            MonthlyDayDailyRangeCalculator mtc = new MonthlyDayDailyRangeCalculator();
 
-//            List<DateTimeOffset> result = mtc.CalculateNextExecutions(schedule, 10);
+//            List<DateTimeOffset> result = mtc.CalculateExecutions(schedule, 10);
 
 //            List<DateTimeOffset> expected = new List<DateTimeOffset> { new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero) };
 
@@ -142,7 +142,7 @@
 
 //            MonthlyTheDailyRangeCalculator mtc = new MonthlyTheDailyRangeCalculator();
 
-//            List<DateTimeOffset> result = mtc.CalculateNextExecutions(schedule, 10);
+//            List<DateTimeOffset> result = mtc.CalculateExecutions(schedule, 10);
 
 //            List<DateTimeOffset> expected = new List<DateTimeOffset> { new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero) };
 

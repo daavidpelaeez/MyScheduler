@@ -412,7 +412,7 @@ namespace MyScheduler
             config.DailyEndTime = new TimeSpan(3, 3, 0);
 
             var rdc = new RecurringDailyRangeCalculator();
-            var result = rdc.CalculateNextExecutions(config, 4);
+            var result = rdc.CalculateExecutions(config, 4);
 
             var expected = new List<DateTimeOffset>() { 
             
@@ -445,7 +445,7 @@ namespace MyScheduler
             config.DailyEndTime = new TimeSpan(3, 3, 0);
 
             var rdc = new RecurringWeeklyRangeCalculator();
-            var result = rdc.CalculateWeeklyRecurringConfig(config, 4);
+            var result = rdc.CalculateExecutions(config, 4);
 
             var expected = new List<DateTimeOffset>() {
 
