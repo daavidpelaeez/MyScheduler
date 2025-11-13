@@ -15,7 +15,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 Enabled = true
             };
 
@@ -39,7 +39,7 @@ namespace MyScheduler
             var result = Validator.ValidateTask(schedule, 10);
 
             Assert.True(result.IsFailure);
-            Assert.Contains("EventDate is required for OneTime tasks.", result.Error);
+            Assert.Contains("OnceTypeDateExecution is required for OneTime tasks.", result.Error);
         }
 
         [Fact]
@@ -92,7 +92,7 @@ namespace MyScheduler
                 DailyFrequencyOnceCheckbox = true,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 2,
                 Enabled = true
                 
@@ -114,7 +114,7 @@ namespace MyScheduler
                 DailyFrequencyOnceCheckbox = true,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 2
             };
@@ -134,7 +134,7 @@ namespace MyScheduler
                 DailyFrequencyOnceCheckbox = true,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 11, 0, 0, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 11, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 2
             };
@@ -154,7 +154,7 @@ namespace MyScheduler
                 DailyFrequencyOnceCheckbox = true,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 2
             };
 
@@ -171,7 +171,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 11, 0, 0, 0, TimeSpan.Zero),
                 Enabled = true
             };
@@ -190,7 +190,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 12, 0, 0, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 12, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 11, 0, 0, 0, TimeSpan.Zero)
             };
 
@@ -269,7 +269,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 1,
                 Enabled = true
             };
@@ -290,7 +290,7 @@ namespace MyScheduler
                 DailyFrequencyOnceCheckbox = true,
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 1
             };
 
@@ -351,7 +351,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 10, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 10, 9, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 10, 10, 0, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 10, 10, 0, 0, TimeSpan.Zero),
                 Enabled = true
             };
 
@@ -391,7 +391,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 11, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 1
             };
 
@@ -413,7 +413,7 @@ namespace MyScheduler
                 DailyFrequencyOnceCheckbox = true,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 DailyOnceExecutionTime = TimeSpan.Zero,
                 Recurrence = 1,

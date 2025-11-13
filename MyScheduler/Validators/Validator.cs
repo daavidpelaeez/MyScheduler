@@ -2,7 +2,6 @@
 using MyScheduler.Entities;
 using MyScheduler.Enums;
 using MyScheduler.Helpers;
-using MyScheduler.ScheduleCalculators;
 using System.Text;
 
 namespace MyScheduler.Validators

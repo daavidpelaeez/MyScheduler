@@ -611,7 +611,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void MonthlyTheDailyRange_ShouldPass_WithSecondsRange()
+        public void MonthlyTheDailyRange_ShouldPass_WhenSecondsRange()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;

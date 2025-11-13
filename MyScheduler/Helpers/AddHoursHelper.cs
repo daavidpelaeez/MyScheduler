@@ -1,22 +1,21 @@
 ﻿using MyScheduler.Entities;
-using MyScheduler.ScheduleCalculators;
 using System;
 using System.Collections.Generic;
-using System.Text;
+
 
 namespace MyScheduler.Helpers
 {
     public class AddHoursHelper
     {
-        public List<DateTimeOffset> addHourToList(ScheduleEntity scheduleConfig, int? numOccurrences, List<DateTimeOffset> listToAddExecutionOnce) 
+        public List<DateTimeOffset> AddHourToList(ScheduleEntity scheduleConfig, List<DateTimeOffset> listToAddExecutionOnce) 
         {
             var dates = listToAddExecutionOnce;
-            var executionDailyOnceTime = scheduleConfig.DailyOnceExecutionTime;
+            var executionDailyOnceTime = scheduleConfig.DailyOnceExecutionTime!;
             var datesWithHoursList = new List<DateTimeOffset>();
 
             foreach (var date in dates)
             {
-                var dateWithOffset = DateTimeZoneHelper.ToDateTimeOffset(date.Date, executionDailyOnceTime!.Value);
+                var dateWithOffset = DateTimeZoneHelper.ToTimeZoneOffset(date.Date, executionDailyOnceTime.Value);
                 datesWithHoursList.Add(dateWithOffset);
             }
 
@@ -42,7 +41,7 @@ namespace MyScheduler.Helpers
                     if (!scheduleConfig.EndDate.HasValue && count >= maxOccurrences)
                         break;
 
-                    var dateWithOffset = DateTimeZoneHelper.ToDateTimeOffset(day.Date, currentTime);
+                    var dateWithOffset = DateTimeZoneHelper.ToTimeZoneOffset(day.Date, currentTime);
 
                     result.Add(dateWithOffset);
                     count++;

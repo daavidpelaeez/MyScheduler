@@ -1,6 +1,5 @@
 ﻿using MyScheduler.Entities;
 using MyScheduler.Helpers;
-using System;
 using System.Linq;
 
 
@@ -13,7 +12,7 @@ namespace MyScheduler.ScheduleCalculators
         {
             var nextExecution = DailySchedulerHelper.GetRecurrentDays(scheduleConfig, numOccurrences).First();
 
-            scheduleConfig.EventDate = nextExecution;
+            scheduleConfig.OnceTypeDateExecution = nextExecution;
 
             return Result<ScheduleOutput>.Success(OutputHelper.OutputBuilder(nextExecution, DescriptionGenerator.GetDescription(scheduleConfig)));
         }

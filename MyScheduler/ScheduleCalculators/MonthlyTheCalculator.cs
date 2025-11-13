@@ -12,7 +12,6 @@ namespace MyScheduler.ScheduleCalculators
 
         public Result<ScheduleOutput> GetOutput(ScheduleEntity scheduleConfig, int? numOccurrences)
         {
-
             var dates = CalculateExecutions(scheduleConfig, numOccurrences);
 
             return (dates.Count > 0) ? Result<ScheduleOutput>.Success(OutputHelper.OutputBuilder(dates.First(), DescriptionGenerator.GetDescription(scheduleConfig))) :
@@ -24,8 +23,8 @@ namespace MyScheduler.ScheduleCalculators
         {
             var resultList = new List<DateTimeOffset>();
 
-            var order = scheduleConfig.MonthlyTheOrder;
-            var dayOfWeek = scheduleConfig.MonthlyTheDayOfWeek;
+            var order = scheduleConfig.MonthlyTheOrder!;
+            var dayOfWeek = scheduleConfig.MonthlyTheDayOfWeek!;
             int monthRecurrence = scheduleConfig.MonthlyTheRecurrence;
             DateTimeOffset endDate = scheduleConfig.EndDate ?? DateTimeOffset.MaxValue;
 
@@ -34,7 +33,7 @@ namespace MyScheduler.ScheduleCalculators
                  currentMonth <= endDate && resultList.Count < numOccurrences;
                  currentMonth = currentMonth.AddMonths(monthRecurrence))
             {
-                var targetDate = GetTargetDateInMonth(currentMonth, order!.Value, dayOfWeek!.Value);
+                var targetDate = GetTargetDateInMonth(currentMonth, order.Value, dayOfWeek.Value);
 
                 if (targetDate.HasValue && targetDate.Value >= scheduleConfig.StartDate)
                     resultList.Add(targetDate.Value);
@@ -46,19 +45,19 @@ namespace MyScheduler.ScheduleCalculators
 
         private DateTimeOffset? GetTargetDateInMonth(DateTimeOffset baseDate, MonthlyTheOrder order, MonthlyDayOfWeek dayOfWeek)
         {
-            var matchingDays = GetMatchingDaysInMonth(baseDate.Year, baseDate.Month, dayOfWeek, baseDate);
+            var matchingDays = GetMatchingDaysInMonth(baseDate,dayOfWeek);
             return SelectDayByOrder(matchingDays, order);
         }
 
 
-        private List<DateTimeOffset> GetMatchingDaysInMonth(int year, int month, MonthlyDayOfWeek dayOfWeek, DateTimeOffset startDate)
+        private List<DateTimeOffset> GetMatchingDaysInMonth(DateTimeOffset baseDate, MonthlyDayOfWeek dayOfWeek)
         {
             var matchingDays = new List<DateTimeOffset>();
-            int daysInMonth = DateTime.DaysInMonth(year, month);
+            int daysInMonth = DateTime.DaysInMonth(baseDate.Year, baseDate.Month);
 
             for (int day = 1; day <= daysInMonth; day++)
             {
-                var date = new DateTimeOffset(year, month, day, 0, 0, 0, TimeSpan.Zero);
+                var date = new DateTimeOffset(baseDate.Year, baseDate.Month, day, baseDate.Hour, baseDate.Minute, baseDate.Second, baseDate.Offset);
 
                 if (IsMatchingDay(date, dayOfWeek))
                     matchingDays.Add(date);
@@ -70,7 +69,7 @@ namespace MyScheduler.ScheduleCalculators
 
         private DateTimeOffset? SelectDayByOrder(List<DateTimeOffset> matchingDays, MonthlyTheOrder order)
         {
-            if (matchingDays.Count == 0)
+            if (matchingDays.Count < 1)
                 return null;
 
             switch (order)

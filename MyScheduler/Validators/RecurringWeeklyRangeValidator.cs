@@ -1,8 +1,5 @@
 ﻿using MyScheduler.Entities;
 using MyScheduler.Helpers;
-using MyScheduler.ScheduleCalculators;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace MyScheduler.Validators
@@ -13,8 +10,11 @@ namespace MyScheduler.Validators
         {
             DailyFrequencyCommonRules.CheckDailyCommonRules(scheduleConfig, errors);
 
-            if (scheduleConfig.DaysOfWeek.Count < 1)
+            if (scheduleConfig.DaysOfWeek == null || scheduleConfig.DaysOfWeek.Count < 1)
+            {
                 errors.AppendLine("DaysOfWeek must be selected for RecurringWeeklyRange.");
+                return;
+            }
 
             if (scheduleConfig.WeeklyRecurrence < 1)
                 errors.AppendLine("WeeklyRecurrence must be at least 1.");
@@ -37,7 +37,7 @@ namespace MyScheduler.Validators
             if (scheduleConfig.DailyStartTime == scheduleConfig.DailyEndTime)
                 errors.AppendLine("DailyStartTime cannot be the same as DailyEndTime.");
 
-            if (WeeklyScheduleHelper.SameWeekDayChecker(scheduleConfig.DaysOfWeek!))
+            if (WeeklyScheduleHelper.SameWeekDayChecker(scheduleConfig.DaysOfWeek))
                 errors.AppendLine("Check days of the week they cant be repeated");
 
 

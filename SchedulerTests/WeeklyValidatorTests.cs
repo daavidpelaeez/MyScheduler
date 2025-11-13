@@ -569,7 +569,7 @@ namespace MyScheduler
             var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
 
             Assert.True(result.IsSuccess);
-            Assert.Equal(new DateTimeOffset(2025, 10, 27, 13, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
+            Assert.Equal(new DateTimeOffset(2025, 10, 27, 13, 30, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
             Assert.Contains("occurs every 2 week(s) on monday at 13:30", result.Value.Description.ToLower());
         }
 

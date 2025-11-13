@@ -1,7 +1,4 @@
 ﻿using MyScheduler.Entities;
-using MyScheduler.Enums;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace MyScheduler.Validators

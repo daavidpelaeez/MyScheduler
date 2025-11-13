@@ -5,21 +5,21 @@ namespace MyScheduler.Helpers
 {
     public static class DateTimeZoneHelper
     {
-        public static DateTimeOffset ToDateTimeOffset(DateTime day, TimeSpan time)
+        public static DateTimeOffset ToTimeZoneOffset(DateTime day, TimeSpan time)
         {
-            var tzId = TimeZoneInfo.Local.Id;
-            var tz = TimeZoneInfo.FindSystemTimeZoneById(tzId);
+            var timeZoneID = TimeZoneInfo.Local.Id;
+            var timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneID);
 
             var localDateTime = day.Date + time;
 
-            if (tz.IsAmbiguousTime(localDateTime))
+            if (timeZone.IsAmbiguousTime(localDateTime))
             {
-                var offsets = tz.GetAmbiguousTimeOffsets(localDateTime);
+                var offsets = timeZone.GetAmbiguousTimeOffsets(localDateTime);
                 return new DateTimeOffset(localDateTime, offsets.Max());
             }
             else
             {
-                var offset = tz.GetUtcOffset(localDateTime);
+                var offset = timeZone.GetUtcOffset(localDateTime);
                 return new DateTimeOffset(localDateTime, offset);
             }
 

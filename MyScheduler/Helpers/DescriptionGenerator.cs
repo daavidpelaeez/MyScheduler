@@ -12,7 +12,7 @@ namespace MyScheduler.Helpers
             switch (scheduleConfig.ScheduleType)
             {
                 case Enums.ScheduleType.Once:
-                        return $"Occurs once. Schedule on {scheduleConfig.EventDate!.Value.Date.ToShortDateString()} at {scheduleConfig.EventDate.Value.DateTime.ToShortTimeString()}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
+                        return $"Occurs once. Schedule on {scheduleConfig.OnceTypeDateExecution!.Value.Date.ToShortDateString()} at {scheduleConfig.OnceTypeDateExecution.Value.DateTime.ToShortTimeString()}, starting {scheduleConfig.StartDate.Date.ToShortDateString()}";
 
                 case Enums.ScheduleType.Recurring:
                     return GetRecurringDescription(scheduleConfig);

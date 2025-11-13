@@ -30,24 +30,22 @@ namespace MyScheduler.ScheduleCalculators
 
             for (int count = 0; currentMonth <= endDate; currentMonth = currentMonth.AddMonths(monthRecurrence))
             {
-                var day = GetValidDay(currentMonth.Year, currentMonth.Month, dayNumber);
-
-                var targetDate = new DateTimeOffset(currentMonth.Year, currentMonth.Month, day, 0, 0, 0, TimeSpan.Zero);
-
                 if (numOccurrences.HasValue && count >= numOccurrences)
                     break;
+
+                var day = GetValidDay(currentMonth.Year, currentMonth.Month, dayNumber);
+
+                var targetDate = new DateTimeOffset(currentMonth.Year, currentMonth.Month, day, currentMonth.Hour, currentMonth.Minute, currentMonth.Second, currentMonth.Offset);
 
                 if (targetDate >= scheduleConfig.StartDate)
                 {
                     resultList.Add(targetDate);
                     count++;
                 }
-                   
 
             }
 
             return resultList;
-
         }
 
         private int GetValidDay(int year, int month, int dayNumber)

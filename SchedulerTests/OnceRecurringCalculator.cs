@@ -18,7 +18,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 Enabled = true
             };
 
@@ -87,7 +87,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 5, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 6, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero),
                 Enabled = true,
                 Recurrence = 2
             };
@@ -175,7 +175,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero)
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero)
             };
 
             var result = taskManager.GetNextExecution(schedule, null);
@@ -194,7 +194,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 7, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 Enabled = true
             };
 
@@ -283,7 +283,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 9, 0, 0, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 Enabled = true
             };
@@ -304,7 +304,7 @@ namespace MyScheduler
             {
                 ScheduleType = ScheduleType.Once,
                 StartDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 Enabled = true
             };
@@ -326,7 +326,7 @@ namespace MyScheduler
                 ScheduleType = ScheduleType.Once,
                 CurrentDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 StartDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
-                EventDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
+                OnceTypeDateExecution = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero),
                 Enabled = true
             };

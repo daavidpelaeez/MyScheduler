@@ -19,7 +19,7 @@ namespace MyScheduler.Helpers
                 if (maxOccurrences.HasValue && result.Count >= maxOccurrences.Value)
                     break;
 
-                if (current >= scheduleConfig.CurrentDate && scheduleConfig.DaysOfWeek.Contains(current.DayOfWeek))
+                if (current >= scheduleConfig.CurrentDate && scheduleConfig.DaysOfWeek!.Contains(current.DayOfWeek))
                 {
                     result.Add(current);
                 }

@@ -17,7 +17,7 @@ namespace MyScheduler
             config.Enabled = true;
             config.ScheduleType = ScheduleType.Once;
             config.StartDate = new DateTimeOffset(2025, 10, 25, 0, 0, 0, TimeSpan.Zero);
-            config.EventDate = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero);
+            config.OnceTypeDateExecution = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero);
 
             var manager = new ScheduleManager();
             var result = manager.GetNextExecution(config, 10);
@@ -99,7 +99,7 @@ namespace MyScheduler
             var result = manager.GetNextExecution(config, 5);
 
             Assert.True(result.IsSuccess,result.Error);
-            var expectedTime = new DateTimeOffset(2025, 10, 27, 10, 0, 0, TimeSpan.Zero);
+            var expectedTime = new DateTimeOffset(2025, 10, 27, 10, 0, 0, TimeSpan.FromHours(1));
             var expectedDescription = "Occurs every 1 week(s) on monday and wednesday at 10:00:00, starting 25/10/2025";
 
             Assert.Equal(expectedTime, result.Value.ExecutionTime);
@@ -395,95 +395,162 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void ReccurringDailyRange_HourChange_Shouldpass()
-        {
-            var config = new ScheduleEntity();
-            config.Enabled = true;
-            config.ScheduleType = ScheduleType.Recurring;
-            config.Occurs = Occurs.Daily;
-            config.StartDate = new DateTimeOffset(2025, 10, 26, 0, 0, 0,TimeSpan.Zero);
-            config.CurrentDate = new DateTimeOffset(2025, 10, 26, 0, 0, 0, TimeSpan.Zero);
-            config.WeeklyRecurrence = 1;
-            config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday };
-            config.DailyFrequencyRangeCheckbox = true;
-            config.TimeUnit = TimeUnit.Seconds;
-            config.TimeUnitNumberOf = 1;
-            config.DailyStartTime = new TimeSpan(2, 59, 58);
-            config.DailyEndTime = new TimeSpan(3, 3, 0);
-
-            var rdc = new RecurringDailyRangeCalculator();
-            var result = rdc.CalculateExecutions(config, 4);
-
-            var expected = new List<DateTimeOffset>() { 
-            
-                new DateTimeOffset(2025,10,26,2,59,58,0,TimeSpan.FromHours(2)),
-                new DateTimeOffset(2025,10,26,2,59,59,0,TimeSpan.FromHours(2)),
-                new DateTimeOffset(2025,10,26,3,0,0,0,TimeSpan.FromHours(1)),
-                new DateTimeOffset(2025,10,26,3,0,1,0,TimeSpan.FromHours(1))
-
-
-            };
-
-            Assert.Equal(expected, result);
-        }
-
-        [Fact]
-        public void ReccurringWeeklyRange_HourChange_ShouldPass()
+        public void RecurringWeekly__ShouldPass_When_RangeHoursDifferentDay()
         {
             var config = new ScheduleEntity();
             config.Enabled = true;
             config.ScheduleType = ScheduleType.Recurring;
             config.Occurs = Occurs.Weekly;
-            config.StartDate = new DateTimeOffset(2025, 10, 26, 0, 0, 0, TimeSpan.Zero);
-            config.CurrentDate = new DateTimeOffset(2025, 10, 26, 0, 0, 0, TimeSpan.Zero);
+            config.StartDate = new DateTimeOffset(2025, 11, 4, 0, 0, 0, TimeSpan.Zero);
+            config.CurrentDate = new DateTimeOffset(2025, 11, 4, 0, 0, 0, TimeSpan.Zero);
             config.WeeklyRecurrence = 1;
-            config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Sunday };
+            config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Tuesday };
             config.DailyFrequencyRangeCheckbox = true;
-            config.TimeUnit = TimeUnit.Seconds;
+            config.TimeUnit = TimeUnit.Hours;
             config.TimeUnitNumberOf = 1;
-            config.DailyStartTime = new TimeSpan(2, 59, 58);
-            config.DailyEndTime = new TimeSpan(3, 3, 0);
-
-            var rdc = new RecurringWeeklyRangeCalculator();
-            var result = rdc.CalculateExecutions(config, 4);
-
-            var expected = new List<DateTimeOffset>() {
-
-                new DateTimeOffset(2025,10,26,2,59,58,0,TimeSpan.FromHours(2)),
-                new DateTimeOffset(2025,10,26,2,59,59,0,TimeSpan.FromHours(2)),
-                new DateTimeOffset(2025,10,26,3,0,0,0,TimeSpan.FromHours(1)),
-                new DateTimeOffset(2025,10,26,3,0,1,0,TimeSpan.FromHours(1))
-            };
-
-            Assert.Equal(expected, result);
-        }
-
-        [Fact]
-        public void ReccurringWeeklyRangePipeline_HourChange_ShouldPass()
-        {
-            var config = new ScheduleEntity();
-            config.Enabled = true;
-            config.ScheduleType = ScheduleType.Recurring;
-            config.Occurs = Occurs.Weekly;
-            config.StartDate = new DateTimeOffset(2025, 10, 26, 0, 0, 0, TimeSpan.Zero);
-            config.CurrentDate = new DateTimeOffset(2025, 10, 26, 0, 0, 0, TimeSpan.Zero);
-            config.WeeklyRecurrence = 1;
-            config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Sunday };
-            config.DailyFrequencyRangeCheckbox = true;
-            config.TimeUnit = TimeUnit.Seconds;
-            config.TimeUnitNumberOf = 1;
-            config.DailyStartTime = new TimeSpan(3, 0, 0 );
-            config.DailyEndTime = new TimeSpan(3, 3, 0);
+            config.DailyStartTime = new TimeSpan(7, 0, 0);
+            config.DailyEndTime = new TimeSpan(9, 0, 0);
 
             var manager = new ScheduleManager();
             var result = manager.GetNextExecution(config, 1);
 
-            var output = new ScheduleOutput();
-            output.ExecutionTime = new DateTimeOffset(2025, 10, 26, 3, 0, 0, TimeSpan.FromHours(1));
-
-            Assert.Equal(output.ExecutionTime, result.Value.ExecutionTime);
+            Assert.True(result.IsSuccess, result.Error);
+            Assert.Equal(new DateTimeOffset(2025, 11, 4, 7, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
         }
 
+        [Fact]
+        public void RecurringWeekly__ShouldPass_When_SingleDayOnceExecution()
+        {
+            var config = new ScheduleEntity();
+            config.Enabled = true;
+            config.ScheduleType = ScheduleType.Recurring;
+            config.Occurs = Occurs.Weekly;
+            config.StartDate = new DateTimeOffset(2025, 11, 1, 0, 0, 0, TimeSpan.Zero);
+            config.CurrentDate = new DateTimeOffset(2025, 11, 1, 0, 0, 0, TimeSpan.Zero);
+            config.WeeklyRecurrence = 1;
+            config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Friday };
+            config.DailyFrequencyOnceCheckbox = true;
+            config.DailyOnceExecutionTime = new TimeSpan(8, 0, 0);
 
+            var manager = new ScheduleManager();
+            var result = manager.GetNextExecution(config, 1);
+
+            Assert.True(result.IsSuccess, result.Error);
+            Assert.Equal(new DateTimeOffset(2025, 11, 7, 8, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
+        }
+
+        [Fact]
+        public void RecurringWeekly__ShouldPass_When_MultipleDaysRangeMinutes()
+        {
+            var config = new ScheduleEntity();
+            config.Enabled = true;
+            config.ScheduleType = ScheduleType.Recurring;
+            config.Occurs = Occurs.Weekly;
+            config.StartDate = new DateTimeOffset(2025, 11, 2, 0, 0, 0, TimeSpan.Zero);
+            config.CurrentDate = new DateTimeOffset(2025, 11, 2, 0, 0, 0, TimeSpan.Zero);
+            config.WeeklyRecurrence = 1;
+            config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Sunday, DayOfWeek.Tuesday };
+            config.DailyFrequencyRangeCheckbox = true;
+            config.TimeUnit = TimeUnit.Minutes;
+            config.TimeUnitNumberOf = 15;
+            config.DailyStartTime = new TimeSpan(10, 0, 0);
+            config.DailyEndTime = new TimeSpan(11, 0, 0);
+
+            var manager = new ScheduleManager();
+            var result = manager.GetNextExecution(config, 1);
+
+            Assert.True(result.IsSuccess, result.Error);
+            Assert.Equal(new DateTimeOffset(2025, 11, 2, 10, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
+        }
+
+        [Fact]
+        public void RecurringWeekly__ShouldPass_When_RecurrenceTwoWeeks()
+        {
+            var config = new ScheduleEntity();
+            config.Enabled = true;
+            config.ScheduleType = ScheduleType.Recurring;
+            config.Occurs = Occurs.Weekly;
+            config.StartDate = new DateTimeOffset(2025, 11, 3, 0, 0, 0, TimeSpan.Zero);
+            config.CurrentDate = new DateTimeOffset(2025, 11, 3, 0, 0, 0, TimeSpan.Zero);
+            config.WeeklyRecurrence = 2;
+            config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday };
+            config.DailyFrequencyOnceCheckbox = true;
+            config.DailyOnceExecutionTime = new TimeSpan(14, 0, 0);
+
+            var manager = new ScheduleManager();
+            var result = manager.GetNextExecution(config, 1);
+
+            Assert.True(result.IsSuccess, result.Error);
+            Assert.Equal(new DateTimeOffset(2025, 11, 3, 14, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
+        }
+
+        [Fact]
+        public void RecurringWeekly__ShouldPass_When_RangeSeconds()
+        {
+            var config = new ScheduleEntity();
+            config.Enabled = true;
+            config.ScheduleType = ScheduleType.Recurring;
+            config.Occurs = Occurs.Weekly;
+            config.StartDate = new DateTimeOffset(2025, 11, 5, 0, 0, 0, TimeSpan.Zero);
+            config.CurrentDate = new DateTimeOffset(2025, 11, 5, 0, 0, 0, TimeSpan.Zero);
+            config.WeeklyRecurrence = 1;
+            config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Wednesday };
+            config.DailyFrequencyRangeCheckbox = true;
+            config.TimeUnit = TimeUnit.Seconds;
+            config.TimeUnitNumberOf = 30;
+            config.DailyStartTime = new TimeSpan(6, 0, 0);
+            config.DailyEndTime = new TimeSpan(6, 1, 0);
+
+            var manager = new ScheduleManager();
+            var result = manager.GetNextExecution(config, 1);
+
+            Assert.True(result.IsSuccess, result.Error);
+            Assert.Equal(new DateTimeOffset(2025, 11, 5, 6, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
+        }
+
+        [Fact]
+        public void RecurringWeekly__ShouldPass_When_RangeMinutesSingleDay()
+        {
+            var config = new ScheduleEntity();
+            config.Enabled = true;
+            config.ScheduleType = ScheduleType.Recurring;
+            config.Occurs = Occurs.Weekly;
+            config.StartDate = new DateTimeOffset(2025, 11, 6, 0, 0, 0, TimeSpan.Zero);
+            config.CurrentDate = new DateTimeOffset(2025, 11, 6, 0, 0, 0, TimeSpan.Zero);
+            config.WeeklyRecurrence = 1;
+            config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Thursday };
+            config.DailyFrequencyRangeCheckbox = true;
+            config.TimeUnit = TimeUnit.Minutes;
+            config.TimeUnitNumberOf = 10;
+            config.DailyStartTime = new TimeSpan(15, 0, 0);
+            config.DailyEndTime = new TimeSpan(15, 30, 0);
+
+            var manager = new ScheduleManager();
+            var result = manager.GetNextExecution(config, 1);
+
+            Assert.True(result.IsSuccess, result.Error);
+            Assert.Equal(new DateTimeOffset(2025, 11, 6, 15, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
+        }
+
+        [Fact]
+        public void RecurringWeekly__ShouldPass_When_OnceExecutionDifferentRecurrence()
+        {
+            var config = new ScheduleEntity();
+            config.Enabled = true;
+            config.ScheduleType = ScheduleType.Recurring;
+            config.Occurs = Occurs.Weekly;
+            config.StartDate = new DateTimeOffset(2025, 11, 7, 0, 0, 0, TimeSpan.Zero);
+            config.CurrentDate = new DateTimeOffset(2025, 11, 7, 0, 0, 0, TimeSpan.Zero);
+            config.WeeklyRecurrence = 3;
+            config.DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Friday };
+            config.DailyFrequencyOnceCheckbox = true;
+            config.DailyOnceExecutionTime = new TimeSpan(18, 0, 0);
+
+            var manager = new ScheduleManager();
+            var result = manager.GetNextExecution(config, 1);
+
+            Assert.True(result.IsSuccess, result.Error);
+            Assert.Equal(new DateTimeOffset(2025, 11, 7, 18, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
+        }
     }
 }

@@ -2,7 +2,6 @@
 using MyScheduler.Helpers;
 using MyScheduler.ScheduleCalculators;
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace MyScheduler.Validators
@@ -15,10 +14,13 @@ namespace MyScheduler.Validators
 
             DailyFrequencyCommonRules.CheckDailyCommonRules(scheduleConfig, errors);
 
-            if (scheduleConfig.DaysOfWeek.Count < 1)
-                errors.AppendLine("DaysOfWeek must be selected for RecurringWeeklyOnce.");
+            if (scheduleConfig.DaysOfWeek == null || scheduleConfig.DaysOfWeek.Count < 1)
+            {
+                errors.AppendLine("DaysOfWeek must be selected for RecurringWeeklyRange.");
+                return;
+            }
 
-            if(scheduleConfig.DailyOnceExecutionTime < TimeSpan.Zero)
+            if (scheduleConfig.DailyOnceExecutionTime < TimeSpan.Zero)
                 errors.AppendLine("DailyOnceExecutionTime is wrong");
 
             if (scheduleConfig.WeeklyRecurrence < 1)

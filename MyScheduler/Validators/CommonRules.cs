@@ -1,7 +1,6 @@
 ﻿using MyScheduler.Entities;
 using MyScheduler.Enums;
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace MyScheduler.Validators
@@ -21,13 +20,13 @@ namespace MyScheduler.Validators
             if (scheduleConfig.EndDate.HasValue && scheduleConfig.EndDate < scheduleConfig.CurrentDate)
                 errors.AppendLine("The end date of a recurring scheduleConfig must be after the current date.");
 
-            if (scheduleConfig.EventDate.HasValue && scheduleConfig.EventDate < scheduleConfig.CurrentDate)
+            if (scheduleConfig.OnceTypeDateExecution.HasValue && scheduleConfig.OnceTypeDateExecution < scheduleConfig.CurrentDate)
                 errors.AppendLine("The event date must be in the future.");
 
-            if (scheduleConfig.EventDate.HasValue && scheduleConfig.EventDate < scheduleConfig.StartDate)
+            if (scheduleConfig.OnceTypeDateExecution.HasValue && scheduleConfig.OnceTypeDateExecution < scheduleConfig.StartDate)
                 errors.AppendLine("The event date cannot be before the start date.");
 
-            if (scheduleConfig.EventDate.HasValue && scheduleConfig.EndDate.HasValue && scheduleConfig.EventDate > scheduleConfig.EndDate)
+            if (scheduleConfig.OnceTypeDateExecution.HasValue && scheduleConfig.EndDate.HasValue && scheduleConfig.OnceTypeDateExecution > scheduleConfig.EndDate)
                 errors.AppendLine("The event date cannot be after the end date.");
 
             if (scheduleConfig.StartDate <= DateTimeOffset.MinValue)
