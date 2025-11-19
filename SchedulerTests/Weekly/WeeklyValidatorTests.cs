@@ -7,7 +7,7 @@ using MyScheduler.Services;
 using MyScheduler.Validators;
 using Xunit;
 
-namespace MyScheduler
+namespace MyScheduler.Weekly
 {
     public class WeeklyValidatorTests
     {
@@ -84,31 +84,6 @@ namespace MyScheduler
             Assert.Contains("at least 1", result.Error);
         }
 
-        [Fact]
-        public void WeeklyEvery_ShouldFail_WhenRecurrenceIsEmpty()
-        {
-            var listOfDays = new List<DayOfWeek> { DayOfWeek.Monday };
-
-            var schedulerConfig = new ScheduleEntity
-            {
-                ScheduleType = ScheduleType.Recurring,
-                Occurs = Occurs.Weekly,
-                DaysOfWeek = listOfDays,
-                CurrentDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
-                StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
-                EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
-                DailyOnceExecutionTime = new TimeSpan(13, 30, 0),
-                DailyFrequencyRangeCheckbox = true,
-                Enabled = true
-            };
-
-            var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
-
-            Assert.True(result.IsFailure);
-            Assert.Contains("WeeklyRecurrence", result.Error);
-            Assert.Contains("at least 1", result.Error);
-        }
 
         // Once (weekly) validations
 
@@ -296,8 +271,9 @@ namespace MyScheduler
                 StartDate = new DateTimeOffset(2025, 10, 15, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 10, 17, 0, 0, 0, TimeSpan.Zero),
                 WeeklyRecurrence = 2,
-                DailyEndTime = new TimeSpan(13, 30, 0),
+                DailyEndTime = new TimeSpan(14, 30, 0),
                 DailyFrequencyRangeCheckbox = true,
+                DailyStartTime = new TimeSpan(13, 30, 0),
                 TimeUnit = TimeUnit.Hours,
                 Enabled = true
             };

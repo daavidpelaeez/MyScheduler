@@ -3,7 +3,7 @@ using MyScheduler.Enums;
 using MyScheduler.Services;
 using MyScheduler.Validators;
 
-namespace MyScheduler
+namespace MyScheduler.OnceTests
 {
     public class OnceRecurringValidator
     {

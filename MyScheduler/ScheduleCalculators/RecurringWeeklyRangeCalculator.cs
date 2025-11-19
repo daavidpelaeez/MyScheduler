@@ -1,8 +1,6 @@
 ﻿
 using MyScheduler.Entities;
 using MyScheduler.Helpers;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MyScheduler.ScheduleCalculators

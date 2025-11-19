@@ -19,14 +19,14 @@ namespace MyScheduler.Helpers
                 if (maxOccurrences.HasValue && result.Count >= maxOccurrences.Value)
                     break;
 
-                if (current >= scheduleConfig.CurrentDate && scheduleConfig.DaysOfWeek!.Contains(current.DayOfWeek))
+                if (current >= scheduleConfig.CurrentDate && scheduleConfig.DaysOfWeek != null && scheduleConfig.DaysOfWeek.Contains(current.DayOfWeek))
                 {
                     result.Add(current);
                 }
 
                 if (current.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    current = current.AddDays((scheduleConfig.WeeklyRecurrence - 1) * 7);
+                    current = current.AddDays((scheduleConfig.WeeklyRecurrence!.Value - 1) * 7);
                 }
             }
             return result;
@@ -41,7 +41,7 @@ namespace MyScheduler.Helpers
 
        public static TimeSpan IntervalCalculator(ScheduleEntity scheduleConfig)
         {
-            int timeUnitNumberOf = scheduleConfig.TimeUnitNumberOf;
+            int timeUnitNumberOf = scheduleConfig.TimeUnitNumberOf!.Value;
 
             return scheduleConfig.TimeUnit switch
             {

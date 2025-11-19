@@ -4,7 +4,7 @@ using MyScheduler.Services;
 using Xunit;
 using System;
 
-namespace MyScheduler
+namespace MyScheduler.OnceTests
 {
     public class OnceRecurringCalculator
     {

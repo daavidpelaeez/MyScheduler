@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using MyScheduler.Entities;
 using MyScheduler.Enums;
 using MyScheduler.Helpers;
+using MyScheduler.Localizers;
 using MyScheduler.ScheduleCalculators;
 using MyScheduler.Services;
 using Xunit;
 
-namespace MyScheduler
+namespace MyScheduler.Weekly
 {
     public class WeeklyCalculatorTests
     {
@@ -186,9 +187,8 @@ namespace MyScheduler
         public void WeeklyEvery_ShouldPass_WhenGetWeeklyDescription2Days()
         {
             var listOfDays = new List<DayOfWeek> { DayOfWeek.Monday, DayOfWeek.Tuesday };
-
-            var result = DescriptionGenerator.GetWeeklyDayList(listOfDays);
-
+            var localizer = new Localizer();
+            var result = DescriptionGenerator.GetWeeklyDayList(listOfDays, localizer, "en-US");
             Assert.Equal("monday and tuesday", result);
         }
 
@@ -196,9 +196,8 @@ namespace MyScheduler
         public void WeeklyEvery_ShouldPass_WhenGetWeeklyDescription0Days()
         {
             var listOfDays = new List<DayOfWeek>();
-
-            var result = DescriptionGenerator.GetWeeklyDayList(listOfDays);
-
+            var localizer = new Localizer();
+            var result = DescriptionGenerator.GetWeeklyDayList(listOfDays, localizer, "en-US");
             Assert.Equal("no days specified", result);
         }
     }

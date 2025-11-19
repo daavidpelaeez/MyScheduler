@@ -9,7 +9,6 @@ namespace MyScheduler.ScheduleCalculators
 {
     public class MonthlyDayCalculator
     {
-
         public Result<ScheduleOutput> GetOutput(ScheduleEntity scheduleConfig, int? numOccurrences)
         {
             var dates = CalculateExecutions(scheduleConfig, numOccurrences);
@@ -21,38 +20,28 @@ namespace MyScheduler.ScheduleCalculators
         public List<DateTimeOffset> CalculateExecutions(ScheduleEntity scheduleConfig, int? numOccurrences)
         {
             var resultList = new List<DateTimeOffset>();
-            int dayNumber = scheduleConfig.MonthlyDayNumber;
-            int monthRecurrence = scheduleConfig.MonthlyDayRecurrence;
-
+            int dayNumber = scheduleConfig.MonthlyDayNumber!.Value;
+            int monthRecurrence = scheduleConfig.MonthlyDayRecurrence!.Value;
             DateTimeOffset endDate = scheduleConfig.EndDate ?? DateTimeOffset.MaxValue;
-
             var currentMonth = scheduleConfig.StartDate;
-
             for (int count = 0; currentMonth <= endDate; currentMonth = currentMonth.AddMonths(monthRecurrence))
             {
                 if (numOccurrences.HasValue && count >= numOccurrences)
                     break;
-
-                var day = GetValidDay(currentMonth.Year, currentMonth.Month, dayNumber);
-
-                var targetDate = new DateTimeOffset(currentMonth.Year, currentMonth.Month, day, currentMonth.Hour, currentMonth.Minute, currentMonth.Second, currentMonth.Offset);
-
-                if (targetDate >= scheduleConfig.StartDate)
+                int daysInMonth = DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
+                if (dayNumber <= daysInMonth)
                 {
-                    resultList.Add(targetDate);
-                    count++;
+                    var targetDate = new DateTimeOffset(currentMonth.Year, currentMonth.Month, dayNumber, currentMonth.Hour, currentMonth.Minute, currentMonth.Second, currentMonth.Offset);
+                    if (targetDate >= scheduleConfig.StartDate)
+                    {
+                        resultList.Add(targetDate);
+                        count++;
+                    }
                 }
-
             }
-
             return resultList;
         }
 
-        private int GetValidDay(int year, int month, int dayNumber)
-        {
-            int daysInMonth = DateTime.DaysInMonth(year, month);
-            return (dayNumber > daysInMonth) ? daysInMonth : dayNumber;
-        }
 
 
 

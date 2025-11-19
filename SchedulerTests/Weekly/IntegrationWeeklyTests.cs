@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace MyScheduler
+namespace MyScheduler.Weekly
 {
     public class IntegrationWeeklyTests
     {

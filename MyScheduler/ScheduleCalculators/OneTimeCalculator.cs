@@ -1,5 +1,4 @@
-﻿
-using MyScheduler.Entities;
+﻿using MyScheduler.Entities;
 using MyScheduler.Helpers;
 
 namespace MyScheduler.ScheduleCalculators
@@ -9,9 +8,9 @@ namespace MyScheduler.ScheduleCalculators
         public Result<ScheduleOutput> GetOnceOutput(ScheduleEntity scheduleConfig)
         {
             var nextExecution = scheduleConfig.OnceTypeDateExecution;
-
-            return Result<ScheduleOutput>.Success(OutputHelper.OutputBuilder(nextExecution!.Value,DescriptionGenerator.GetDescription(scheduleConfig)));
-
+            return nextExecution.HasValue
+                ? Result<ScheduleOutput>.Success(OutputHelper.OutputBuilder(nextExecution.Value, DescriptionGenerator.GetDescription(scheduleConfig)))
+                : Result<ScheduleOutput>.Failure("No next execution found");
         }
     }
 }

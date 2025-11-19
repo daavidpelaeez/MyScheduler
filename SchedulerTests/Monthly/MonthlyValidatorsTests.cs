@@ -5,7 +5,7 @@ using MyScheduler.Enums;
 using MyScheduler.Validators;
 using Xunit;
 
-namespace MyScheduler
+namespace MyScheduler.Monthly
 {
     public class MonthlyValidatorsTests
     {
@@ -47,7 +47,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void ShouldFail_When_NeitherDayNorTheChecked()
+        public void ShouldFail_When_DayNorTheChecked()
         {
             var schedule = new ScheduleEntity();
             schedule.ScheduleType = ScheduleType.Recurring;

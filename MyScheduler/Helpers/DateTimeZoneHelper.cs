@@ -12,17 +12,8 @@ namespace MyScheduler.Helpers
 
             var localDateTime = day.Date + time;
 
-            if (timeZone.IsAmbiguousTime(localDateTime))
-            {
-                var offsets = timeZone.GetAmbiguousTimeOffsets(localDateTime);
-                return new DateTimeOffset(localDateTime, offsets.Max());
-            }
-            else
-            {
-                var offset = timeZone.GetUtcOffset(localDateTime);
-                return new DateTimeOffset(localDateTime, offset);
-            }
-
+            var offset = timeZone.GetUtcOffset(localDateTime);
+            return new DateTimeOffset(localDateTime, offset);
         }
         
     }

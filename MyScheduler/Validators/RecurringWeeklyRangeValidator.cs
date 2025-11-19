@@ -16,6 +16,9 @@ namespace MyScheduler.Validators
                 return;
             }
 
+            if (!scheduleConfig.TimeUnitNumberOf.HasValue || scheduleConfig.TimeUnitNumberOf < 1)
+                errors.AppendLine("TimeUnitNumberOf must be positive for Weekly Range configuration.");
+
             if (scheduleConfig.WeeklyRecurrence < 1)
                 errors.AppendLine("WeeklyRecurrence must be at least 1.");
 

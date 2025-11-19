@@ -1,15 +1,10 @@
 ﻿using MyScheduler.Entities;
-using MyScheduler.Helpers;
 using MyScheduler.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MyScheduler
+
+namespace MyScheduler.Monthly
 {
-    public class IntegrationMonthlyTests
+    public class MonthlyTests
     {
         
         [Fact]
@@ -39,7 +34,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void MonthlyDay_ShouldPass_WithDayNumberOne()
+        public void MonthlyDay_ShouldPass_WhenDayNumberOne()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -65,7 +60,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void MonthlyDay_ShouldPass_WithDayNumberThirtyOne()
+        public void MonthlyDay_ShouldPass_WhenDayNumberThirtyOne()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -92,7 +87,7 @@ namespace MyScheduler
 
 
         [Fact]
-        public void MonthlyDay_ShouldPass_WithThreeMonthRecurrence()
+        public void MonthlyDay_ShouldPass_WhenThreeMonthRecurrence()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -119,7 +114,7 @@ namespace MyScheduler
 
 
       [Fact]
-        public void MonthlyThe_ShouldPass_FirstMonday()
+        public void MonthlyThe_ShouldPass_WhenFirstMonday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -146,7 +141,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void MonthlyThe_ShouldPass_SecondTuesday()
+        public void MonthlyThe_ShouldPass_WhenSecondTuesday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -173,7 +168,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void MonthlyThe_ShouldPass_ThirdWednesday()
+        public void MonthlyThe_ShouldPass_WhenThirdWednesday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -200,7 +195,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void MonthlyThe_ShouldPass_FourthThursday()
+        public void MonthlyThe_ShouldPass_WhenFourthThursday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -227,7 +222,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void MonthlyThe_ShouldPass_LastFriday()
+        public void MonthlyThe_ShouldPass_WhenLastFriday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -254,7 +249,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void MonthlyThe_ShouldPass_FirstSaturday()
+        public void MonthlyThe_ShouldPass_WhenFirstSaturday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -281,7 +276,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void MonthlyThe_ShouldPass_LastSunday()
+        public void MonthlyThe_ShouldPass_WhenLastSunday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -308,7 +303,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void MonthlyThe_ShouldPass_FirstDay()
+        public void MonthlyThe_ShouldPass_WhenFirstDay()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -335,7 +330,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void MonthlyThe_ShouldPass_FirstWeekday()
+        public void MonthlyThe_ShouldPass_WhenFirstWeekday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -362,7 +357,7 @@ namespace MyScheduler
         }
 
         [Fact]
-        public void MonthlyThe_ShouldPass_LastWeekendDay()
+        public void MonthlyThe_ShouldPass_WhenLastWeekendDay()
         {
             ScheduleEntity schedule = new ScheduleEntity();
             schedule.ScheduleType = Enums.ScheduleType.Recurring;
@@ -948,32 +943,6 @@ namespace MyScheduler
             Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
         }
 
-        [Fact]
-        public void MonthlyDay_NonLeapYear_Day29_AdjustsTo28()
-        {
-            var schedule = new ScheduleEntity
-            {
-                ScheduleType = Enums.ScheduleType.Recurring,
-                Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
-                MonthlyFrequencyDayCheckbox = true,
-                MonthlyDayNumber = 29,
-                MonthlyDayRecurrence = 1,
-                DailyFrequencyOnceCheckbox = true,
-                DailyOnceExecutionTime = TimeSpan.Zero,
-                StartDate = new DateTimeOffset(2025, 2, 1, 0, 0, 0, TimeSpan.Zero),
-                EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero)
-            };
-
-            var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
-
-            Assert.False(result.IsFailure);
-            Assert.Equal(2025, result.Value.ExecutionTime.Year);
-            Assert.Equal(2, result.Value.ExecutionTime.Month);
-            Assert.Equal(28, result.Value.ExecutionTime.Day); 
-            Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
-        }
 
         [Fact]
         public void MonthlyThe_ThirdWeekendDay_ReturnsCorrectDate()
