@@ -55,7 +55,7 @@
 //        }
 
 //        [Fact]
-//        public void MonthlyDayDailyOnceCalculator()
+//        public void MonthlyDayDailyOnceOutput()
 //        {
 //            ScheduleEntity schedule = new ScheduleEntity();
 
@@ -65,7 +65,7 @@
 //            schedule.MonthlyDayRecurrence = 2;
 //            schedule.DailyOnceExecutionTime = new TimeSpan(15,0,0);
 
-//            MonthlyDayDailyOnceCalculator mtc = new MonthlyDayDailyOnceCalculator();
+//            MonthlyDayDailyOnceOutput mtc = new MonthlyDayDailyOnceOutput();
 
 //            List<DateTimeOffset> result = mtc.AddHourToList(schedule, 10);
 
@@ -77,7 +77,7 @@
 //        }
 
 //        [Fact]
-//        public void MonthlyDayDailyRangeCalculator()
+//        public void MonthlyDayDailyRangeOutput()
 //        {
 //            ScheduleEntity schedule = new ScheduleEntity();
 
@@ -91,7 +91,7 @@
 //            schedule.DailyEndTime = new TimeSpan(19, 0, 0);
 
 
-//            MonthlyDayDailyRangeCalculator mtc = new MonthlyDayDailyRangeCalculator();
+//            MonthlyDayDailyRangeOutput mtc = new MonthlyDayDailyRangeOutput();
 
 //            List<DateTimeOffset> result = mtc.CalculateExecutions(schedule, 10);
 
@@ -102,7 +102,7 @@
 //        }
 
 //        [Fact]
-//        public void MonthlyTheDailyOnceCalculatorTest()
+//        public void MonthlyTheDailyOnceOutputTest()
 //        {
 //            ScheduleEntity schedule = new ScheduleEntity();
 
@@ -113,7 +113,7 @@
 //            schedule.MonthlyTheRecurrence = 1;
 //            schedule.DailyOnceExecutionTime = new TimeSpan(15,0,0);
 
-//            MonthlyTheDailyOnceCalculator mtc = new MonthlyTheDailyOnceCalculator();
+//            MonthlyTheDailyOnceOutput mtc = new MonthlyTheDailyOnceOutput();
 
 //            List<DateTimeOffset> result = mtc.AddHourToList(schedule, 10);
 
@@ -126,7 +126,7 @@
 
 
 //        [Fact]
-//        public void MonthlyTheDailyRangeCalculator()
+//        public void MonthlyTheDailyRangeOutput()
 //        {
 //            ScheduleEntity schedule = new ScheduleEntity();
 
@@ -140,7 +140,7 @@
 //            schedule.DailyStartTime = new TimeSpan(15, 0, 0);
 //            schedule.DailyEndTime = new TimeSpan(19, 0, 0);
 
-//            MonthlyTheDailyRangeCalculator mtc = new MonthlyTheDailyRangeCalculator();
+//            MonthlyTheDailyRangeOutput mtc = new MonthlyTheDailyRangeOutput();
 
 //            List<DateTimeOffset> result = mtc.CalculateExecutions(schedule, 10);
 

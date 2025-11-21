@@ -1,5 +1,5 @@
-﻿using MyScheduler.Entities;
-using MyScheduler.Enums;
+﻿using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

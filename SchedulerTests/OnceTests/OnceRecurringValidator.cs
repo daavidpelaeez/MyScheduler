@@ -1,7 +1,7 @@
-﻿using MyScheduler.Entities;
-using MyScheduler.Enums;
-using MyScheduler.Services;
-using MyScheduler.Validators;
+﻿using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
+using MyScheduler.Domain.Validators;
+
 
 namespace MyScheduler.OnceTests
 {

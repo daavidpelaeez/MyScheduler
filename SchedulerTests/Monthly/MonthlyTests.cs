@@ -1,5 +1,6 @@
-﻿using MyScheduler.Entities;
-using MyScheduler.Services;
+﻿using MyScheduler.Application.Services;
+using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
 
 
 namespace MyScheduler.Monthly
@@ -11,9 +12,9 @@ namespace MyScheduler.Monthly
         public void MonthlyDay_ShouldPass_WhenAllIsGood()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyDayCheckbox = true;
             schedule.MonthlyDayNumber = 3;
             schedule.MonthlyDayRecurrence = 2;
@@ -24,10 +25,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,8,3,0,0,0,TimeSpan.FromHours(2));
-            var expectedDescription = $"Occurs day {schedule.MonthlyDayNumber} every {schedule.MonthlyDayRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 11/06/2025";
+            var expectedDescription = $"Occurs day {schedule.MonthlyDayNumber} every {schedule.MonthlyDayRecurrence} month(s) at 00:00, starting 11/06/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -37,9 +38,9 @@ namespace MyScheduler.Monthly
         public void MonthlyDay_ShouldPass_WhenDayNumberOne()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyDayCheckbox = true;
             schedule.MonthlyDayNumber = 1;
             schedule.MonthlyDayRecurrence = 1;
@@ -50,10 +51,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,2,1,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs day {schedule.MonthlyDayNumber} every {schedule.MonthlyDayRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 15/01/2025";
+            var expectedDescription = $"Occurs day {schedule.MonthlyDayNumber} every {schedule.MonthlyDayRecurrence} month(s) at 00:00, starting 15/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -63,9 +64,9 @@ namespace MyScheduler.Monthly
         public void MonthlyDay_ShouldPass_WhenDayNumberThirtyOne()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyDayCheckbox = true;
             schedule.MonthlyDayNumber = 31;
             schedule.MonthlyDayRecurrence = 1;
@@ -76,10 +77,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,1,31,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs day {schedule.MonthlyDayNumber} every {schedule.MonthlyDayRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 01/01/2025";
+            var expectedDescription = $"Occurs day {schedule.MonthlyDayNumber} every {schedule.MonthlyDayRecurrence} month(s) at 00:00, starting 01/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -90,9 +91,9 @@ namespace MyScheduler.Monthly
         public void MonthlyDay_ShouldPass_WhenThreeMonthRecurrence()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyDayCheckbox = true;
             schedule.MonthlyDayNumber = 15;
             schedule.MonthlyDayRecurrence = 3;
@@ -103,10 +104,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,1,15,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs day {schedule.MonthlyDayNumber} every {schedule.MonthlyDayRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 01/01/2025";
+            var expectedDescription = $"Occurs day {schedule.MonthlyDayNumber} every {schedule.MonthlyDayRecurrence} month(s) at 00:00, starting 01/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -117,12 +118,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_WhenFirstMonday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.First;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Monday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.First;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Monday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.Zero;
@@ -131,10 +132,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,1,6,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs the {schedule.MonthlyTheOrder} {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 01/01/2025";
+            var expectedDescription = $"Occurs the first {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at 00:00, starting 01/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -144,12 +145,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_WhenSecondTuesday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Second;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Tuesday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Second;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Tuesday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.Zero;
@@ -158,10 +159,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,1,14,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs the {schedule.MonthlyTheOrder} {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 01/01/2025";
+            var expectedDescription = $"Occurs the second {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at 00:00, starting 01/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -171,12 +172,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_WhenThirdWednesday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Third;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Wednesday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Third;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Wednesday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.Zero;
@@ -185,10 +186,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,1,15,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs the {schedule.MonthlyTheOrder} {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 01/01/2025";
+            var expectedDescription = $"Occurs the third {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at 00:00, starting 01/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -198,12 +199,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_WhenFourthThursday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Fourth;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Thursday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Fourth;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Thursday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.Zero;
@@ -212,10 +213,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,1,23,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs the {schedule.MonthlyTheOrder} {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 01/01/2025";
+            var expectedDescription = $"Occurs the fourth {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at 00:00, starting 01/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -225,12 +226,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_WhenLastFriday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Last;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Friday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Last;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Friday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.Zero;
@@ -239,10 +240,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,1,31,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs the {schedule.MonthlyTheOrder} {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 01/01/2025";
+            var expectedDescription = $"Occurs the last {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at 00:00, starting 01/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -252,12 +253,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_WhenFirstSaturday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.First;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Saturday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.First;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Saturday;
             schedule.MonthlyTheRecurrence = 2;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.Zero;
@@ -266,10 +267,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,1,4,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs the {schedule.MonthlyTheOrder} {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 01/01/2025";
+            var expectedDescription = $"Occurs the first {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at 00:00, starting 01/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -279,12 +280,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_WhenLastSunday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Last;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Sunday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Last;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Sunday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.Zero;
@@ -293,10 +294,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,1,26,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs the {schedule.MonthlyTheOrder} {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 01/01/2025";
+            var expectedDescription = $"Occurs the last {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at 00:00, starting 01/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -306,12 +307,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_WhenFirstDay()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.First;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Day;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.First;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Day;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.Zero;
@@ -320,10 +321,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,2,1,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs the {schedule.MonthlyTheOrder} {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 05/01/2025";
+            var expectedDescription = $"Occurs the first day of every {schedule.MonthlyTheRecurrence} month(s) at 00:00, starting 05/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -333,12 +334,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_WhenFirstWeekday()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.First;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Weekday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.First;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Weekday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.Zero;
@@ -347,10 +348,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,1,1,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs the {schedule.MonthlyTheOrder} {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 01/01/2025";
+            var expectedDescription = $"Occurs the first weekday of every {schedule.MonthlyTheRecurrence} month(s) at 00:00, starting 01/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -360,12 +361,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_WhenLastWeekendDay()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Last;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.WeekendDay;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Last;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.WeekendDay;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.Zero;
@@ -374,10 +375,10 @@ namespace MyScheduler.Monthly
             
             ScheduleManager manager = new ScheduleManager();
 
-            var result = manager.GetNextExecution(schedule, 10);
+            var result = manager.GetOutput(schedule, 10);
 
             var expectedDate = new DateTimeOffset(2025,1,26,0,0,0,TimeSpan.FromHours(1));
-            var expectedDescription = $"Occurs the {schedule.MonthlyTheOrder} {schedule.MonthlyTheDayOfWeek} of every {schedule.MonthlyTheRecurrence} month(s) at {schedule.DailyOnceExecutionTime}, starting 01/01/2025";
+            var expectedDescription = $"Occurs the last weekend day of every {schedule.MonthlyTheRecurrence} month(s) at 00:00, starting 01/01/2025";
 
             Assert.Equal(expectedDate,result.Value.ExecutionTime); 
             Assert.Equal(expectedDescription,result.Value.Description);
@@ -385,23 +386,23 @@ namespace MyScheduler.Monthly
 
 
         [Theory]
-        [InlineData(Enums.MonthlyTheOrder.First, Enums.MonthlyDayOfWeek.Monday, 1, 8, 0, 0)]
-        [InlineData(Enums.MonthlyTheOrder.Second, Enums.MonthlyDayOfWeek.Tuesday, 2, 9, 15, 0)]
-        [InlineData(Enums.MonthlyTheOrder.Third, Enums.MonthlyDayOfWeek.Wednesday, 1, 10, 30, 0)]
-        [InlineData(Enums.MonthlyTheOrder.Fourth, Enums.MonthlyDayOfWeek.Thursday, 2, 11, 45, 0)]
-        [InlineData(Enums.MonthlyTheOrder.Last, Enums.MonthlyDayOfWeek.Friday, 1, 12, 0, 0)]
-        [InlineData(Enums.MonthlyTheOrder.First, Enums.MonthlyDayOfWeek.Day, 1, 13, 0, 0)]
-        [InlineData(Enums.MonthlyTheOrder.Second, Enums.MonthlyDayOfWeek.Weekday, 2, 14, 15, 0)]
-        [InlineData(Enums.MonthlyTheOrder.Third, Enums.MonthlyDayOfWeek.WeekendDay, 1, 15, 30, 0)]
-        [InlineData(Enums.MonthlyTheOrder.Fourth, Enums.MonthlyDayOfWeek.Saturday, 2, 16, 45, 0)]
-        [InlineData(Enums.MonthlyTheOrder.Last, Enums.MonthlyDayOfWeek.Sunday, 1, 17, 0, 0)]
+        [InlineData(MonthlyTheOrder.First, MonthlyDayOfWeek.Monday, 1, 8, 0, 0)]
+        [InlineData(MonthlyTheOrder.Second, MonthlyDayOfWeek.Tuesday, 2, 9, 15, 0)]
+        [InlineData(MonthlyTheOrder.Third, MonthlyDayOfWeek.Wednesday, 1, 10, 30, 0)]
+        [InlineData(MonthlyTheOrder.Fourth, MonthlyDayOfWeek.Thursday, 2, 11, 45, 0)]
+        [InlineData(MonthlyTheOrder.Last, MonthlyDayOfWeek.Friday, 1, 12, 0, 0)]
+        [InlineData(MonthlyTheOrder.First, MonthlyDayOfWeek.Day, 1, 13, 0, 0)]
+        [InlineData(MonthlyTheOrder.Second, MonthlyDayOfWeek.Weekday, 2, 14, 15, 0)]
+        [InlineData(MonthlyTheOrder.Third, MonthlyDayOfWeek.WeekendDay, 1, 15, 30, 0)]
+        [InlineData(MonthlyTheOrder.Fourth, MonthlyDayOfWeek.Saturday, 2, 16, 45, 0)]
+        [InlineData(MonthlyTheOrder.Last, MonthlyDayOfWeek.Sunday, 1, 17, 0, 0)]
         public void MonthlyThe_ShouldPass_AllOrdersAndDays_DailyOnce(
-            Enums.MonthlyTheOrder order, Enums.MonthlyDayOfWeek dayOfWeek, int recurrence, int hour, int min, int sec)
+            MonthlyTheOrder order, MonthlyDayOfWeek dayOfWeek, int recurrence, int hour, int min, int sec)
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
             schedule.MonthlyTheOrder = order;
             schedule.MonthlyTheDayOfWeek = dayOfWeek;
@@ -411,30 +412,30 @@ namespace MyScheduler.Monthly
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
         }
 
         [Theory]
-        [InlineData(Enums.MonthlyTheOrder.First, Enums.MonthlyDayOfWeek.Monday, 1, 8, 0, 0, 10, 0, 0, 1, Enums.TimeUnit.Hours)]
-        [InlineData(Enums.MonthlyTheOrder.Second, Enums.MonthlyDayOfWeek.Tuesday, 2, 9, 0, 0, 9, 30, 0, 15, Enums.TimeUnit.Minutes)]
-        [InlineData(Enums.MonthlyTheOrder.Third, Enums.MonthlyDayOfWeek.Wednesday, 1, 10, 0, 0, 10, 1, 0, 20, Enums.TimeUnit.Seconds)]
-        [InlineData(Enums.MonthlyTheOrder.Fourth, Enums.MonthlyDayOfWeek.Thursday, 2, 11, 0, 0, 12, 0, 0, 1, Enums.TimeUnit.Hours)]
-        [InlineData(Enums.MonthlyTheOrder.Last, Enums.MonthlyDayOfWeek.Friday, 1, 13, 0, 0, 13, 30, 0, 30, Enums.TimeUnit.Minutes)]
-        [InlineData(Enums.MonthlyTheOrder.First, Enums.MonthlyDayOfWeek.Day, 1, 14, 0, 0, 14, 1, 0, 10, Enums.TimeUnit.Seconds)]
-        [InlineData(Enums.MonthlyTheOrder.Second, Enums.MonthlyDayOfWeek.Weekday, 2, 15, 0, 0, 16, 0, 0, 2, Enums.TimeUnit.Hours)]
-        [InlineData(Enums.MonthlyTheOrder.Third, Enums.MonthlyDayOfWeek.WeekendDay, 1, 17, 0, 0, 17, 30, 0, 15, Enums.TimeUnit.Minutes)]
-        [InlineData(Enums.MonthlyTheOrder.Fourth, Enums.MonthlyDayOfWeek.Saturday, 2, 18, 0, 0, 18, 1, 0, 5, Enums.TimeUnit.Seconds)]
-        [InlineData(Enums.MonthlyTheOrder.Last, Enums.MonthlyDayOfWeek.Sunday, 1, 19, 0, 0, 20, 0, 0, 1, Enums.TimeUnit.Hours)]
+        [InlineData(MonthlyTheOrder.First, MonthlyDayOfWeek.Monday, 1, 8, 0, 0, 10, 0, 0, 1, TimeUnit.Hours)]
+        [InlineData(MonthlyTheOrder.Second, MonthlyDayOfWeek.Tuesday, 2, 9, 0, 0, 9, 30, 0, 15, TimeUnit.Minutes)]
+        [InlineData(MonthlyTheOrder.Third, MonthlyDayOfWeek.Wednesday, 1, 10, 0, 0, 10, 1, 0, 20, TimeUnit.Seconds)]
+        [InlineData(MonthlyTheOrder.Fourth, MonthlyDayOfWeek.Thursday, 2, 11, 0, 0, 12, 0, 0, 1, TimeUnit.Hours)]
+        [InlineData(MonthlyTheOrder.Last, MonthlyDayOfWeek.Friday, 1, 13, 0, 0, 13, 30, 0, 30, TimeUnit.Minutes)]
+        [InlineData(MonthlyTheOrder.First, MonthlyDayOfWeek.Day, 1, 14, 0, 0, 14, 1, 0, 10, TimeUnit.Seconds)]
+        [InlineData(MonthlyTheOrder.Second, MonthlyDayOfWeek.Weekday, 2, 15, 0, 0, 16, 0, 0, 2, TimeUnit.Hours)]
+        [InlineData(MonthlyTheOrder.Third, MonthlyDayOfWeek.WeekendDay, 1, 17, 0, 0, 17, 30, 0, 15, TimeUnit.Minutes)]
+        [InlineData(MonthlyTheOrder.Fourth, MonthlyDayOfWeek.Saturday, 2, 18, 0, 0, 18, 1, 0, 5, TimeUnit.Seconds)]
+        [InlineData(MonthlyTheOrder.Last, MonthlyDayOfWeek.Sunday, 1, 19, 0, 0, 20, 0, 0, 1, TimeUnit.Hours)]
         public void MonthlyTheDailyRange_ShouldPass_AllOrdersAndDays_AllTimeUnits(
-            Enums.MonthlyTheOrder order, Enums.MonthlyDayOfWeek dayOfWeek, int recurrence,
-            int sh, int sm, int ss, int eh, int em, int es, int unit, Enums.TimeUnit timeUnit)
+            MonthlyTheOrder order, MonthlyDayOfWeek dayOfWeek, int recurrence,
+            int sh, int sm, int ss, int eh, int em, int es, int unit, TimeUnit timeUnit)
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
             schedule.MonthlyTheOrder = order;
             schedule.MonthlyTheDayOfWeek = dayOfWeek;
@@ -447,7 +448,7 @@ namespace MyScheduler.Monthly
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyStartTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -456,9 +457,9 @@ namespace MyScheduler.Monthly
         public void MonthlyDay_ShouldPass_WithRecurrenceTwo_StartDateBeforeDayInMonth_ReturnsSameMonth()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyDayCheckbox = true;
             schedule.MonthlyDayNumber = 10;
             schedule.MonthlyDayRecurrence = 2;
@@ -468,7 +469,7 @@ namespace MyScheduler.Monthly
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
 
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.False(result.IsFailure);
             Assert.Equal(2025, result.Value.ExecutionTime.Year);
@@ -481,9 +482,9 @@ namespace MyScheduler.Monthly
         public void MonthlyDay_ShouldPass_WithRecurrenceTwo_StartDateAfterDayInMonth_ReturnsNextRecurrenceMonth()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyDayCheckbox = true;
             schedule.MonthlyDayNumber = 10;
             schedule.MonthlyDayRecurrence = 2;
@@ -493,7 +494,7 @@ namespace MyScheduler.Monthly
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
 
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.False(result.IsFailure);
             Assert.Equal(2025, result.Value.ExecutionTime.Year);
@@ -506,9 +507,9 @@ namespace MyScheduler.Monthly
         public void MonthlyDayDailyRange_ShouldPass_WithRangeCrossingMidnight()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyDayCheckbox = true;
             schedule.MonthlyDayNumber = 5;
             schedule.MonthlyDayRecurrence = 1;
@@ -516,12 +517,12 @@ namespace MyScheduler.Monthly
             schedule.DailyStartTime = new TimeSpan(23, 0, 0);
             schedule.DailyEndTime = new TimeSpan(1, 0, 0);
             schedule.TimeUnitNumberOf = 30;
-            schedule.TimeUnit = Enums.TimeUnit.Minutes;
+            schedule.TimeUnit = TimeUnit.Minutes;
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
 
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DailyStartTime cannot be after the DailyEndTime.", result.Error);
@@ -531,12 +532,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_LastDayOfMonth()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Last;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Day;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Last;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Day;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.FromHours(18);
@@ -544,7 +545,7 @@ namespace MyScheduler.Monthly
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
 
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.False(result.IsFailure);
             Assert.Equal(2025, result.Value.ExecutionTime.Year);
@@ -557,12 +558,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_LastWeekdayOfMonth()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Last;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Weekday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Last;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Weekday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.FromHours(19);
@@ -570,7 +571,7 @@ namespace MyScheduler.Monthly
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
 
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.False(result.IsFailure);
             Assert.Equal(2025, result.Value.ExecutionTime.Year);
@@ -583,12 +584,12 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_FirstWeekendDayOfMonth()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.First;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.WeekendDay;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.First;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.WeekendDay;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = TimeSpan.FromHours(8);
@@ -596,7 +597,7 @@ namespace MyScheduler.Monthly
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
 
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.False(result.IsFailure);
             Assert.Equal(2025, result.Value.ExecutionTime.Year);
@@ -609,23 +610,23 @@ namespace MyScheduler.Monthly
         public void MonthlyTheDailyRange_ShouldPass_WhenSecondsRange()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.First;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Monday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.First;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Monday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyRangeCheckbox = true;
             schedule.DailyStartTime = new TimeSpan(0, 0, 0);
             schedule.DailyEndTime = new TimeSpan(0, 1, 0);
             schedule.TimeUnitNumberOf = 10;
-            schedule.TimeUnit = Enums.TimeUnit.Seconds;
+            schedule.TimeUnit = TimeUnit.Seconds;
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
 
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.False(result.IsFailure);
             Assert.Equal(2025, result.Value.ExecutionTime.Year);
@@ -638,9 +639,9 @@ namespace MyScheduler.Monthly
         public void MonthlyDayDailyRange_ShouldPass_WithSecondsRange_MinimumInterval()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyDayCheckbox = true;
             schedule.MonthlyDayNumber = 2;
             schedule.MonthlyDayRecurrence = 1;
@@ -648,12 +649,12 @@ namespace MyScheduler.Monthly
             schedule.DailyStartTime = new TimeSpan(0, 0, 0);
             schedule.DailyEndTime = new TimeSpan(0, 0, 10);
             schedule.TimeUnitNumberOf = 1;
-            schedule.TimeUnit = Enums.TimeUnit.Seconds;
+            schedule.TimeUnit = TimeUnit.Seconds;
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
 
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.False(result.IsFailure);
             Assert.Equal(2025, result.Value.ExecutionTime.Year);
@@ -667,9 +668,9 @@ namespace MyScheduler.Monthly
         {
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Recurring,
+                ScheduleType = ScheduleType.Recurring,
                 Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
+                Occurs = Occurs.Monthly,
                 MonthlyFrequencyDayCheckbox = true,
                 MonthlyFrequencyTheCheckbox = true,
                 DailyFrequencyOnceCheckbox = true,
@@ -679,7 +680,7 @@ namespace MyScheduler.Monthly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("You cannot set both Day and The options on monthly configuration. Please choose only one.", result.Error);
@@ -690,9 +691,9 @@ namespace MyScheduler.Monthly
         {
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Recurring,
+                ScheduleType = ScheduleType.Recurring,
                 Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
+                Occurs = Occurs.Monthly,
                 DailyFrequencyOnceCheckbox = true,
                 DailyOnceExecutionTime = TimeSpan.Zero,
                 StartDate = new DateTimeOffset(2025,1,1,0,0,0,0,TimeSpan.Zero),
@@ -700,7 +701,7 @@ namespace MyScheduler.Monthly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("You need to check at least one option (Day or The) for monthly configuration.", result.Error);
@@ -711,9 +712,9 @@ namespace MyScheduler.Monthly
         {
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Recurring,
+                ScheduleType = ScheduleType.Recurring,
                 Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
+                Occurs = Occurs.Monthly,
                 MonthlyFrequencyDayCheckbox = true,
                 MonthlyDayNumber = 0, // invalid
                 MonthlyDayRecurrence = 1,
@@ -724,7 +725,7 @@ namespace MyScheduler.Monthly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("Monthly day number must be between 1 and 31.", result.Error);
@@ -735,9 +736,9 @@ namespace MyScheduler.Monthly
         {
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Recurring,
+                ScheduleType = ScheduleType.Recurring,
                 Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
+                Occurs = Occurs.Monthly,
                 MonthlyFrequencyDayCheckbox = true,
                 MonthlyDayNumber = 5,
                 MonthlyDayRecurrence = 0, // invalid
@@ -748,7 +749,7 @@ namespace MyScheduler.Monthly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("Monthly day recurrence must be greater than 0.", result.Error);
@@ -759,13 +760,13 @@ namespace MyScheduler.Monthly
         {
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Recurring,
+                ScheduleType = ScheduleType.Recurring,
                 Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
+                Occurs = Occurs.Monthly,
                 MonthlyFrequencyDayCheckbox = true,
                 MonthlyDayNumber = 10,
                 MonthlyDayRecurrence = 1,
-                MonthlyTheOrder = Enums.MonthlyTheOrder.First, 
+                MonthlyTheOrder = MonthlyTheOrder.First, 
                 DailyFrequencyOnceCheckbox = true,
                 DailyOnceExecutionTime = TimeSpan.Zero,
                 StartDate = new DateTimeOffset(2025,1,1,0,0,0,0,TimeSpan.Zero),
@@ -773,7 +774,7 @@ namespace MyScheduler.Monthly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("You cannot set monthly order (The Order) when using Day configuration.", result.Error);
@@ -784,9 +785,9 @@ namespace MyScheduler.Monthly
         {
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Recurring,
+                ScheduleType = ScheduleType.Recurring,
                 Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
+                Occurs = Occurs.Monthly,
                 MonthlyFrequencyDayCheckbox = true,
                 MonthlyDayNumber = 10,
                 MonthlyDayRecurrence = 1,
@@ -797,7 +798,7 @@ namespace MyScheduler.Monthly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DailyOnceExecutionTime is required for Monthly Day Once configuration.", result.Error);
@@ -808,9 +809,9 @@ namespace MyScheduler.Monthly
         {
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Recurring,
+                ScheduleType = ScheduleType.Recurring,
                 Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
+                Occurs = Occurs.Monthly,
                 MonthlyFrequencyDayCheckbox = true,
                 MonthlyDayNumber = 10,
                 MonthlyDayRecurrence = 1,
@@ -824,7 +825,7 @@ namespace MyScheduler.Monthly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DailyStartTime is required for Monthly Day Range configuration.", result.Error);
@@ -838,9 +839,9 @@ namespace MyScheduler.Monthly
         {
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Recurring,
+                ScheduleType = ScheduleType.Recurring,
                 Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
+                Occurs = Occurs.Monthly,
                 MonthlyFrequencyTheCheckbox = true,
                 MonthlyTheOrder = null, 
                 MonthlyTheDayOfWeek = null, 
@@ -852,7 +853,7 @@ namespace MyScheduler.Monthly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("Monthly order (First, Second, Third, Fourth, Last) is required for The configuration.", result.Error);
@@ -865,12 +866,12 @@ namespace MyScheduler.Monthly
         {
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Recurring,
+                ScheduleType = ScheduleType.Recurring,
                 Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
+                Occurs = Occurs.Monthly,
                 MonthlyFrequencyTheCheckbox = true,
-                MonthlyTheOrder = Enums.MonthlyTheOrder.First,
-                MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Monday,
+                MonthlyTheOrder = MonthlyTheOrder.First,
+                MonthlyTheDayOfWeek = MonthlyDayOfWeek.Monday,
                 MonthlyTheRecurrence = 1,
                 DailyFrequencyOnceCheckbox = true,
                 DailyOnceExecutionTime = null, 
@@ -879,7 +880,7 @@ namespace MyScheduler.Monthly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DailyOnceExecutionTime is required for Monthly The Once configuration.", result.Error);
@@ -890,12 +891,12 @@ namespace MyScheduler.Monthly
         {
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Recurring,
+                ScheduleType = ScheduleType.Recurring,
                 Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
+                Occurs = Occurs.Monthly,
                 MonthlyFrequencyTheCheckbox = true,
-                MonthlyTheOrder = Enums.MonthlyTheOrder.Last,
-                MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Friday,
+                MonthlyTheOrder = MonthlyTheOrder.Last,
+                MonthlyTheDayOfWeek = MonthlyDayOfWeek.Friday,
                 MonthlyTheRecurrence = 1,
                 DailyFrequencyRangeCheckbox = true,
                 DailyStartTime = null,
@@ -907,7 +908,7 @@ namespace MyScheduler.Monthly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DailyStartTime is required for Monthly The Range configuration.", result.Error);
@@ -921,20 +922,21 @@ namespace MyScheduler.Monthly
         {
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Recurring,
+                ScheduleType = ScheduleType.Recurring,
                 Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
+                Occurs = Occurs.Monthly,
                 MonthlyFrequencyDayCheckbox = true,
                 MonthlyDayNumber = 29,
                 MonthlyDayRecurrence = 1,
                 DailyFrequencyOnceCheckbox = true,
                 DailyOnceExecutionTime = TimeSpan.Zero,
                 StartDate = new DateTimeOffset(2024, 2, 1, 0, 0, 0, TimeSpan.Zero),
-                EndDate = new DateTimeOffset(2024, 12, 31, 0, 0, 0, TimeSpan.Zero)
+                EndDate = new DateTimeOffset(2024, 12, 31, 0, 0, 0, TimeSpan.Zero),
+                Language = "es"
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.False(result.IsFailure);
             Assert.Equal(2024, result.Value.ExecutionTime.Year);
@@ -950,12 +952,12 @@ namespace MyScheduler.Monthly
             
             var schedule = new ScheduleEntity
             {
-                ScheduleType = Enums.ScheduleType.Recurring,
+                ScheduleType = ScheduleType.Recurring,
                 Enabled = true,
-                Occurs = Enums.Occurs.Monthly,
+                Occurs = Occurs.Monthly,
                 MonthlyFrequencyTheCheckbox = true,
-                MonthlyTheOrder = Enums.MonthlyTheOrder.Third,
-                MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.WeekendDay,
+                MonthlyTheOrder = MonthlyTheOrder.Third,
+                MonthlyTheDayOfWeek = MonthlyDayOfWeek.WeekendDay,
                 MonthlyTheRecurrence = 1,
                 DailyFrequencyOnceCheckbox = true,
                 DailyOnceExecutionTime = TimeSpan.Zero,
@@ -964,7 +966,7 @@ namespace MyScheduler.Monthly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
 
             Assert.False(result.IsFailure);
             Assert.Equal(2025, result.Value.ExecutionTime.Year);
@@ -976,9 +978,9 @@ namespace MyScheduler.Monthly
         public void MonthlyDay_ShouldPass_WithDaySevenEveryFourMonths_AtEvening()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyDayCheckbox = true;
             schedule.MonthlyDayNumber = 7;
             schedule.MonthlyDayRecurrence = 4;
@@ -987,7 +989,7 @@ namespace MyScheduler.Monthly
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2026, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(2025, result.Value.ExecutionTime.Year);
             Assert.Equal(1, result.Value.ExecutionTime.Month);
@@ -999,9 +1001,9 @@ namespace MyScheduler.Monthly
         public void MonthlyDayDailyRange_ShouldPass_Day12Every3Months_Every2Hours()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyDayCheckbox = true;
             schedule.MonthlyDayNumber = 12;
             schedule.MonthlyDayRecurrence = 3;
@@ -1009,11 +1011,11 @@ namespace MyScheduler.Monthly
             schedule.DailyStartTime = new TimeSpan(8, 0, 0);
             schedule.DailyEndTime = new TimeSpan(16, 0, 0);
             schedule.TimeUnitNumberOf = 2;
-            schedule.TimeUnit = Enums.TimeUnit.Hours;
+            schedule.TimeUnit = TimeUnit.Hours;
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2026, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(2025, result.Value.ExecutionTime.Year);
             Assert.Equal(1, result.Value.ExecutionTime.Month);
@@ -1025,9 +1027,9 @@ namespace MyScheduler.Monthly
         public void MonthlyDayDailyRange_ShouldPass_Day28Every1Month_Every5Minutes()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyDayCheckbox = true;
             schedule.MonthlyDayNumber = 28;
             schedule.MonthlyDayRecurrence = 1;
@@ -1035,11 +1037,11 @@ namespace MyScheduler.Monthly
             schedule.DailyStartTime = new TimeSpan(10, 0, 0);
             schedule.DailyEndTime = new TimeSpan(10, 30, 0);
             schedule.TimeUnitNumberOf = 5;
-            schedule.TimeUnit = Enums.TimeUnit.Minutes;
+            schedule.TimeUnit = TimeUnit.Minutes;
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2026, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(2025, result.Value.ExecutionTime.Year);
             Assert.Equal(1, result.Value.ExecutionTime.Month);
@@ -1051,9 +1053,9 @@ namespace MyScheduler.Monthly
         public void MonthlyDayDailyRange_ShouldPass_Day15Every2Months_Every20Seconds()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyDayCheckbox = true;
             schedule.MonthlyDayNumber = 15;
             schedule.MonthlyDayRecurrence = 2;
@@ -1061,11 +1063,11 @@ namespace MyScheduler.Monthly
             schedule.DailyStartTime = new TimeSpan(14, 0, 0);
             schedule.DailyEndTime = new TimeSpan(14, 1, 0);
             schedule.TimeUnitNumberOf = 20;
-            schedule.TimeUnit = Enums.TimeUnit.Seconds;
+            schedule.TimeUnit = TimeUnit.Seconds;
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2026, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(2025, result.Value.ExecutionTime.Year);
             Assert.Equal(1, result.Value.ExecutionTime.Month);
@@ -1077,19 +1079,19 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_FirstMonday_DailyOnce()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.First;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Monday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.First;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Monday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = new TimeSpan(8, 0, 0);
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1098,19 +1100,19 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_SecondTuesday_DailyOnce()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Second;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Tuesday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Second;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Tuesday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = new TimeSpan(9, 15, 0);
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1119,19 +1121,19 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_ThirdWednesday_DailyOnce()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Third;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Wednesday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Third;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Wednesday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = new TimeSpan(10, 30, 0);
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1140,19 +1142,19 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_FourthThursday_DailyOnce()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Fourth;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Thursday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Fourth;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Thursday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = new TimeSpan(11, 45, 0);
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1161,19 +1163,19 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_LastFriday_DailyOnce()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Last;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Friday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Last;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Friday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = new TimeSpan(12, 0, 0);
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1182,19 +1184,19 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_FirstDay_DailyOnce()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.First;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Day;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.First;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Day;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = new TimeSpan(13, 0, 0);
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1203,19 +1205,19 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_SecondWeekday_DailyOnce()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Second;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Weekday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Second;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Weekday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = new TimeSpan(14, 15, 0);
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1224,19 +1226,19 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_ThirdWeekendDay_DailyOnce()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Third;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.WeekendDay;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Third;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.WeekendDay;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = new TimeSpan(15, 30, 0);
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1245,19 +1247,19 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_FourthSaturday_DailyOnce()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Fourth;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Saturday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Fourth;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Saturday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = new TimeSpan(16, 45, 0);
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1266,19 +1268,19 @@ namespace MyScheduler.Monthly
         public void MonthlyThe_ShouldPass_LastSunday_DailyOnce()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Last;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Sunday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Last;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Sunday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyOnceCheckbox = true;
             schedule.DailyOnceExecutionTime = new TimeSpan(17, 0, 0);
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyOnceExecutionTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1287,22 +1289,22 @@ namespace MyScheduler.Monthly
         public void MonthlyTheDailyRange_ShouldPass_FirstMonday_EveryHour()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.First;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Monday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.First;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Monday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyRangeCheckbox = true;
             schedule.DailyStartTime = new TimeSpan(8, 0, 0);
             schedule.DailyEndTime = new TimeSpan(12, 0, 0);
             schedule.TimeUnitNumberOf = 1;
-            schedule.TimeUnit = Enums.TimeUnit.Hours;
+            schedule.TimeUnit = TimeUnit.Hours;
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyStartTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1311,22 +1313,22 @@ namespace MyScheduler.Monthly
         public void MonthlyTheDailyRange_ShouldPass_SecondTuesday_Every15Minutes()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Second;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Tuesday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Second;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Tuesday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyRangeCheckbox = true;
             schedule.DailyStartTime = new TimeSpan(9, 0, 0);
             schedule.DailyEndTime = new TimeSpan(9, 30, 0);
             schedule.TimeUnitNumberOf = 15;
-            schedule.TimeUnit = Enums.TimeUnit.Minutes;
+            schedule.TimeUnit = TimeUnit.Minutes;
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyStartTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1335,22 +1337,22 @@ namespace MyScheduler.Monthly
         public void MonthlyTheDailyRange_ShouldPass_ThirdWednesday_Every20Seconds()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Third;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Wednesday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Third;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Wednesday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyRangeCheckbox = true;
             schedule.DailyStartTime = new TimeSpan(10, 0, 0);
             schedule.DailyEndTime = new TimeSpan(10, 1, 0);
             schedule.TimeUnitNumberOf = 20;
-            schedule.TimeUnit = Enums.TimeUnit.Seconds;
+            schedule.TimeUnit = TimeUnit.Seconds;
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyStartTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1359,22 +1361,22 @@ namespace MyScheduler.Monthly
         public void MonthlyTheDailyRange_ShouldPass_FourthThursday_EveryHour()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Fourth;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Thursday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Fourth;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Thursday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyRangeCheckbox = true;
             schedule.DailyStartTime = new TimeSpan(11, 0, 0);
             schedule.DailyEndTime = new TimeSpan(12, 0, 0);
             schedule.TimeUnitNumberOf = 1;
-            schedule.TimeUnit = Enums.TimeUnit.Hours;
+            schedule.TimeUnit = TimeUnit.Hours;
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyStartTime, result.Value.ExecutionTime.TimeOfDay);
         }
@@ -1383,22 +1385,22 @@ namespace MyScheduler.Monthly
         public void MonthlyTheDailyRange_ShouldPass_LastFriday_Every30Minutes()
         {
             ScheduleEntity schedule = new ScheduleEntity();
-            schedule.ScheduleType = Enums.ScheduleType.Recurring;
+            schedule.ScheduleType = ScheduleType.Recurring;
             schedule.Enabled = true;
-            schedule.Occurs = Enums.Occurs.Monthly;
+            schedule.Occurs = Occurs.Monthly;
             schedule.MonthlyFrequencyTheCheckbox = true;
-            schedule.MonthlyTheOrder = Enums.MonthlyTheOrder.Last;
-            schedule.MonthlyTheDayOfWeek = Enums.MonthlyDayOfWeek.Friday;
+            schedule.MonthlyTheOrder = MonthlyTheOrder.Last;
+            schedule.MonthlyTheDayOfWeek = MonthlyDayOfWeek.Friday;
             schedule.MonthlyTheRecurrence = 1;
             schedule.DailyFrequencyRangeCheckbox = true;
             schedule.DailyStartTime = new TimeSpan(13, 0, 0);
             schedule.DailyEndTime = new TimeSpan(13, 30, 0);
             schedule.TimeUnitNumberOf = 30;
-            schedule.TimeUnit = Enums.TimeUnit.Minutes;
+            schedule.TimeUnit = TimeUnit.Minutes;
             schedule.StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
             schedule.EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, TimeSpan.Zero);
             ScheduleManager manager = new ScheduleManager();
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
             Assert.Equal(schedule.DailyStartTime, result.Value.ExecutionTime.TimeOfDay);
         }

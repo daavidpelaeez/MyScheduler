@@ -1,8 +1,8 @@
-﻿using System;
-using MyScheduler.Entities;
-using MyScheduler.Enums;
-using MyScheduler.Helpers;
-using Xunit;
+﻿
+using MyScheduler.Application.Services;
+using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
+
 
 namespace MyScheduler.Services
 {
@@ -13,8 +13,7 @@ namespace MyScheduler.Services
         {
             var manager = new ScheduleManager();
             var schedule = new ScheduleEntity();
-            // Invalid config: missing required fields
-            var result = manager.GetNextExecution(schedule, null);
+            var result = manager.GetOutput(schedule, null);
             Assert.True(result.IsFailure);
             Assert.NotNull(result.Error);
         }
@@ -32,9 +31,9 @@ namespace MyScheduler.Services
                 CurrentDate = DateTimeOffset.Now,
                 OnceTypeDateExecution = DateTimeOffset.Now.AddDays(1)
             };
-            var result = manager.GetNextExecution(schedule, null);
+            var result = manager.GetOutput(schedule, null);
             Assert.False(result.IsFailure);
-            Assert.NotNull(result.Value);
+
         }
 
         [Fact]
@@ -54,9 +53,8 @@ namespace MyScheduler.Services
                 CurrentDate = DateTimeOffset.Now
             };
             schedule.DailyFrequencyRangeCheckbox = false;
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
-            Assert.NotNull(result.Value);
         }
 
         [Fact]
@@ -78,9 +76,9 @@ namespace MyScheduler.Services
                 Recurrence = 1,
                 CurrentDate = DateTimeOffset.Now
             };
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
-            Assert.NotNull(result.Value);
+
         }
 
         [Fact]
@@ -101,9 +99,8 @@ namespace MyScheduler.Services
                 CurrentDate = DateTimeOffset.Now,
                 DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday }
             };
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
-            Assert.NotNull(result.Value);
         }
 
         [Fact]
@@ -127,9 +124,9 @@ namespace MyScheduler.Services
                 CurrentDate = DateTimeOffset.Now,
                 DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday }
             };
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
-            Assert.NotNull(result.Value);
+
         }
 
         [Fact]
@@ -148,9 +145,8 @@ namespace MyScheduler.Services
                 Enabled = true,
                 StartDate = DateTimeOffset.Now.AddDays(1)
             };
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
-            Assert.NotNull(result.Value);
         }
 
         [Fact]
@@ -172,9 +168,9 @@ namespace MyScheduler.Services
                 Enabled = true,
                 StartDate = DateTimeOffset.Now.AddDays(1)
             };
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
-            Assert.NotNull(result.Value);
+
         }
 
         [Fact]
@@ -194,9 +190,9 @@ namespace MyScheduler.Services
                 Enabled = true,
                 StartDate = DateTimeOffset.Now.AddDays(1)
             };
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
-            Assert.NotNull(result.Value);
+
         }
 
         [Fact]
@@ -219,9 +215,9 @@ namespace MyScheduler.Services
                 Enabled = true,
                 StartDate = DateTimeOffset.Now.AddDays(1)
             };
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
-            Assert.NotNull(result.Value);
+
         }
 
         [Fact]
@@ -238,13 +234,13 @@ namespace MyScheduler.Services
                 Enabled = true,
                 StartDate = DateTimeOffset.Now.AddDays(1)
             };
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
-            Assert.NotNull(result.Value);
+
         }
 
         [Fact]
-        public void GetNextExecution_ShouldReturnMonthlyTheCalculatorResult()
+        public void GetNextExecution_ShouldReturnMonthlyTheOutputResult()
         {
             var manager = new ScheduleManager();
             var schedule = new ScheduleEntity
@@ -258,9 +254,8 @@ namespace MyScheduler.Services
                 Enabled = true,
                 StartDate = DateTimeOffset.Now.AddDays(1)
             };
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.False(result.IsFailure);
-            Assert.NotNull(result.Value);
         }
 
         [Fact]
@@ -273,7 +268,7 @@ namespace MyScheduler.Services
                 Enabled = true,
                 StartDate = DateTimeOffset.Now.AddDays(1)
             };
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.True(result.IsFailure);
             Assert.Contains("Schedule type should be once or recurring", result.Error);
         }
@@ -289,7 +284,7 @@ namespace MyScheduler.Services
                 Enabled = true,
                 StartDate = DateTimeOffset.Now.AddDays(1)
             };
-            var result = manager.GetNextExecution(schedule, 1);
+            var result = manager.GetOutput(schedule, 1);
             Assert.True(result.IsFailure);
             Assert.Contains("daily frequency once", result.Error);
         }

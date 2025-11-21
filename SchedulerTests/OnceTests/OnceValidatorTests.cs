@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
+
 using System.Text;
-using Xunit;
-using MyScheduler.Entities;
-using MyScheduler.Validators;
-using MyScheduler.Enums;
+using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
+using MyScheduler.Domain.Validators;
 
 namespace MyScheduler.OnceTests
 {
@@ -15,12 +13,12 @@ namespace MyScheduler.OnceTests
         {
             var schedule = new ScheduleEntity
             {
-                OnceTypeDateExecution = null, // No tiene valor
-                Recurrence = 1, // > 0
-                DailyFrequencyRangeCheckbox = true, // true
-                DailyFrequencyOnceCheckbox = true, // true
+                OnceTypeDateExecution = null, 
+                Recurrence = 1, 
+                DailyFrequencyRangeCheckbox = true, 
+                DailyFrequencyOnceCheckbox = true, 
                 WeeklyRecurrence = 1, // > 0
-                DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday }, // Count > 0
+                DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday }, 
                 DailyOnceExecutionTime = TimeSpan.FromHours(8), // != null
                 TimeUnit = TimeUnit.Hours, // != null
                 TimeUnitNumberOf = 1, // > 0

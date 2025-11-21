@@ -1,4 +1,4 @@
-﻿using MyScheduler.Entities;
+﻿using MyScheduler.Domain.Entities;
 using System;
 
 namespace MyScheduler.Helpers

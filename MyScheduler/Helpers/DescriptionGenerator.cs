@@ -1,5 +1,6 @@
-﻿using MyScheduler.Entities;
-using MyScheduler.Localizers;
+﻿using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
+using MyScheduler.Infraestructure.Localizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,120 +12,117 @@ namespace MyScheduler.Helpers
         public static string GetDescription(ScheduleEntity scheduleConfig)
         {
             var localizer = new Localizer();
-            var lang = scheduleConfig.language ?? "en-US";
+            var language = scheduleConfig.Language;
 
             switch (scheduleConfig.ScheduleType)
             {
-                case Enums.ScheduleType.Once:
+                case ScheduleType.Once:
                     return string.Format(
-                        localizer.GetString("OccursOnce", lang),
-                        localizer.FormatDate(scheduleConfig.OnceTypeDateExecution!.Value, scheduleConfig, lang),
-                        scheduleConfig.OnceTypeDateExecution.Value.DateTime.ToShortTimeString(),
-                        localizer.FormatDate(scheduleConfig.StartDate, scheduleConfig, lang)
+                        localizer.GetString("OccursOnce", language),
+                        localizer.FormatDate(scheduleConfig.OnceTypeDateExecution!.Value, scheduleConfig, language),
+                        localizer.FormatTime(scheduleConfig.OnceTypeDateExecution!.Value, language),
+                        localizer.FormatDate(scheduleConfig.StartDate, scheduleConfig, language)
                     );
 
-                case Enums.ScheduleType.Recurring:
-                    return GetRecurringDescription(scheduleConfig, localizer, lang);
+                case ScheduleType.Recurring:
+                    return GetRecurringDescription(scheduleConfig, localizer, language);
 
                 default:
-                    return localizer.GetString("DescriptionNotAvailable", lang);
+                    return localizer.GetString("DescriptionNotAvailable", language);
             }
         }
 
-        public static string GetRecurringDescription(ScheduleEntity s, Localizer localizer, string lang)
+        public static string GetRecurringDescription(ScheduleEntity schedule, Localizer localizer, string language)
         {
             string description = "";
-
-            switch (s.Occurs)
+            switch (schedule.Occurs)
             {
-                case Enums.Occurs.Daily:
-                    if (s.DailyFrequencyOnceCheckbox)
+                case Occurs.Daily:
+                    if (schedule.DailyFrequencyOnceCheckbox)
                     {
                         description = string.Format(
-                            localizer.GetString("OccursEveryDayAt", lang),
-                            s.Recurrence,
-                            s.DailyOnceExecutionTime,
-                            localizer.FormatDate(s.StartDate, s, lang)
+                            localizer.GetString("OccursEveryDayAt", language),
+                            schedule.Recurrence,
+                            localizer.FormatTime(new DateTimeOffset(schedule.DailyOnceExecutionTime!.Value.Ticks, TimeSpan.Zero), language),
+                            localizer.FormatDate(schedule.StartDate, schedule, language)
                         );
                     }
-                    else if (s.DailyFrequencyRangeCheckbox)
+                    else if (schedule.DailyFrequencyRangeCheckbox)
                     {
                         description = string.Format(
-                            localizer.GetString("OccursEveryDayEveryUnit", lang),
-                            s.Recurrence,
-                            s.TimeUnitNumberOf,
-                            s.TimeUnit?.ToString().ToLower(),
-                            s.DailyStartTime,
-                            s.DailyEndTime,
-                            localizer.FormatDate(s.StartDate, s, lang)
+                            localizer.GetString("OccursEveryDayEveryUnit", language),
+                            schedule.Recurrence,
+                            schedule.TimeUnitNumberOf,
+                            localizer.GetString(schedule.TimeUnit.ToString().ToLower(), language),
+                            localizer.FormatTime(new DateTimeOffset(schedule.DailyStartTime!.Value.Ticks, TimeSpan.Zero), language) ,
+                            localizer.FormatTime(new DateTimeOffset(schedule.DailyEndTime!.Value.Ticks, TimeSpan.Zero), language) ,
+                            localizer.FormatDate(schedule.StartDate, schedule, language)
                         );
                     }
                     break;
-
-                case Enums.Occurs.Weekly:
-                    var days = GetWeeklyDayList(s.DaysOfWeek, localizer, lang);
-                    if (s.DailyFrequencyOnceCheckbox)
+                case Occurs.Weekly:
+                    var days = GetWeeklyDayList(schedule.DaysOfWeek!, localizer, language);
+                    if (schedule.DailyFrequencyOnceCheckbox)
                     {
                         description = string.Format(
-                            localizer.GetString("OccursEveryWeekOnAt", lang),
-                            s.WeeklyRecurrence,
+                            localizer.GetString("OccursEveryWeekOnAt", language),
+                            schedule.WeeklyRecurrence,
                             days,
-                            s.DailyOnceExecutionTime,
-                            localizer.FormatDate(s.StartDate, s, lang)
+                            localizer.FormatTime(new DateTimeOffset(schedule.DailyOnceExecutionTime!.Value.Ticks, TimeSpan.Zero), language),
+                            localizer.FormatDate(schedule.StartDate, schedule, language)
                         );
                     }
-                    else if (s.DailyFrequencyRangeCheckbox)
+                    else if (schedule.DailyFrequencyRangeCheckbox)
                     {
                         description = string.Format(
-                            localizer.GetString("OccursEveryWeekOnEveryUnit", lang),
-                            s.WeeklyRecurrence,
+                            localizer.GetString("OccursEveryWeekOnEveryUnit", language),
+                            schedule.WeeklyRecurrence,
                             days,
-                            s.TimeUnitNumberOf,
-                            s.TimeUnit?.ToString().ToLower(),
-                            s.DailyStartTime,
-                            s.DailyEndTime,
-                            localizer.FormatDate(s.StartDate, s, lang)
+                            schedule.TimeUnitNumberOf,
+                            localizer.GetString(schedule.TimeUnit.ToString().ToLower(), language),
+                            localizer.FormatTime(new DateTimeOffset(schedule.DailyStartTime!.Value.Ticks, TimeSpan.Zero), language),
+                            localizer.FormatTime(new DateTimeOffset(schedule.DailyEndTime!.Value.Ticks, TimeSpan.Zero), language),
+                            localizer.FormatDate(schedule.StartDate, schedule, language)
                         );
                     }
                     break;
+                case Occurs.Monthly:
 
-                case Enums.Occurs.Monthly:
-                    if (s.MonthlyFrequencyDayCheckbox)
+                    if (schedule.MonthlyFrequencyDayCheckbox)
                     {
                         description = string.Format(
-                            localizer.GetString("OccursDayEveryMonth", lang),
-                            s.MonthlyDayNumber,
-                            s.MonthlyDayRecurrence
+                            localizer.GetString("OccursDayEveryMonth", language),
+                            schedule.MonthlyDayNumber,
+                            schedule.MonthlyDayRecurrence
                         );
                     }
-                    else if (s.MonthlyFrequencyTheCheckbox)
+                    else if (schedule.MonthlyFrequencyTheCheckbox)
                     {
                         description = string.Format(
-                            localizer.GetString("OccursTheOfEveryMonth", lang),
-                            s.MonthlyTheOrder,
-                            s.MonthlyTheDayOfWeek,
-                            s.MonthlyTheRecurrence
+                            localizer.GetString("OccursTheOfEveryMonth", language),
+                            localizer.GetString(schedule.MonthlyTheOrder.ToString(), language),
+                            localizer.GetString(schedule.MonthlyTheDayOfWeek.ToString(), language),
+                            schedule.MonthlyTheRecurrence
                         );
                     }
 
-                    if (s.DailyFrequencyOnceCheckbox)
+                    if (schedule.DailyFrequencyOnceCheckbox)
                     {
-                        description += string.Format(localizer.GetString("AtTime", lang), s.DailyOnceExecutionTime);
+                        description += string.Format(localizer.GetString("AtTime", language),localizer.FormatTime(new DateTimeOffset(schedule.DailyOnceExecutionTime!.Value.Ticks, TimeSpan.Zero), language));
                     }
-                    else if (s.DailyFrequencyRangeCheckbox)
+                    else if (schedule.DailyFrequencyRangeCheckbox)
                     {
-                        description += string.Format(localizer.GetString("EveryUnitBetween", lang), s.TimeUnitNumberOf, s.TimeUnit?.ToString().ToLower(), s.DailyStartTime, s.DailyEndTime);
+                        description += string.Format(localizer.GetString("EveryUnitBetween", language), schedule.TimeUnitNumberOf, localizer.GetString(schedule.TimeUnit.ToString().ToLower(), language),  localizer.FormatTime(new DateTimeOffset(schedule.DailyStartTime!.Value.Ticks, TimeSpan.Zero), language), localizer.FormatTime(new DateTimeOffset(schedule.DailyEndTime!.Value.Ticks, TimeSpan.Zero), language));
                     }
 
-                    description += string.Format(localizer.GetString("StartingOn", lang), localizer.FormatDate(s.StartDate, s, lang));
+                    description += string.Format(localizer.GetString("StartingOn", language), localizer.FormatDate(schedule.StartDate, schedule, language));
+
                     break;
-
                 default:
-                    description = localizer.GetString("RecurringDescriptionNotAvailable", lang);
+                    description = localizer.GetString("RecurringDescriptionNotAvailable", language);
                     break;
             }
-
-            return string.IsNullOrWhiteSpace(description) ? localizer.GetString("RecurringDescriptionNotAvailable", lang) : description;
+            return string.IsNullOrWhiteSpace(description) ? localizer.GetString("RecurringDescriptionNotAvailable", language) : description;
         }
 
         public static string GetWeeklyDayList(List<DayOfWeek> days, Localizer localizer, string language)

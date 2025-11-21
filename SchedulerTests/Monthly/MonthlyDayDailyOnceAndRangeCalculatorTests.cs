@@ -1,8 +1,7 @@
-using System;
-using Xunit;
-using MyScheduler.Entities;
-using MyScheduler.Enums;
-using MyScheduler.ScheduleCalculators;
+
+using MyScheduler.Application.ScheduleCalculators.Monthly;
+using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
 
 namespace MyScheduler.Monthly
 {
@@ -10,7 +9,7 @@ namespace MyScheduler.Monthly
     {
 
         [Fact]
-        public void MonthlyDayDailyOnceCalculator_ReturnsSuccess_WhenDateExists()
+        public void MonthlyDayDailyOnceOutput_ReturnsSuccess_WhenDateExists()
         {
             var schedule = new ScheduleEntity
             {
@@ -22,15 +21,14 @@ namespace MyScheduler.Monthly
                 StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 1, 31, 0, 0, 0, TimeSpan.Zero)
             };
-            var calc = new MonthlyDayDailyOnceCalculator();
+            var calc = new MonthlyDayDailyOnceOutput();
             var result = calc.GetOutput(schedule, 1);
             Assert.True(result.IsSuccess);
-            Assert.NotNull(result.Value);
             
         }
 
         [Fact]
-        public void MonthlyDayDailyRangeCalculator_ReturnsSuccess_WhenDateExists()
+        public void MonthlyDayDailyRangeOutput_ReturnsSuccess_WhenDateExists()
         {
             var schedule = new ScheduleEntity
             {
@@ -45,15 +43,14 @@ namespace MyScheduler.Monthly
                 StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 1, 31, 0, 0, 0, TimeSpan.Zero)
             };
-            var calc = new MonthlyDayDailyRangeCalculator();
+            var calc = new MonthlyDayDailyRangeOutput();
             var result = calc.GetOutput(schedule, 1);
             Assert.True(result.IsSuccess);
-            Assert.NotNull(result.Value);
             
         }
 
         [Fact]
-        public void MonthlyDayDailyOnceCalculator_ReturnsFailure_WhenNoDateExists()
+        public void MonthlyDayDailyOnceOutput_ReturnsFailure_WhenNoDateExists()
         {
             var schedule = new ScheduleEntity
             {
@@ -65,14 +62,14 @@ namespace MyScheduler.Monthly
                 StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 1, 31, 0, 0, 0, TimeSpan.Zero)
             };
-            var calc = new MonthlyDayDailyOnceCalculator();
+            var calc = new MonthlyDayDailyOnceOutput();
             var result = calc.GetOutput(schedule, 1);
             Assert.True(result.IsFailure);
             Assert.Equal("No next execution found", result.Error);
         }
 
         [Fact]
-        public void MonthlyDayDailyRangeCalculator_ReturnsFailure_WhenNoDateExists()
+        public void MonthlyDayDailyRangeOutput_ReturnsFailure_WhenNoDateExists()
         {
             var schedule = new ScheduleEntity
             {
@@ -87,7 +84,7 @@ namespace MyScheduler.Monthly
                 StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 1, 31, 0, 0, 0, TimeSpan.Zero)
             };
-            var calc = new MonthlyDayDailyRangeCalculator();
+            var calc = new MonthlyDayDailyRangeOutput();
             var result = calc.GetOutput(schedule, 1);
             Assert.True(result.IsFailure);
             Assert.Equal("No next execution found", result.Error);

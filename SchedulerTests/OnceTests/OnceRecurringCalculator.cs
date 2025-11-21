@@ -1,8 +1,7 @@
-﻿using MyScheduler.Entities;
-using MyScheduler.Enums;
-using MyScheduler.Services;
-using Xunit;
-using System;
+﻿
+using MyScheduler.Application.Services;
+using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
 
 namespace MyScheduler.OnceTests
 {
@@ -22,7 +21,7 @@ namespace MyScheduler.OnceTests
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
@@ -46,11 +45,11 @@ namespace MyScheduler.OnceTests
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 10, 9, 13, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
-            Assert.Equal("Occurs every 1 day(s) at 13:30:00, starting 09/10/2025", result.Value.Description);
+            Assert.Equal("Occurs every 1 day(s) at 13:30, starting 09/10/2025", result.Value.Description);
         }
 
         [Fact]
@@ -70,11 +69,11 @@ namespace MyScheduler.OnceTests
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(new DateTimeOffset(2025, 10, 8, 13, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
-            Assert.Equal("Occurs every 1 day(s) at 13:30:00, starting 05/10/2025", result.Value.Description);
+            Assert.Equal("Occurs every 1 day(s) at 13:30, starting 05/10/2025", result.Value.Description);
         }
 
         [Fact]
@@ -92,7 +91,7 @@ namespace MyScheduler.OnceTests
                 Recurrence = 2
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("onetime tasks cannot have a ", result.Error.ToLower());
@@ -115,7 +114,7 @@ namespace MyScheduler.OnceTests
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("recurringdailyonce tasks must have a recurrence", result.Error.ToLower());
@@ -136,7 +135,7 @@ namespace MyScheduler.OnceTests
                 Recurrence = 1
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("start date", result.Error.ToLower());
@@ -159,7 +158,7 @@ namespace MyScheduler.OnceTests
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 10, 9, 13, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
@@ -178,7 +177,7 @@ namespace MyScheduler.OnceTests
                 OnceTypeDateExecution = new DateTimeOffset(2025, 10, 8, 0, 0, 0, TimeSpan.Zero)
             };
 
-            var result = taskManager.GetNextExecution(schedule, null);
+            var result = taskManager.GetOutput(schedule, null);
 
             Assert.True(result.IsFailure);
             Assert.Contains("event date", result.Error.ToLower());
@@ -198,7 +197,7 @@ namespace MyScheduler.OnceTests
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsSuccess);
             Assert.Equal("Occurs once. Schedule on 10/10/2025 at 14:30, starting 07/10/2025", result.Value.Description);
@@ -221,10 +220,10 @@ namespace MyScheduler.OnceTests
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsSuccess, result.Error);
-            Assert.Equal("Occurs every 2 day(s) at 13:30:00, starting 05/10/2025", result.Value.Description);
+            Assert.Equal("Occurs every 2 day(s) at 13:30, starting 05/10/2025", result.Value.Description);
         }
 
         [Fact]
@@ -244,7 +243,7 @@ namespace MyScheduler.OnceTests
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 10, 10, 13, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
@@ -267,7 +266,7 @@ namespace MyScheduler.OnceTests
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 10, 8, 13, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
@@ -288,7 +287,7 @@ namespace MyScheduler.OnceTests
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
@@ -309,7 +308,7 @@ namespace MyScheduler.OnceTests
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule, 10);
+            var result = taskManager.GetOutput(schedule, 10);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);
@@ -331,7 +330,7 @@ namespace MyScheduler.OnceTests
                 Enabled = true
             };
 
-            var result = taskManager.GetNextExecution(schedule, null);
+            var result = taskManager.GetOutput(schedule, null);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 10, 10, 14, 30, 0, TimeSpan.Zero), result.Value.ExecutionTime);

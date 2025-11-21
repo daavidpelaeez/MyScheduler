@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MyScheduler.Entities;
-using MyScheduler.Enums;
-using MyScheduler.Services;
-using MyScheduler.Validators;
-using Xunit;
+﻿using System.Text;
+using MyScheduler.Application.Services;
+using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
+using MyScheduler.Domain.Validators;
+
 
 namespace MyScheduler.Weekly
 {
     public class WeeklyValidatorTests
     {
-        // Common
+        
         [Fact]
         public void WeeklyOnce_ShouldFail_WhenDaysOfWeekIsEmpty()
         {
@@ -28,7 +26,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DaysOfWeek", result.Error);
@@ -51,7 +49,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DaysOfWeek", result.Error);
@@ -77,7 +75,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("WeeklyRecurrence", result.Error);
@@ -107,7 +105,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DailyOnceExecutionTime", result.Error);
@@ -135,7 +133,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("Daily start time", result.Error);
@@ -163,7 +161,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("Daily end time", result.Error);
@@ -191,7 +189,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("Time unit", result.Error);
@@ -220,7 +218,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("Time unit", result.Error);
@@ -250,7 +248,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("TimeUnit", result.Error);
@@ -279,7 +277,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("TimeUnitNumberOf", result.Error);
@@ -308,7 +306,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DailyStartTime", result.Error);
@@ -337,7 +335,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DailyEndTime", result.Error);
@@ -368,7 +366,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("Execution time of day", result.Error);
@@ -396,7 +394,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DailyStartTime", result.Error);
@@ -424,7 +422,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DailyStartTime", result.Error);
@@ -454,7 +452,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure, result.Error);
             Assert.Contains("No next execution", result.Error);
@@ -483,7 +481,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("WeeklyRecurrence", result.Error);
@@ -513,7 +511,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("TimeUnitNumberOf", result.Error);
@@ -542,7 +540,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(new DateTimeOffset(2025, 10, 27, 13, 30, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
@@ -572,7 +570,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 10, 27, 13, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
@@ -603,7 +601,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("Check days of the week", result.Error);
@@ -629,7 +627,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("Check days of the week", result.Error);
@@ -655,7 +653,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("DailyOnceExecutionTime", result.Error);
@@ -682,7 +680,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, null);
+            var result = schedulerManager.GetOutput(schedulerConfig, null);
 
             Assert.True(result.IsFailure);
             Assert.Contains("end date", result.Error);
@@ -710,7 +708,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("StartDate", result.Error);
@@ -737,7 +735,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("StartDate", result.Error);
@@ -765,7 +763,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, 10);
+            var result = schedulerManager.GetOutput(schedulerConfig, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("EndDate", result.Error);
@@ -792,7 +790,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, -1);
+            var result = schedulerManager.GetOutput(schedulerConfig, -1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("end date", result.Error);
@@ -820,7 +818,7 @@ namespace MyScheduler.Weekly
             };
 
             var schedulerManager = new ScheduleManager();
-            var result = schedulerManager.GetNextExecution(schedulerConfig, -1);
+            var result = schedulerManager.GetOutput(schedulerConfig, -1);
 
             Assert.True(result.IsFailure);
             Assert.Contains("end date", result.Error);

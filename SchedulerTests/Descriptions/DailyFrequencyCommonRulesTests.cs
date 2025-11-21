@@ -1,9 +1,8 @@
-using System;
+
 using System.Text;
-using Xunit;
-using MyScheduler.Entities;
-using MyScheduler.Enums;
-using MyScheduler.Validators;
+using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
+using MyScheduler.Domain.Validators;
 
 namespace MyScheduler.Descriptions
 {

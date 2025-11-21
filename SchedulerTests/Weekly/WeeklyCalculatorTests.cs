@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using MyScheduler.Entities;
-using MyScheduler.Enums;
+﻿
+using MyScheduler.Application.Services;
+using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
+
 using MyScheduler.Helpers;
-using MyScheduler.Localizers;
-using MyScheduler.ScheduleCalculators;
-using MyScheduler.Services;
-using Xunit;
+using MyScheduler.Infraestructure.Localizer;
+
 
 namespace MyScheduler.Weekly
 {
@@ -30,7 +29,7 @@ namespace MyScheduler.Weekly
             };
 
             var result = DescriptionGenerator.GetDescription(taskConfig);
-            string expectedDescription = "Occurs every 4 week(s) on monday, tuesday and sunday at 13:30:00, starting 16/10/2025";
+            string expectedDescription = "Occurs every 4 week(s) on monday, tuesday and sunday at 13:30, starting 16/10/2025";
 
             Assert.Equal(expectedDescription, result);
         }
@@ -55,9 +54,9 @@ namespace MyScheduler.Weekly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(taskConfig, 10);
+            var result = manager.GetOutput(taskConfig, 10);
 
-            string expectedDescription = "Occurs every 4 week(s) on monday, tuesday and sunday at 13:30:00, starting 16/10/2025";
+            string expectedDescription = "Occurs every 4 week(s) on monday, tuesday and sunday at 13:30, starting 16/10/2025";
             DateTimeOffset expectedExecutionTime = new DateTimeOffset(2025, 10, 19, 13, 30, 0, TimeSpan.FromHours(2));
 
             Assert.Equal(expectedDescription, result.Value.Description);
@@ -91,9 +90,9 @@ namespace MyScheduler.Weekly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(taskConfig, 10);
+            var result = manager.GetOutput(taskConfig, 10);
 
-            string expectedDescription = "Occurs every 1 week(s) on monday every 2 hours between 13:30:00 and 19:30:00, starting 17/10/2025";
+            string expectedDescription = "Occurs every 1 week(s) on monday every 2 hours between 13:30 and 19:30, starting 17/10/2025";
             DateTimeOffset expectedExecutionTime = new DateTimeOffset(2025, 10, 20, 13, 30, 0, TimeSpan.FromHours(2));
 
             Assert.Equal(expectedDescription, result.Value.Description);
@@ -154,7 +153,7 @@ namespace MyScheduler.Weekly
             };
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(taskConfig, 10);
+            var result = manager.GetOutput(taskConfig, 10);
 
             Assert.True(result.IsFailure, result.Error);
         }
@@ -177,7 +176,7 @@ namespace MyScheduler.Weekly
             };
 
             var onceCalc = new ScheduleManager();
-            var result = onceCalc.GetNextExecution(taskConfig, 10);
+            var result = onceCalc.GetOutput(taskConfig, 10);
 
             Assert.True(result.IsFailure, result.Error);
             Assert.Contains("No next execution", result.Error);

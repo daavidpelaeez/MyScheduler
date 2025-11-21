@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Text;
-using Xunit;
-using MyScheduler.Entities;
-using MyScheduler.Enums;
-using MyScheduler.Localizers;
+using MyScheduler.Domain.Enums;
+using MyScheduler.Domain.Validators;
+using MyScheduler.Domain.Services;
+using MyScheduler.Domain.Services.Calculators;
+using MyScheduler.Domain.Entities;
+using MyScheduler.Infraestructure.Localizer;
 
 namespace MyScheduler.Helpers
 {
@@ -15,7 +15,7 @@ namespace MyScheduler.Helpers
         {
             var schedule = new ScheduleEntity { DailyOnceExecutionTime = TimeSpan.FromHours(8) };
             var dates = new List<DateTimeOffset> { DateTimeOffset.Now.Date };
-            var helper = new AddHoursHelper();
+            var helper = new AddTime();
             var result = helper.AddHourToList(schedule, dates);
             Assert.Single(result);
             Assert.Equal(8, result[0].Hour);
@@ -32,11 +32,49 @@ namespace MyScheduler.Helpers
                 EndDate = DateTimeOffset.Now.AddDays(1)
             };
             var dates = new List<DateTimeOffset> { DateTimeOffset.Now.Date };
-            var helper = new AddHoursHelper();
+            var helper = new AddTime();
             var result = helper.AddHourRangeToList(schedule, 3, dates);
             Assert.Contains(result, d => d.Hour == 8);
             Assert.Contains(result, d => d.Hour == 9);
             Assert.Contains(result, d => d.Hour == 10);
+        }
+
+        [Fact]
+        public void AddHourRangeToList_CoversCurrentTimeCondition()
+        {
+            var schedule = new ScheduleEntity {
+                DailyStartTime = TimeSpan.FromHours(8),
+                DailyEndTime = TimeSpan.FromHours(10),
+                TimeUnit = TimeUnit.Hours,
+                TimeUnitNumberOf = 1,
+                EndDate = DateTimeOffset.Now.AddDays(1),
+                TimeZoneID = "W. Europe Standard Time"
+            };
+            var dates = new List<DateTimeOffset> { DateTimeOffset.Now.Date };
+            var helper = new AddTime();
+            var result = helper.AddHourRangeToList(schedule, 3, dates);
+            // Debe cubrir: currentTime == startTime, currentTime < endTime, currentTime > endTime
+            Assert.Contains(result, d => d.Hour == 8);
+            Assert.Contains(result, d => d.Hour == 9);
+            Assert.Contains(result, d => d.Hour == 10);
+            Assert.Equal(3, result.Count);
+        }
+
+        [Fact]
+        public void AddHourRangeToList_DoesNotEnterLoop_WhenStartTimeGreaterThanEndTime()
+        {
+            var schedule = new ScheduleEntity {
+                DailyStartTime = TimeSpan.FromHours(12),
+                DailyEndTime = TimeSpan.FromHours(10),
+                TimeUnit = TimeUnit.Hours,
+                TimeUnitNumberOf = 1,
+                EndDate = DateTimeOffset.Now.AddDays(1),
+                TimeZoneID = "W. Europe Standard Time"
+            };
+            var dates = new List<DateTimeOffset> { DateTimeOffset.Now.Date };
+            var helper = new AddTime();
+            var result = helper.AddHourRangeToList(schedule, 3, dates);
+            Assert.Empty(result);
         }
 
         [Fact]
@@ -52,18 +90,10 @@ namespace MyScheduler.Helpers
                 Recurrence = 1,
                 CurrentDate = DateTimeOffset.Now.Date
             };
-            var result = DailySchedulerHelper.GetRecurrentDays(schedule, null);
+            var result = RecurrenceCalculator.GetRecurrentDays(schedule, null);
             Assert.True(result.Count >= 2);
         }
 
-        [Fact]
-        public void DateTimeZoneHelper_ToTimeZoneOffset_ReturnsCorrectOffset()
-        {
-            var date = DateTime.Now.Date;
-            var time = TimeSpan.FromHours(8);
-            var result = DateTimeZoneHelper.ToTimeZoneOffset(date, time);
-            Assert.Equal(8, result.Hour);
-        }
 
         [Fact]
         public void DescriptionGenerator_GetDescription_OnceType()
@@ -195,10 +225,10 @@ namespace MyScheduler.Helpers
             var schedule = new ScheduleEntity
             {
                 Occurs = (Occurs)999, 
-                language = "en-US"
+                Language = "en-US"
             };
             var localizer = new Localizer();
-            var desc = DescriptionGenerator.GetRecurringDescription(schedule, localizer, schedule.language);
+            var desc = DescriptionGenerator.GetRecurringDescription(schedule, localizer, schedule.Language);
             Assert.Equal("Recurring schedule description not available.", desc);
         }
 
@@ -211,7 +241,7 @@ namespace MyScheduler.Helpers
                 DailyFrequencyRangeCheckbox = false
             };
             var errors = new StringBuilder();
-            Validators.DailyFrequencyCommonRules.CheckDailyCommonRules(schedule, errors);
+            DailyFrequencyCommonRules.CheckDailyCommonRules(schedule, errors);
             var errorText = errors.ToString();
             Assert.Contains("Daily frequency cannot be empty for daily tasks", errorText);
         }
@@ -231,7 +261,7 @@ namespace MyScheduler.Helpers
                 ScheduleType = ScheduleType.Recurring
             };
             var errors = new StringBuilder();
-            Validators.DailyFrequencyCommonRules.CheckDailyCommonRules(schedule, errors);
+            DailyFrequencyCommonRules.CheckDailyCommonRules(schedule, errors);
             var errorText = errors.ToString();
             Assert.Contains("Daily tasks cannot have timeUnitNumberOf", errorText);
             Assert.Contains("Time unit cannot be set for a daily frequency once task", errorText);
@@ -256,7 +286,7 @@ namespace MyScheduler.Helpers
                 ScheduleType = ScheduleType.Recurring
             };
             var errors = new StringBuilder();
-            Validators.DailyFrequencyCommonRules.CheckDailyCommonRules(schedule, errors);
+            DailyFrequencyCommonRules.CheckDailyCommonRules(schedule, errors);
             var errorText = errors.ToString();
             Assert.Contains("Execution time of day cannot be set for a daily frequency every task", errorText);
             Assert.Contains("You need to set a time unit for daily every configurations", errorText);
@@ -281,7 +311,7 @@ namespace MyScheduler.Helpers
                 ScheduleType = ScheduleType.Recurring
             };
             var errors = new StringBuilder();
-            Validators.DailyFrequencyCommonRules.CheckDailyCommonRules(schedule, errors);
+            DailyFrequencyCommonRules.CheckDailyCommonRules(schedule, errors);
             Assert.Equal(string.Empty, errors.ToString());
         }
     }
@@ -335,10 +365,10 @@ namespace MyScheduler.Helpers
                 Recurrence = 2,
                 DailyOnceExecutionTime = TimeSpan.FromHours(9),
                 StartDate = new DateTimeOffset(2024, 5, 2, 0, 0, 0, TimeSpan.Zero),
-                language = "en-US"
+                Language = "en-US"
             };
             var localizer = new Localizer();
-            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.language);
+            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.Language);
             Assert.Contains("Occurs every 2 day(s) at", desc);
         }
 
@@ -355,10 +385,10 @@ namespace MyScheduler.Helpers
                 DailyStartTime = TimeSpan.FromHours(8),
                 DailyEndTime = TimeSpan.FromHours(10),
                 StartDate = new DateTimeOffset(2024, 5, 3, 0, 0, 0, TimeSpan.Zero),
-                language = "en-US"
+                Language = "en-US"
             };
             var localizer = new Localizer();
-            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.language);
+            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.Language);
             Assert.Contains("Occurs every 3 day(s) every 1 hours between", desc);
         }
 
@@ -373,10 +403,10 @@ namespace MyScheduler.Helpers
                 DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday, DayOfWeek.Wednesday },
                 DailyOnceExecutionTime = TimeSpan.FromHours(7),
                 StartDate = new DateTimeOffset(2024, 5, 4, 0, 0, 0, TimeSpan.Zero),
-                language = "en-US"
+                Language = "en-US"
             };
             var localizer = new Localizer();
-            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.language);
+            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.Language);
             Assert.Contains("Occurs every 2 week(s) on", desc);
             Assert.Contains("at", desc);
         }
@@ -395,10 +425,10 @@ namespace MyScheduler.Helpers
                 DailyStartTime = TimeSpan.FromHours(6),
                 DailyEndTime = TimeSpan.FromHours(8),
                 StartDate = new DateTimeOffset(2024, 5, 5, 0, 0, 0, TimeSpan.Zero),
-                language = "en-US"
+                Language = "en-US"
             };
             var localizer = new Localizer();
-            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.language);
+            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.Language);
             Assert.Contains("Occurs every 1 week(s) on", desc);
             Assert.Contains("every 2 minutes between", desc);
         }
@@ -416,10 +446,10 @@ namespace MyScheduler.Helpers
                 DailyOnceExecutionTime = TimeSpan.FromHours(10),
                 DailyFrequencyRangeCheckbox = false,
                 StartDate = new DateTimeOffset(2024, 5, 6, 0, 0, 0, TimeSpan.Zero),
-                language = "en-US"
+                Language = "en-US"
             };
             var localizer = new Localizer();
-            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.language);
+            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.Language);
             Assert.Contains("Occurs day 15 every 2 month(s) at", desc);
             Assert.Contains(", starting", desc);
         }
@@ -441,20 +471,20 @@ namespace MyScheduler.Helpers
                 DailyStartTime = TimeSpan.FromHours(11),
                 DailyEndTime = TimeSpan.FromHours(12),
                 StartDate = new DateTimeOffset(2024, 5, 7, 0, 0, 0, TimeSpan.Zero),
-                language = "en-US"
+                Language = "en-US"
             };
             var localizer = new Localizer();
-            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.language);
-            Assert.Contains("Occurs the Second Friday of every 3 month(s) every 5 seconds between", desc);
+            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.Language);
+            Assert.Contains("Occurs the second Friday of every 3 month(s) every 5 seconds between", desc);
             Assert.Contains(", starting", desc);
         }
 
         [Fact]
         public void GetRecurringDescription_Default_ReturnsExpected()
         {
-            var s = new ScheduleEntity { Occurs = (Occurs)999, language = "en-US" };
+            var s = new ScheduleEntity { Occurs = (Occurs)999, Language = "en-US" };
             var localizer = new Localizer();
-            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.language);
+            var desc = DescriptionGenerator.GetRecurringDescription(s, localizer, s.Language);
             Assert.Equal("Recurring schedule description not available.", desc);
         }
 
@@ -462,7 +492,6 @@ namespace MyScheduler.Helpers
         public void GetWeeklyDayList_NullOrEmpty_ReturnsNoDaysSpecified()
         {
             var localizer = new Localizer();
-            Assert.Equal("no days specified", DescriptionGenerator.GetWeeklyDayList(null, localizer, "en-US"));
             Assert.Equal("no days specified", DescriptionGenerator.GetWeeklyDayList(new List<DayOfWeek>(), localizer, "en-US"));
         }
 

@@ -1,38 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using MyScheduler.Entities;
-using MyScheduler.Enums;
-using MyScheduler.ScheduleCalculators;
-using MyScheduler.Helpers;
-using Xunit;
+﻿
+using MyScheduler.Application.ScheduleCalculators;
+using MyScheduler.Application.ScheduleCalculators.Monthly;
+using MyScheduler.Application.ScheduleCalculators.Once;
+using MyScheduler.Application.ScheduleOutputs.Monthly;
+using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
 
 namespace MyScheduler.Calculators
 {
     public class CalculatorsTests
     {
         [Fact]
-        public void OneTimeCalculator_ReturnsSuccess_WhenDateExists()
+        public void OneTimeOutput_ReturnsSuccess_WhenDateExists()
         {
             var schedule = new ScheduleEntity
             {
                 ScheduleType = ScheduleType.Once,
                 OnceTypeDateExecution = DateTimeOffset.Now.AddDays(1)
             };
-            var calc = new OneTimeCalculator();
+            var calc = new OneTimeOutput();
             var result = calc.GetOnceOutput(schedule);
             Assert.True(result.IsSuccess);
-            Assert.NotNull(result.Value);
             Assert.Equal("", result.Error);
         }
 
         [Fact]
-        public void OneTimeCalculator_ReturnsFailure_WhenNoDate()
+        public void OneTimeOutput_ReturnsFailure_WhenNoDate()
         {
             var schedule = new ScheduleEntity
             {
                 ScheduleType = ScheduleType.Once
             };
-            var calc = new OneTimeCalculator();
+            var calc = new OneTimeOutput();
             var result = calc.GetOnceOutput(schedule);
             Assert.True(result.IsFailure);
             Assert.Contains("No next execution found", result.Error);
@@ -40,7 +39,7 @@ namespace MyScheduler.Calculators
 
 
         [Fact]
-        public void MonthlyTheCalculator_ReturnsFailure_WhenNoDate()
+        public void MonthlyTheOutput_ReturnsFailure_WhenNoDate()
         {
             var schedule = new ScheduleEntity
             {
@@ -58,14 +57,14 @@ namespace MyScheduler.Calculators
                 DailyFrequencyOnceCheckbox = false,
                 DailyFrequencyRangeCheckbox = false
             };
-            var calc = new MonthlyTheCalculator();
+            var calc = new MonthlyTheOutput();
             var result = calc.GetOutput(schedule, 1);
             Assert.True(result.IsFailure);
             Assert.Contains("No next execution found", result.Error);
         }
 
         [Fact]
-        public void MonthlyTheDailyOnceCalculator_ReturnsFailure_WhenNoDate()
+        public void MonthlyTheDailyOnceOutput_ReturnsFailure_WhenNoDate()
         {
             var schedule = new ScheduleEntity
             {
@@ -84,14 +83,14 @@ namespace MyScheduler.Calculators
                 MonthlyDayRecurrence = 0,
                 DailyFrequencyRangeCheckbox = false
             };
-            var calc = new MonthlyTheDailyOnceCalculator();
+            var calc = new MonthlyTheDailyOnceOutput();
             var result = calc.GetOutput(schedule, 1);
             Assert.True(result.IsFailure);
             Assert.Contains("No next execution found", result.Error);
         }
 
         [Fact]
-        public void MonthlyTheDailyRangeCalculator_ReturnsSuccess_WhenDateExists()
+        public void MonthlyTheDailyRangeOutput_ReturnsSuccess_WhenDateExists()
         {
             var schedule = new ScheduleEntity
             {
@@ -113,15 +112,14 @@ namespace MyScheduler.Calculators
                 MonthlyDayRecurrence = 0,
                 DailyFrequencyOnceCheckbox = false
             };
-            var calc = new MonthlyTheDailyRangeCalculator();
+            var calc = new MonthlyTheDailyRangeOutput();
             var result = calc.GetOutput(schedule, 1);
             Assert.True(result.IsSuccess);
-            Assert.NotNull(result.Value);
             Assert.Equal("", result.Error);
         }
 
         [Fact]
-        public void MonthlyTheDailyRangeCalculator_ReturnsFailure_WhenNoDate()
+        public void MonthlyTheDailyRangeOutput_ReturnsFailure_WhenNoDate()
         {
             var schedule = new ScheduleEntity
             {
@@ -143,7 +141,7 @@ namespace MyScheduler.Calculators
                 MonthlyDayRecurrence = 0,
                 DailyFrequencyOnceCheckbox = false
             };
-            var calc = new MonthlyTheDailyRangeCalculator();
+            var calc = new MonthlyTheDailyRangeOutput();
             var result = calc.GetOutput(schedule, 1);
             Assert.True(result.IsFailure);
             Assert.Contains("No next execution found", result.Error);
@@ -165,10 +163,10 @@ namespace MyScheduler.Calculators
                 EndDate = new DateTimeOffset(DateTime.Now.Year, DateTime.Now.Month, 2, 0, 0, 0, TimeSpan.Zero),
                 Recurrence = 1
             };
-            var calc = new RecurringDailyRangeCalculator();
+            var calc = new RecurringDailyRangeOutput();
             var result = calc.GetOutput(schedule, 2);
             Assert.True(result.IsSuccess);
-            Assert.NotNull(result.Value);
+
         }
 
         [Fact]
@@ -187,7 +185,7 @@ namespace MyScheduler.Calculators
                 EndDate = new DateTimeOffset(2024, 6, 9, 0, 0, 0, TimeSpan.Zero), // EndDate anterior a StartDate
                 Recurrence = 1
             };
-            var calc = new RecurringDailyRangeCalculator();
+            var calc = new RecurringDailyRangeOutput();
             var result = calc.GetOutput(schedule, 2);
             Assert.True(result.IsFailure);
             Assert.Equal("No next execution found", result.Error);

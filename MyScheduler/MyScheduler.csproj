@@ -5,4 +5,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="Application\ScheduleOutputs\Daily\RecurringDailyRangeOutput.cs" />
+  </ItemGroup>
+
 </Project>

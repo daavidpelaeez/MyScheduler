@@ -1,10 +1,7 @@
-﻿using MyScheduler.Entities;
-using MyScheduler.Enums;
-using MyScheduler.ScheduleCalculators;
-using MyScheduler.Services;
-using System;
-using System.Collections.Generic;
-using Xunit;
+﻿using MyScheduler.Application.Services;
+using MyScheduler.Domain.Entities;
+using MyScheduler.Domain.Enums;
+
 
 namespace MyScheduler.Weekly
 {
@@ -20,7 +17,7 @@ namespace MyScheduler.Weekly
             config.OnceTypeDateExecution = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 10);
+            var result = manager.GetOutput(config, 10);
 
             Assert.True(result.IsSuccess, result.Error);
             var expectedTime = new DateTimeOffset(2025, 10, 31, 0, 0, 0, TimeSpan.Zero);
@@ -44,11 +41,11 @@ namespace MyScheduler.Weekly
             config.DailyOnceExecutionTime = new TimeSpan(13, 30, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 10);
+            var result = manager.GetOutput(config, 10);
 
             Assert.True(result.IsSuccess);
             var expectedTime = new DateTimeOffset(2025, 10, 29, 13, 30, 0, TimeSpan.Zero);
-            var expectedDescription = "Occurs every 2 day(s) at 13:30:00, starting 25/10/2025";
+            var expectedDescription = "Occurs every 2 day(s) at 13:30, starting 25/10/2025";
 
             Assert.Equal(expectedTime, result.Value.ExecutionTime);
             Assert.Equal(expectedDescription, result.Value.Description);
@@ -71,11 +68,11 @@ namespace MyScheduler.Weekly
             config.DailyEndTime = new TimeSpan(15, 30, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 10);
+            var result = manager.GetOutput(config, 10);
 
             Assert.True(result.IsSuccess);
             var expectedTime = new DateTimeOffset(2025, 10, 25, 13, 30, 0, TimeSpan.FromHours(2));
-            var expectedDescription = "Occurs every 2 day(s) every 2 hours between 13:30:00 and 15:30:00, starting 25/10/2025";
+            var expectedDescription = "Occurs every 2 day(s) every 2 hours between 13:30 and 15:30, starting 25/10/2025";
 
             Assert.Equal(expectedTime, result.Value.ExecutionTime);
             Assert.Equal(expectedDescription, result.Value.Description);
@@ -96,11 +93,11 @@ namespace MyScheduler.Weekly
             config.DailyOnceExecutionTime = new TimeSpan(10, 0, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 5);
+            var result = manager.GetOutput(config, 5);
 
             Assert.True(result.IsSuccess,result.Error);
             var expectedTime = new DateTimeOffset(2025, 10, 27, 10, 0, 0, TimeSpan.FromHours(1));
-            var expectedDescription = "Occurs every 1 week(s) on monday and wednesday at 10:00:00, starting 25/10/2025";
+            var expectedDescription = "Occurs every 1 week(s) on monday and wednesday at 10:00, starting 25/10/2025";
 
             Assert.Equal(expectedTime, result.Value.ExecutionTime);
             Assert.Equal(expectedDescription, result.Value.Description);
@@ -124,11 +121,11 @@ namespace MyScheduler.Weekly
             config.TimeUnitNumberOf = 2;
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 5);
+            var result = manager.GetOutput(config, 5);
 
             Assert.True(result.IsSuccess, result.Error);
             var expectedTime = new DateTimeOffset(2025, 10, 27, 9, 0, 0, TimeSpan.FromHours(1));
-            var expectedDescription = "Occurs every 1 week(s) on monday every 2 hours between 09:00:00 and 12:00:00, starting 25/10/2025";
+            var expectedDescription = "Occurs every 1 week(s) on monday every 2 hours between 09:00 and 12:00, starting 25/10/2025";
 
             Assert.Equal(expectedTime, result.Value.ExecutionTime);
             Assert.Equal(expectedDescription, result.Value.Description);
@@ -148,7 +145,7 @@ namespace MyScheduler.Weekly
             config.DailyOnceExecutionTime = new TimeSpan(13, 30, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 10);
+            var result = manager.GetOutput(config, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("enabled", result.Error.ToLower());
@@ -168,7 +165,7 @@ namespace MyScheduler.Weekly
             config.DailyOnceExecutionTime = null;
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 10);
+            var result = manager.GetOutput(config, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("execution", result.Error.ToLower());
@@ -191,7 +188,7 @@ namespace MyScheduler.Weekly
             config.DailyEndTime = new TimeSpan(12, 0, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 10);
+            var result = manager.GetOutput(config, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("time unit", result.Error.ToLower());
@@ -212,7 +209,7 @@ namespace MyScheduler.Weekly
             config.DailyOnceExecutionTime = new TimeSpan(10, 0, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 5);
+            var result = manager.GetOutput(config, 5);
 
             Assert.True(result.IsFailure);
             Assert.Contains("daysofweek", result.Error.ToLower());
@@ -233,7 +230,7 @@ namespace MyScheduler.Weekly
             config.DailyOnceExecutionTime = new TimeSpan(13, 30, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 10);
+            var result = manager.GetOutput(config, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("end date", result.Error.ToLower());
@@ -255,7 +252,7 @@ namespace MyScheduler.Weekly
             configLeap.DailyFrequencyOnceCheckbox = true;
             configLeap.DailyOnceExecutionTime = new TimeSpan(10, 0, 0);
 
-            var resLeap = manager.GetNextExecution(configLeap, 1);
+            var resLeap = manager.GetOutput(configLeap, 1);
             Assert.True(resLeap.IsSuccess,resLeap.Error);
             Assert.Equal(new DateTimeOffset(2024, 2, 28, 10, 0, 0, TimeSpan.Zero), resLeap.Value.ExecutionTime);
 
@@ -269,7 +266,7 @@ namespace MyScheduler.Weekly
             configYearEnd.DailyFrequencyOnceCheckbox = true;
             configYearEnd.DailyOnceExecutionTime = new TimeSpan(23, 59, 0);
 
-            var resYear = manager.GetNextExecution(configYearEnd, 1);
+            var resYear = manager.GetOutput(configYearEnd, 1);
             Assert.True(resYear.IsSuccess, resYear.Error);
             Assert.Equal(new DateTimeOffset(2025, 12, 31, 23, 59, 0, TimeSpan.Zero), resYear.Value.ExecutionTime);
         }
@@ -291,7 +288,7 @@ namespace MyScheduler.Weekly
             config.DailyEndTime = new TimeSpan(9, 45, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 10);
+            var result = manager.GetOutput(config, 10);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 10, 25, 8, 15, 0, TimeSpan.FromHours(2)), result.Value.ExecutionTime);
@@ -315,7 +312,7 @@ namespace MyScheduler.Weekly
             config.DailyEndTime = new TimeSpan(12, 0, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 10);
+            var result = manager.GetOutput(config, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("you need to set a time unit number of", result.Error.ToLower());
@@ -340,7 +337,7 @@ namespace MyScheduler.Weekly
             config.DailyEndTime = new TimeSpan(17, 0, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 10);
+            var result = manager.GetOutput(config, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("daily frequency", result.Error.ToLower());
@@ -364,7 +361,7 @@ namespace MyScheduler.Weekly
             config.DailyEndTime = new TimeSpan(12, 0, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 10);
+            var result = manager.GetOutput(config, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("daysofweek", result.Error.ToLower());
@@ -388,7 +385,7 @@ namespace MyScheduler.Weekly
             config.DailyEndTime = new TimeSpan(12, 0, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 10);
+            var result = manager.GetOutput(config, 10);
 
             Assert.True(result.IsFailure);
             Assert.Contains("timeunit", result.Error.ToLower());
@@ -412,7 +409,7 @@ namespace MyScheduler.Weekly
             config.DailyEndTime = new TimeSpan(9, 0, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 1);
+            var result = manager.GetOutput(config, 1);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 11, 4, 7, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
@@ -433,7 +430,7 @@ namespace MyScheduler.Weekly
             config.DailyOnceExecutionTime = new TimeSpan(8, 0, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 1);
+            var result = manager.GetOutput(config, 1);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 11, 7, 8, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
@@ -457,7 +454,7 @@ namespace MyScheduler.Weekly
             config.DailyEndTime = new TimeSpan(11, 0, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 1);
+            var result = manager.GetOutput(config, 1);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 11, 2, 10, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
@@ -478,7 +475,7 @@ namespace MyScheduler.Weekly
             config.DailyOnceExecutionTime = new TimeSpan(14, 0, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 1);
+            var result = manager.GetOutput(config, 1);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 11, 3, 14, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
@@ -502,7 +499,7 @@ namespace MyScheduler.Weekly
             config.DailyEndTime = new TimeSpan(6, 1, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 1);
+            var result = manager.GetOutput(config, 1);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 11, 5, 6, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
@@ -526,7 +523,7 @@ namespace MyScheduler.Weekly
             config.DailyEndTime = new TimeSpan(15, 30, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 1);
+            var result = manager.GetOutput(config, 1);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 11, 6, 15, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
@@ -547,7 +544,7 @@ namespace MyScheduler.Weekly
             config.DailyOnceExecutionTime = new TimeSpan(18, 0, 0);
 
             var manager = new ScheduleManager();
-            var result = manager.GetNextExecution(config, 1);
+            var result = manager.GetOutput(config, 1);
 
             Assert.True(result.IsSuccess, result.Error);
             Assert.Equal(new DateTimeOffset(2025, 11, 7, 18, 0, 0, TimeSpan.FromHours(1)), result.Value.ExecutionTime);
