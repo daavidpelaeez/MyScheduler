@@ -11,7 +11,7 @@ namespace MyScheduler.Infraestructure.Localizer
         {
             { "en-US", 0 },
             { "en-UK", 1 },
-            { "es", 2 }
+            { "es-ES", 2 }
         };
 
         public static Dictionary<string, string[]> Translations = new Dictionary<string, string[]>
@@ -198,13 +198,19 @@ namespace MyScheduler.Infraestructure.Localizer
         }
 
         public string FormatDate(DateTimeOffset date, ScheduleEntity scheduleConfig, string language)
-        { 
-            return date.ToString("dd/MM/yyyy", CultureInfo.GetCultureInfo(language));
-        }
-
-        public string FormatTime(DateTimeOffset date, string language)
         {
-            return date.ToString("HH:mm", CultureInfo.GetCultureInfo(language));
+            string format = language switch
+            {
+                "en-US" => "MM/dd/yyyy",
+                _ => "dd/MM/yyyy"
+            };
+            return date.ToString(format, CultureInfo.GetCultureInfo(language));
+        }
+        
+
+        public string FormatTime(TimeSpan time, string language)
+        {
+            return time.ToString(@"hh\:mm", CultureInfo.GetCultureInfo(language));
         }
     }
 }

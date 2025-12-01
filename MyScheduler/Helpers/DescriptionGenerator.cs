@@ -19,9 +19,9 @@ namespace MyScheduler.Helpers
                 case ScheduleType.Once:
                     return string.Format(
                         localizer.GetString("OccursOnce", language),
-                        localizer.FormatDate(scheduleConfig.OnceTypeDateExecution!.Value, scheduleConfig, language),
-                        localizer.FormatTime(scheduleConfig.OnceTypeDateExecution!.Value, language),
-                        localizer.FormatDate(scheduleConfig.StartDate, scheduleConfig, language)
+                        localizer.FormatDate(scheduleConfig.OnceTypeDateExecution!.Value, scheduleConfig, language), 
+                        localizer.FormatTime(scheduleConfig.OnceTypeDateExecution!.Value.DateTime.TimeOfDay, language), 
+                        localizer.FormatDate(scheduleConfig.StartDate, scheduleConfig, language) 
                     );
 
                 case ScheduleType.Recurring:
@@ -43,7 +43,7 @@ namespace MyScheduler.Helpers
                         description = string.Format(
                             localizer.GetString("OccursEveryDayAt", language),
                             schedule.Recurrence,
-                            localizer.FormatTime(new DateTimeOffset(schedule.DailyOnceExecutionTime!.Value.Ticks, TimeSpan.Zero), language),
+                            localizer.FormatTime(schedule.DailyOnceExecutionTime!.Value, language),
                             localizer.FormatDate(schedule.StartDate, schedule, language)
                         );
                     }
@@ -54,8 +54,8 @@ namespace MyScheduler.Helpers
                             schedule.Recurrence,
                             schedule.TimeUnitNumberOf,
                             localizer.GetString(schedule.TimeUnit.ToString().ToLower(), language),
-                            localizer.FormatTime(new DateTimeOffset(schedule.DailyStartTime!.Value.Ticks, TimeSpan.Zero), language) ,
-                            localizer.FormatTime(new DateTimeOffset(schedule.DailyEndTime!.Value.Ticks, TimeSpan.Zero), language) ,
+                            localizer.FormatTime(schedule.DailyStartTime!.Value, language) ,
+                            localizer.FormatTime(schedule.DailyEndTime!.Value, language) ,
                             localizer.FormatDate(schedule.StartDate, schedule, language)
                         );
                     }
@@ -68,7 +68,7 @@ namespace MyScheduler.Helpers
                             localizer.GetString("OccursEveryWeekOnAt", language),
                             schedule.WeeklyRecurrence,
                             days,
-                            localizer.FormatTime(new DateTimeOffset(schedule.DailyOnceExecutionTime!.Value.Ticks, TimeSpan.Zero), language),
+                            localizer.FormatTime(schedule.DailyOnceExecutionTime!.Value, language),
                             localizer.FormatDate(schedule.StartDate, schedule, language)
                         );
                     }
@@ -80,8 +80,8 @@ namespace MyScheduler.Helpers
                             days,
                             schedule.TimeUnitNumberOf,
                             localizer.GetString(schedule.TimeUnit.ToString().ToLower(), language),
-                            localizer.FormatTime(new DateTimeOffset(schedule.DailyStartTime!.Value.Ticks, TimeSpan.Zero), language),
-                            localizer.FormatTime(new DateTimeOffset(schedule.DailyEndTime!.Value.Ticks, TimeSpan.Zero), language),
+                            localizer.FormatTime(schedule.DailyStartTime!.Value, language),
+                            localizer.FormatTime(schedule.DailyEndTime!.Value, language),
                             localizer.FormatDate(schedule.StartDate, schedule, language)
                         );
                     }
@@ -108,16 +108,17 @@ namespace MyScheduler.Helpers
 
                     if (schedule.DailyFrequencyOnceCheckbox)
                     {
-                        description += string.Format(localizer.GetString("AtTime", language),localizer.FormatTime(new DateTimeOffset(schedule.DailyOnceExecutionTime!.Value.Ticks, TimeSpan.Zero), language));
+                        description += string.Format(localizer.GetString("AtTime", language),localizer.FormatTime(schedule.DailyOnceExecutionTime!.Value, language));
                     }
                     else if (schedule.DailyFrequencyRangeCheckbox)
                     {
-                        description += string.Format(localizer.GetString("EveryUnitBetween", language), schedule.TimeUnitNumberOf, localizer.GetString(schedule.TimeUnit.ToString().ToLower(), language),  localizer.FormatTime(new DateTimeOffset(schedule.DailyStartTime!.Value.Ticks, TimeSpan.Zero), language), localizer.FormatTime(new DateTimeOffset(schedule.DailyEndTime!.Value.Ticks, TimeSpan.Zero), language));
+                        description += string.Format(localizer.GetString("EveryUnitBetween", language), schedule.TimeUnitNumberOf, localizer.GetString(schedule.TimeUnit.ToString().ToLower(), language),  localizer.FormatTime(schedule.DailyStartTime!.Value, language), localizer.FormatTime(schedule.DailyEndTime!.Value, language));
                     }
 
                     description += string.Format(localizer.GetString("StartingOn", language), localizer.FormatDate(schedule.StartDate, schedule, language));
 
                     break;
+
                 default:
                     description = localizer.GetString("RecurringDescriptionNotAvailable", language);
                     break;

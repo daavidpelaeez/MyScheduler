@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using MyScheduler.Domain.Services;
-using Xunit;
+
 
 namespace MyScheduler.Helpers
 {
@@ -15,7 +14,7 @@ namespace MyScheduler.Helpers
         [InlineData("Romance Standard Time", "Romance Standard Time")]
         [InlineData("Central European Standard Time", "Central European Standard Time")]
         [InlineData("GMT Standard Time", "GMT Standard Time")]
-        [InlineData("Unknown", "Eastern Standard Time")]
+        [InlineData("Unknown", "Central European Standard Time")]
         public void GetTimeZoneID_ReturnsExpected(string input, string expected)
         {
             var result = TimeZoneService.GetTimeZoneID(input);

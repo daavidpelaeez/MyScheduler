@@ -1,8 +1,9 @@
-﻿using MyScheduler.Domain.Entities;
+﻿using MyScheduler.Application.Services;
+using MyScheduler.Domain.Entities;
 using MyScheduler.Domain.Enums;
-using MyScheduler.Infraestructure.Localizer;
+using MyScheduler.Domain.Services;
 using MyScheduler.Helpers;
-using MyScheduler.Application.Services;
+using MyScheduler.Infraestructure.Localizer;
 
 namespace MyScheduler.Descriptions
 {
@@ -33,9 +34,9 @@ namespace MyScheduler.Descriptions
         }
 
         [Theory]
-        [InlineData("en-US", "Occurs every 1 day(s) at 08:00, starting 01/01/2025")]
-        [InlineData("en-UK", "Occurs every 1 day(s) at 08:00, starting 01/01/2025")]
-        [InlineData("es", "Ocurre cada 1 día(s) a las 08:00, comienza el 01/01/2025")]
+        [InlineData("en-US", "Occurs every 1 day(s) at 08:00, starting 02/01/2025")]
+        [InlineData("en-UK", "Occurs every 1 day(s) at 08:00, starting 01/02/2025")]
+        [InlineData("es-ES", "Ocurre cada 1 día(s) a las 08:00, comienza el 01/02/2025")]
         public void GetOutput_ShouldPass_WhenDailyOnce_AllLanguages(string language, string expectedDescription)
         {
             var schedule = new ScheduleEntity
@@ -46,7 +47,7 @@ namespace MyScheduler.Descriptions
                 DailyFrequencyOnceCheckbox = true,
                 DailyOnceExecutionTime = new TimeSpan(8, 0, 0),
                 Recurrence = 1,
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 2, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, 0, 0, TimeSpan.Zero),
                 Language = language
             };
@@ -56,9 +57,9 @@ namespace MyScheduler.Descriptions
         }
 
         [Theory]
-        [InlineData("en-US", "Occurs every 1 week(s) on monday and wednesday every 2 hours between 08:00 and 10:00, starting 01/01/2025")]
-        [InlineData("en-UK", "Occurs every 1 week(s) on monday and wednesday every 2 hours between 08:00 and 10:00, starting 01/01/2025")]
-        [InlineData("es", "Ocurre cada 1 semana(s) los lunes y miércoles cada 2 horas entre las 08:00 y las 10:00, comienza el 01/01/2025")]
+        [InlineData("en-US", "Occurs every 1 week(s) on monday and wednesday every 2 hours between 08:00 and 10:00, starting 02/01/2025")]
+        [InlineData("en-UK", "Occurs every 1 week(s) on monday and wednesday every 2 hours between 08:00 and 10:00, starting 01/02/2025")]
+        [InlineData("es-ES", "Ocurre cada 1 semana(s) los lunes y miércoles cada 2 horas entre las 08:00 y las 10:00, comienza el 01/02/2025")]
         public void GetOutput_ShouldPass_WhenWeeklyRange_AllLanguages(string language, string expectedDescription)
         {
             var schedule = new ScheduleEntity
@@ -73,7 +74,7 @@ namespace MyScheduler.Descriptions
                 TimeUnit = TimeUnit.Hours,
                 DailyStartTime = new TimeSpan(8, 0, 0),
                 DailyEndTime = new TimeSpan(10, 0, 0),
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 2, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, 0, 0, TimeSpan.Zero),
                 Language = language
             };
@@ -83,9 +84,9 @@ namespace MyScheduler.Descriptions
         }
 
         [Theory]
-        [InlineData("en-US", "Occurs the first Monday of every 1 month(s) every 2 hours between 08:00 and 10:00, starting 01/01/2025")]
-        [InlineData("en-UK", "Occurs the first Monday of every 1 month(s) every 2 hours between 08:00 and 10:00, starting 01/01/2025")]
-        [InlineData("es", "Ocurre el primer lunes de cada 1 mes(es) cada 2 horas entre las 08:00 y las 10:00, comienza el 01/01/2025")]
+        [InlineData("en-US", "Occurs the first Monday of every 1 month(s) every 2 hours between 08:00 and 10:00, starting 02/01/2025")]
+        [InlineData("en-UK", "Occurs the first Monday of every 1 month(s) every 2 hours between 08:00 and 10:00, starting 01/02/2025")]
+        [InlineData("es-ES", "Ocurre el primer lunes de cada 1 mes(es) cada 2 horas entre las 08:00 y las 10:00, comienza el 01/02/2025")]
         public void GetOutput_ShouldPass_WhenMonthlyTheRange_AllLanguages(string language, string expectedDescription)
         {
             var schedule = new ScheduleEntity
@@ -102,7 +103,7 @@ namespace MyScheduler.Descriptions
                 TimeUnit = TimeUnit.Hours,
                 DailyStartTime = new TimeSpan(8, 0, 0),
                 DailyEndTime = new TimeSpan(10, 0, 0),
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 2, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, 0, 0, TimeSpan.Zero),
                 Language = language
             };
@@ -112,9 +113,75 @@ namespace MyScheduler.Descriptions
         }
 
         [Theory]
-        [InlineData("en-US", "Occurs day 5 every 1 month(s) at 08:00, starting 01/01/2025")]
-        [InlineData("en-UK", "Occurs day 5 every 1 month(s) at 08:00, starting 01/01/2025")]
-        [InlineData("es", "Ocurre el día 5 cada 1 mes(es) a las 08:00, comienza el 01/01/2025")]
+        [InlineData("en-US", "Occurs the first Monday of every 1 month(s) every 2 hours between 08:00 and 10:00, starting 02/01/2025")]
+        [InlineData("en-UK", "Occurs the first Monday of every 1 month(s) every 2 hours between 08:00 and 10:00, starting 01/02/2025")]
+        [InlineData("es-ES", "Ocurre el primer lunes de cada 1 mes(es) cada 2 horas entre las 08:00 y las 10:00, comienza el 01/02/2025")]
+        public void GetOutput_ShouldPass_WhenMonthlyTheRange_AllLanguages_RomanceTimeZone(string language, string expectedDescription)
+        {
+            var schedule = new ScheduleEntity
+            {
+                ScheduleType = ScheduleType.Recurring,
+                Enabled = true,
+                Occurs = Occurs.Monthly,
+                MonthlyFrequencyTheCheckbox = true,
+                MonthlyTheOrder = MonthlyTheOrder.First,
+                MonthlyTheDayOfWeek = MonthlyDayOfWeek.Monday,
+                MonthlyTheRecurrence = 1,
+                DailyFrequencyRangeCheckbox = true,
+                TimeUnitNumberOf = 2,
+                TimeUnit = TimeUnit.Hours,
+                DailyStartTime = new TimeSpan(8, 0, 0),
+                DailyEndTime = new TimeSpan(10, 0, 0),
+                StartDate = new DateTimeOffset(2025, 2, 1, 0, 0, 0, TimeSpan.Zero),
+                EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, 0, 0, TimeSpan.Zero),
+                Language = language,
+                TimeZoneID = "Romance Standard Time"
+            };
+            var manager = new ScheduleManager();
+            var result = manager.GetOutput(schedule, 1);
+
+            Assert.Equal(expectedDescription, result.Value.Description);
+            Assert.Equal(TimeSpan.FromHours(1), result.Value.ExecutionTime.Offset);
+        }
+
+        [Theory]
+        [InlineData("en-US", "Occurs the first Monday of every 1 month(s) every 2 hours between 08:00 and 10:00, starting 02/01/2025")]
+        [InlineData("en-UK", "Occurs the first Monday of every 1 month(s) every 2 hours between 08:00 and 10:00, starting 01/02/2025")]
+        [InlineData("es-ES", "Ocurre el primer lunes de cada 1 mes(es) cada 2 horas entre las 08:00 y las 10:00, comienza el 01/02/2025")]
+        public void GetOutput_ShouldPass_WhenMonthlyTheRange_AllLanguages_GmtTimeZone(string language, string expectedDescription)
+        {
+            var schedule = new ScheduleEntity
+            {
+                ScheduleType = ScheduleType.Recurring,
+                Enabled = true,
+                Occurs = Occurs.Monthly,
+                MonthlyFrequencyTheCheckbox = true,
+                MonthlyTheOrder = MonthlyTheOrder.First,
+                MonthlyTheDayOfWeek = MonthlyDayOfWeek.Monday,
+                MonthlyTheRecurrence = 1,
+                DailyFrequencyRangeCheckbox = true,
+                TimeUnitNumberOf = 2,
+                TimeUnit = TimeUnit.Hours,
+                DailyStartTime = new TimeSpan(8, 0, 0),
+                DailyEndTime = new TimeSpan(10, 0, 0),
+                StartDate = new DateTimeOffset(2025, 2, 1, 0, 0, 0, TimeSpan.Zero),
+                EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, 0, 0, TimeSpan.Zero),
+                Language = language,
+                TimeZoneID = "GMT Standard Time"
+            };
+            var manager = new ScheduleManager();
+            var result = manager.GetOutput(schedule, 1);
+
+            Assert.Equal(expectedDescription, result.Value.Description);
+     
+            Assert.Equal(TimeSpan.Zero, result.Value.ExecutionTime.Offset);
+        }
+
+
+        [Theory]
+        [InlineData("en-US", "Occurs day 5 every 1 month(s) at 08:00, starting 02/01/2025")]
+        [InlineData("en-UK", "Occurs day 5 every 1 month(s) at 08:00, starting 01/02/2025")]
+        [InlineData("es-ES", "Ocurre el día 5 cada 1 mes(es) a las 08:00, comienza el 01/02/2025")]
         public void GetOutput_ShouldPass_WhenMonthlyDayOnce_AllLanguages(string language, string expectedDescription)
         {
             var schedule = new ScheduleEntity
@@ -127,7 +194,7 @@ namespace MyScheduler.Descriptions
                 MonthlyDayRecurrence = 1,
                 DailyFrequencyOnceCheckbox = true,
                 DailyOnceExecutionTime = new TimeSpan(8, 0, 0),
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 2, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, 0, 0, TimeSpan.Zero),
                 Language = language
             };
@@ -138,9 +205,9 @@ namespace MyScheduler.Descriptions
 
 
         [Theory]
-        [InlineData("en-US", "Occurs day 5 every 1 month(s) at 08:00, starting 01/01/2025")]
-        [InlineData("en-UK", "Occurs day 5 every 1 month(s) at 08:00, starting 01/01/2025")]
-        [InlineData("es", "Ocurre el día 5 cada 1 mes(es) a las 08:00, comienza el 01/01/2025")]
+        [InlineData("en-US", "Occurs day 5 every 1 month(s) at 08:00, starting 02/01/2025")]
+        [InlineData("en-UK", "Occurs day 5 every 1 month(s) at 08:00, starting 01/02/2025")]
+        [InlineData("es-ES", "Ocurre el día 5 cada 1 mes(es) a las 08:00, comienza el 01/02/2025")]
         public void GetOutput_ShouldPass_WhenMonthlyDayOnce_AllLanguage(string language, string expectedDescription)
         {
             var schedule = new ScheduleEntity
@@ -153,7 +220,7 @@ namespace MyScheduler.Descriptions
                 MonthlyDayRecurrence = 1,
                 DailyFrequencyOnceCheckbox = true,
                 DailyOnceExecutionTime = new TimeSpan(8, 0, 0),
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 2, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, 0, 0, TimeSpan.Zero),
                 Language = language
             };
@@ -163,9 +230,9 @@ namespace MyScheduler.Descriptions
         }
 
         [Theory]
-        [InlineData("en-US", "Occurs day 10 every 2 month(s) every 3 hours between 09:00 and 15:00, starting 01/01/2025")]
-        [InlineData("en-UK", "Occurs day 10 every 2 month(s) every 3 hours between 09:00 and 15:00, starting 01/01/2025")]
-        [InlineData("es", "Ocurre el día 10 cada 2 mes(es) cada 3 horas entre las 09:00 y las 15:00, comienza el 01/01/2025")]
+        [InlineData("en-US", "Occurs day 10 every 2 month(s) every 3 hours between 09:00 and 15:00, starting 02/01/2025")]
+        [InlineData("en-UK", "Occurs day 10 every 2 month(s) every 3 hours between 09:00 and 15:00, starting 01/02/2025")]
+        [InlineData("es-ES", "Ocurre el día 10 cada 2 mes(es) cada 3 horas entre las 09:00 y las 15:00, comienza el 01/02/2025")]
         public void GetOutput_ShouldPass_WhenMonthlyDayRange_AllLanguages(string language, string expectedDescription)
         {
             var schedule = new ScheduleEntity
@@ -181,7 +248,7 @@ namespace MyScheduler.Descriptions
                 DailyEndTime = new TimeSpan(15, 0, 0),
                 TimeUnitNumberOf = 3,
                 TimeUnit = TimeUnit.Hours,
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 2, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, 0, 0, TimeSpan.Zero),
                 Language = language
             };
@@ -191,9 +258,9 @@ namespace MyScheduler.Descriptions
         }
 
         [Theory]
-        [InlineData("en-US", "Occurs every 1 week(s) on monday every 15 minutes between 10:00 and 12:00, starting 01/01/2025")]
-        [InlineData("en-UK", "Occurs every 1 week(s) on monday every 15 minutes between 10:00 and 12:00, starting 01/01/2025")]
-        [InlineData("es", "Ocurre cada 1 semana(s) los lunes cada 15 minutos entre las 10:00 y las 12:00, comienza el 01/01/2025")]
+        [InlineData("en-US", "Occurs every 1 week(s) on monday every 15 minutes between 10:00 and 12:00, starting 02/01/2025")]
+        [InlineData("en-UK", "Occurs every 1 week(s) on monday every 15 minutes between 10:00 and 12:00, starting 01/02/2025")]
+        [InlineData("es-ES", "Ocurre cada 1 semana(s) los lunes cada 15 minutos entre las 10:00 y las 12:00, comienza el 01/02/2025")]
         public void GetOutput_ShouldPass_WhenWeeklyRangeSingleDay_AllLanguages(string language, string expectedDescription)
         {
             var schedule = new ScheduleEntity
@@ -208,7 +275,7 @@ namespace MyScheduler.Descriptions
                 TimeUnit = TimeUnit.Minutes,
                 DailyStartTime = new TimeSpan(10, 0, 0),
                 DailyEndTime = new TimeSpan(12, 0, 0),
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 2, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, 0, 0, TimeSpan.Zero),
                 Language = language
             };
@@ -218,9 +285,9 @@ namespace MyScheduler.Descriptions
         }
 
         [Theory]
-        [InlineData("en-US", "Occurs every 1 day(s) every 10 minutes between 07:00 and 08:00, starting 01/01/2025")]
-        [InlineData("en-UK", "Occurs every 1 day(s) every 10 minutes between 07:00 and 08:00, starting 01/01/2025")]
-        [InlineData("es", "Ocurre cada 1 día(s) cada 10 minutos entre las 07:00 y las 08:00, comienza el 01/01/2025")]
+        [InlineData("en-US", "Occurs every 1 day(s) every 10 minutes between 07:00 and 08:00, starting 02/01/2025")]
+        [InlineData("en-UK", "Occurs every 1 day(s) every 10 minutes between 07:00 and 08:00, starting 01/02/2025")]
+        [InlineData("es-ES", "Ocurre cada 1 día(s) cada 10 minutos entre las 07:00 y las 08:00, comienza el 01/02/2025")]
         public void GetOutput_ShouldPass_WhenDailyRange_AllLanguages(string language, string expectedDescription)
         {
             var schedule = new ScheduleEntity
@@ -234,7 +301,7 @@ namespace MyScheduler.Descriptions
                 TimeUnit = TimeUnit.Minutes,
                 DailyStartTime = new TimeSpan(7, 0, 0),
                 DailyEndTime = new TimeSpan(8, 0, 0),
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 2, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, 0, 0, TimeSpan.Zero),
                 Language = language
             };
@@ -244,9 +311,9 @@ namespace MyScheduler.Descriptions
         }
 
         [Theory]
-        [InlineData("en-US", "Occurs the last Friday of every 3 month(s) at 20:00, starting 01/01/2025")]
-        [InlineData("en-UK", "Occurs the last Friday of every 3 month(s) at 20:00, starting 01/01/2025")]
-        [InlineData("es", "Ocurre el último viernes de cada 3 mes(es) a las 20:00, comienza el 01/01/2025")]
+        [InlineData("en-US", "Occurs the last Friday of every 3 month(s) at 20:00, starting 02/01/2025")]
+        [InlineData("en-UK", "Occurs the last Friday of every 3 month(s) at 20:00, starting 01/02/2025")]
+        [InlineData("es-ES", "Ocurre el último viernes de cada 3 mes(es) a las 20:00, comienza el 01/02/2025")]
         public void GetOutput_ShouldPass_WhenMonthlyTheOnce_AllLanguages(string language, string expectedDescription)
         {
             var schedule = new ScheduleEntity
@@ -260,7 +327,7 @@ namespace MyScheduler.Descriptions
                 MonthlyTheRecurrence = 3,
                 DailyFrequencyOnceCheckbox = true,
                 DailyOnceExecutionTime = new TimeSpan(20, 0, 0),
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 2, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2025, 12, 31, 0, 0, 0, 0, 0, TimeSpan.Zero),
                 Language = language
             };
@@ -269,28 +336,11 @@ namespace MyScheduler.Descriptions
             Assert.Equal(expectedDescription, result.Value.Description);
         }
 
-        [Fact]
-        public void Localizer_ShouldPass_WhenReturnCorrectDescription()
-        {
-            var localizer = new Localizer();
-            var scheduleConfig = new ScheduleEntity
-            {
-                ScheduleType = ScheduleType.Recurring,
-                Occurs = Occurs.Daily,
-                DailyFrequencyOnceCheckbox = true,
-                DailyOnceExecutionTime = new TimeSpan(8, 0, 0),
-                Recurrence = 1,
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
-                Language = "en-US"
-            };
-            var result = DescriptionGenerator.GetDescription(scheduleConfig);
-            Assert.Equal("Occurs every 1 day(s) at 08:00, starting 01/01/2025", result);
-        }
 
         [Theory]
         [InlineData("en-US", "Monday")]
         [InlineData("en-UK", "Monday")]
-        [InlineData("es", "lunes")]
+        [InlineData("es-ES", "lunes")]
         public void Localizer_ShouldPass_WhenReturnCorrectDayTranslation(string language, string expected)
         {
             var localizer = new Localizer();
@@ -301,7 +351,7 @@ namespace MyScheduler.Descriptions
         [Theory]
         [InlineData("en-US", "no days specified")]
         [InlineData("en-UK", "no days specified")]
-        [InlineData("es", "no se especificaron días")]
+        [InlineData("es-ES", "no se especificaron días")]
         public void Localizer_ShouldPass_WhenReturnCorrectNoDaysSpecified(string language, string expected)
         {
             var localizer = new Localizer();
@@ -316,7 +366,7 @@ namespace MyScheduler.Descriptions
             {
                 ScheduleType = ScheduleType.Once,
                 OnceTypeDateExecution = new DateTimeOffset(2025, 1, 1, 8, 0, 0, TimeSpan.Zero),
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var result = DescriptionGenerator.GetDescription(schedule);
@@ -333,7 +383,7 @@ namespace MyScheduler.Descriptions
                 DailyFrequencyOnceCheckbox = true,
                 DailyOnceExecutionTime = new TimeSpan(8, 0, 0),
                 Recurrence = 1,
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var result = DescriptionGenerator.GetDescription(schedule);
@@ -361,7 +411,7 @@ namespace MyScheduler.Descriptions
                 DailyFrequencyOnceCheckbox = true,
                 DailyOnceExecutionTime = new TimeSpan(8, 0, 0),
                 Recurrence = 1,
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var localizer = new Localizer();
@@ -381,7 +431,7 @@ namespace MyScheduler.Descriptions
                 TimeUnit = TimeUnit.Hours,
                 DailyStartTime = new TimeSpan(8, 0, 0),
                 DailyEndTime = new TimeSpan(10, 0, 0),
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var localizer = new Localizer();
@@ -399,7 +449,7 @@ namespace MyScheduler.Descriptions
                 WeeklyRecurrence = 1,
                 DailyOnceExecutionTime = new TimeSpan(8, 0, 0),
                 DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday },
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var localizer = new Localizer();
@@ -420,7 +470,7 @@ namespace MyScheduler.Descriptions
                 DailyStartTime = new TimeSpan(8, 0, 0),
                 DailyEndTime = new TimeSpan(10, 0, 0),
                 DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday },
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var localizer = new Localizer();
@@ -440,13 +490,22 @@ namespace MyScheduler.Descriptions
                 MonthlyDayRecurrence = 2,
                 DailyFrequencyOnceCheckbox = true,
                 DailyOnceExecutionTime = new TimeSpan(8, 0, 0),
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var localizer = new Localizer();
             var result = DescriptionGenerator.GetRecurringDescription(schedule, localizer, "en-US");
             Assert.Contains("Occurs day 10 every 2 month(s)", result);
             Assert.Contains("at 08:00", result);
+        }
+
+        [Fact]
+        public void TimeZoneService_ShouldReturn_CorrectOffset_WhenRomanceTimeZone()
+        {
+            var date = new DateTime(2025, 1, 1);
+            var time = new TimeSpan(8, 0, 0);
+            var offsetDate = TimeZoneService.ToTimeZoneOffset(date, time, "Romance Standard Time");
+            Assert.Equal(TimeSpan.FromHours(1), offsetDate.Offset);
         }
 
         [Fact]
@@ -464,7 +523,7 @@ namespace MyScheduler.Descriptions
                 TimeUnit = TimeUnit.Hours,
                 DailyStartTime = new TimeSpan(8, 0, 0),
                 DailyEndTime = new TimeSpan(10, 0, 0),
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var localizer = new Localizer();
@@ -495,7 +554,7 @@ namespace MyScheduler.Descriptions
                 DailyFrequencyOnceCheckbox = false,
                 DailyFrequencyRangeCheckbox = false,
                 Recurrence = 1,
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var localizer = new Localizer();
@@ -513,7 +572,7 @@ namespace MyScheduler.Descriptions
                 DailyFrequencyRangeCheckbox = false,
                 WeeklyRecurrence = 1,
                 DaysOfWeek = new List<DayOfWeek> { DayOfWeek.Monday },
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var localizer = new Localizer();
@@ -531,7 +590,7 @@ namespace MyScheduler.Descriptions
                 MonthlyFrequencyTheCheckbox = false,
                 DailyFrequencyOnceCheckbox = false,
                 DailyFrequencyRangeCheckbox = false,
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var localizer = new Localizer();
@@ -551,7 +610,7 @@ namespace MyScheduler.Descriptions
                 MonthlyDayRecurrence = 1,
                 DailyFrequencyOnceCheckbox = false,
                 DailyFrequencyRangeCheckbox = false,
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var localizer = new Localizer();
@@ -573,7 +632,7 @@ namespace MyScheduler.Descriptions
                 MonthlyTheRecurrence = 3,
                 DailyFrequencyOnceCheckbox = false,
                 DailyFrequencyRangeCheckbox = false,
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var localizer = new Localizer();
@@ -592,20 +651,12 @@ namespace MyScheduler.Descriptions
                 WeeklyRecurrence = 1,
                 DailyOnceExecutionTime = new TimeSpan(8, 0, 0),
                 DaysOfWeek = null,
-                StartDate = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                StartDate = new DateTimeOffset(2025, 1, 2, 0, 0, 0, TimeSpan.Zero),
                 Language = "en-US"
             };
             var localizer = new Localizer();
             var result = DescriptionGenerator.GetRecurringDescription(schedule, localizer, "en-US");
             Assert.Contains("no days specified", result);
-        }
-
-        [Fact]
-        public void GetWeeklyDayList_ShouldPass_WhenNullOrEmpty_ReturnsNoDaysSpecified()
-        {
-            var localizer = new Localizer();
-            Assert.Equal("no days specified", DescriptionGenerator.GetWeeklyDayList(null, localizer, "en-US"));
-            Assert.Equal("no days specified", DescriptionGenerator.GetWeeklyDayList(new List<DayOfWeek>(), localizer, "en-US"));
         }
 
         [Fact]

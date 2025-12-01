@@ -13,6 +13,7 @@ namespace MyScheduler.Domain.Services
             var localDateTime = day.Date + time;
 
             var offset = timeZone.GetUtcOffset(localDateTime);
+
             return new DateTimeOffset(localDateTime, offset);
         }
 
@@ -29,10 +30,9 @@ namespace MyScheduler.Domain.Services
                 case "GMT Standard Time":
                     return "GMT Standard Time"; 
                 default:
-                    return "Eastern Standard Time"; 
+                    return "Central European Standard Time"; 
             }
         }
-
 
     }
 }

@@ -44,7 +44,7 @@ namespace MyScheduler.Domain.Validators
             if (!scheduleConfig.Enabled)
                 errors.AppendLine("The form its not enabled, check enable checkbox");
 
-            if (string.IsNullOrEmpty(scheduleConfig.Language) || (scheduleConfig.Language != "en-US" && scheduleConfig.Language != "en-UK" && scheduleConfig.Language != "es"))
+            if (string.IsNullOrEmpty(scheduleConfig.Language) || (scheduleConfig.Language != "en-US" && scheduleConfig.Language != "en-UK" && scheduleConfig.Language != "es-ES"))
                 errors.AppendLine("You need to choose an available Language (en-US, en-UK, es)");
 
             if (string.IsNullOrEmpty(scheduleConfig.TimeZoneID))

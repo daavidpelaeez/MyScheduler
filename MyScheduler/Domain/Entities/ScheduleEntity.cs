@@ -30,7 +30,7 @@ namespace MyScheduler.Domain.Entities
         public MonthlyTheOrder? MonthlyTheOrder { get; set; }                   
         public MonthlyDayOfWeek? MonthlyTheDayOfWeek { get; set; }               
         public int? MonthlyTheRecurrence { get; set; }                 
-        public string Language { get; set; } = "en-US";
-        public string TimeZoneID { get; set; } = "Central European Standard Time";
+        public string Language { get; set; } = "en-UK";
+        public string TimeZoneID { get; set; } = "Romance Standard Time";
     }
 }

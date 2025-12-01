@@ -932,7 +932,7 @@ namespace MyScheduler.Monthly
                 DailyOnceExecutionTime = TimeSpan.Zero,
                 StartDate = new DateTimeOffset(2024, 2, 1, 0, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2024, 12, 31, 0, 0, 0, TimeSpan.Zero),
-                Language = "es"
+                Language = "es-ES"
             };
 
             var manager = new ScheduleManager();
