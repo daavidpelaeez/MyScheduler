@@ -1,97 +1,90 @@
 # 🗓️ MyScheduler
 
-**MyScheduler** is a .NET class library that provides a robust and extensible framework for task scheduling.  
-It enables developers to manage and automate the execution of one-time and recurring tasks with clear, modular configuration.
+**MyScheduler** es una librería .NET moderna para la gestión y automatización de tareas programadas, diseñada para ser robusta, extensible y fácil de integrar en cualquier solución.
 
 ---
 
-## ✨ Features
+## ✨ Características
 
-- ✅ Supports separated scheduling model via two enums:
+- **Modelo de programación flexible:**  
   - `ScheduleType`: `Once`, `Recurring`
   - `Occurs`: `Daily`, `Weekly`, `Monthly`
-- 🔘 Flexible daily frequency configuration:
+- **Configuración avanzada de frecuencia diaria:**  
   - `DailyFrequencyOnceCheckbox`
   - `DailyFrequencyEveryCheckbox`
-- 🔍 Thorough validation of scheduling parameters
-- ⏱️ Automatic calculation of next execution time through `ScheduleManager`
-- 🧩 Extensible architecture for adding custom recurrence logic
-- 🧪 Fully unit and integration tested with xUnit for reliability
+- **Validación exhaustiva de parámetros de programación**
+- **Cálculo automático del próximo tiempo de ejecución** con `ScheduleManager`
+- **Arquitectura extensible** para lógica personalizada de recurrencia
+- **Cobertura de tests >95%** con xUnit: confiabilidad garantizada
 
 ---
 
-## 🚀 What's New
+## 🚀 Novedades
 
-### 🗓️ Monthly Recurrence Support
+### 🗓️ Soporte para Recurrencia Mensual
 
-MyScheduler now supports **monthly recurrence** for task execution, greatly enhancing scheduling flexibility.
+- **Dos modos de programación mensual:**
+  - Por día específico (ej: día 10 cada 2 meses)
+  - Por patrón (ej: primer lunes cada 3 meses, último viernes cada mes)
+- **Validaciones inteligentes:**  
+  - No se permite mezclar configuraciones de día y patrón
+  - Rango de valores controlado
+- **Descripciones automáticas:**  
+  - Generación de textos claros para cada configuración
+- **Totalmente testeado:**  
+  - Pruebas unitarias e integración para todos los casos
 
-- **Two monthly scheduling options:**
-  - **By day:** Schedule a task on a specific day of the month (e.g., every 10th day, every 2 months).
-  - **By pattern:** Schedule based on ordinal and weekday (e.g., "first Monday every 3 months", "last Friday every month").
-- **Configuration options:**
-  - `MonthlyDayCalculator` and related classes perform scheduling for the "by day" approach.
-  - `MonthlyTheCalculator` and related classes handle "by pattern" monthly scheduling.
-  - Fully compatible with daily frequencies: once per day or at regular intervals within the day.
-- **Validation and description:**
-  - Validations ensure monthly scheduling is used with correct parameters (cannot mix day/pattern options; values within proper ranges, etc).
-  - Scheduling descriptions are generated to clearly explain monthly recurrences.
-- **Unit tests** for monthly logic are included.
-
-**Example schedule descriptions:**
+**Ejemplos de descripción:**
 - "Occurs day 10 every 2 month(s) at 08:00, starting 01/01/2025"
 - "Occurs the first Monday of every 1 month(s) every 2 hours between 09:00 and 17:00, starting 01/01/2025"
 
 ---
 
-## 🖼 Example (Monthly Recurrence UI)
+## 🧠 Arquitectura
 
-<img width="748" height="765" alt="image" src="https://github.com/user-attachments/assets/4096f157-f097-47f8-bdc9-db930d981e57" />
-
-
----
-
-## 🧠 Architecture Overview
-
-| Component                  | Responsibility                                                                         |
+| Componente                  | Responsabilidad                                                                         |
 |----------------------------|----------------------------------------------------------------------------------------|
-| **ScheduleEntity**         | Holds scheduling configuration (type, recurrence, frequency, and timing)                |
-| **ScheduleType**           | Defines if a task runs `Once` or `Recurring`                                           |
-| **Occurs**                 | Defines recurrence context (`Daily`, `Weekly`, `Monthly`)                              |
-| **DailyFrequencyOnceCheckbox / DailyFrequencyEveryCheckbox** | Choose whether the recurrence runs once per day or at regular intervals |
-| **Validator**              | Validates all scheduling combinations according to the selected configuration           |
-| **ScheduleManager**        | Calculates next execution date/time and builds a human-readable description             |
+| **ScheduleEntity**         | Configuración de la programación (tipo, recurrencia, frecuencia, horario)               |
+| **ScheduleType**           | Define si la tarea es única o recurrente                                                |
+| **Occurs**                 | Contexto de recurrencia (`Daily`, `Weekly`, `Monthly`)                                  |
+| **DailyFrequencyOnceCheckbox / DailyFrequencyEveryCheckbox** | Configuración de frecuencia diaria                   |
+| **Validator**              | Valida todas las combinaciones posibles según la configuración                          |
+| **ScheduleManager**        | Calcula la próxima ejecución y genera la descripción legible                            |
 
 ---
 
-## 🛠️ Getting Started
+## 🛠️ Primeros pasos
 
-### 📋 Requirements
+### 📋 Requisitos
 
-- [.NET SDK 7.0 or later](https://dotnet.microsoft.com/en-us/download)
+- [.NET SDK 7.0 o superior](https://dotnet.microsoft.com/en-us/download)
 
-### 📦 Installation
+### 📦 Instalación
 
-You can add **MyScheduler** to your project via NuGet (once published) or include the project manually in your solution.
+Puedes agregar **MyScheduler** vía NuGet (próximamente) o incluir el proyecto manualmente en tu solución.
+** git clone https://github.com/daavidpelaeez/MyScheduler.git **
 
-#### Manual Cloning
-
-```bash
-git clone https://github.com/daavidpelaeez/MyScheduler.git
-```
 
 ---
 
 ## 🧪 Testing
 
-- The project contains comprehensive unit and integration tests for all recurrence types (Daily, Weekly, Monthly).
-- Check the `SchedulerTests` project for example usage and test cases.
+- Pruebas unitarias e integración para todos los tipos de recurrencia (Daily, Weekly, Monthly)
+- Ejemplos y casos en el proyecto `SchedulerTests`
+- **Cobertura >95%** en lógica central y validadores
 
 ---
 
-## 📚 Documentation
+## 📚 Documentación
 
-- See source code for configuration examples and further details.
-- [Browse the codebase on GitHub](https://github.com/daavidpelaeez/MyScheduler).
+- Ejemplos de configuración en el código fuente
+- [Explora el repositorio en GitHub](https://github.com/daavidpelaeez/MyScheduler)
 
 ---
+
+## 🖼 Ejemplo UI (Recurrencia Mensual)
+
+<img width="748" height="765" alt="image" src="https://github.com/user-attachments/assets/4096f157-f097-47f8-bdc9-db930d981e57" />
+
+---
+
